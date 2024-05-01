@@ -1,4 +1,5 @@
 ﻿using gymsy.App.Models;
+using gymsy.App.Presenters;
 using gymsy.Context;
 using gymsy.Properties;
 using System;
@@ -18,14 +19,13 @@ namespace gymsy.UserControls.AdminControls
         private GymsyDbContext dbContext;
         private int indexRowSelect = 0;
         private bool isModeVerNoDelete = true;
-
+        private AdminPresenter presenter;
         public InstructorsAdminControl()
         {
             //Se trae el contexto de la base de datos
-            this.dbContext = GymsyContext.GymsyContextDB;
 
             InitializeComponent();
-
+            presenter=new AdminPresenter();
             this.cargarPersonas();
             //se muestran los activos
             this.mostrar(false);
@@ -43,7 +43,7 @@ namespace gymsy.UserControls.AdminControls
             DGInstructors.Sort(DGInstructors.Columns[0], ListSortDirection.Ascending);
 
 
-            var instructors = this.dbContext.Instructors.ToList();
+            var instructors = presenter.GetInstructors();
             int cantidad_clientes = 0;
             double ingreso = 0.0;
 
@@ -51,9 +51,10 @@ namespace gymsy.UserControls.AdminControls
             {
 
                 //Deben ser los activos, y en un cierto periodo
-                cantidad_clientes = this.dbContext.Clients.Where(c => c.IdTrainingPlanNavigation.IdInstructor == instructor.IdInstructor).Count();
-                ingreso = this.dbContext.Clients.Where(c => c.IdTrainingPlanNavigation.IdInstructor == instructor.IdInstructor).Sum(c => c.IdTrainingPlanNavigation.Price);
-
+               
+                cantidad_clientes = presenter.InstructorCantClientes(instructor);
+                ingreso = presenter.ingresoClientes(instructor);
+                
                 try
                 {
                     string ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageInstructor + "\\" + instructor.IdPersonNavigation.Avatar;

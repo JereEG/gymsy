@@ -15,6 +15,7 @@ using gymsy.App.Models;
 using System.Numerics;
 using System.Reflection;
 using gymsy.Utilities;
+using gymsy.App.Presenters;
 
 namespace gymsy.UserControls
 {
@@ -22,11 +23,11 @@ namespace gymsy.UserControls
     {
         private bool isEditMode = false; // Variable para saber si se esta editando o agregando un nuevo cliente
         private int indexRowSelect = 0;
-        private GymsyDbContext dbContext;
+        //private GymsyDbContext dbContext;
 
         public AddClientUserControl()
         {
-            this.dbContext = GymsyContext.GymsyContextDB;
+           //this.dbContext = GymsyContext.GymsyContextDB;
 
             InitializeComponent();
 
@@ -139,7 +140,7 @@ namespace gymsy.UserControls
             }
 
             //Se verifica que se hay ingresado un correo
-            if (!string.IsNullOrWhiteSpace(TBUsuario.Text) && TBUsuario.Text.Length < 7 && this.IsNicknameUnique(TBUsuario.Text) && TBUsuario.PlaceholderText != TBUsuario.Text)
+            if (!string.IsNullOrWhiteSpace(TBUsuario.Text) && TBUsuario.Text.Length < 7 && AddClientPresenter.IsNicknameUnique(TBUsuario.Text) && TBUsuario.PlaceholderText != TBUsuario.Text)
             {
                 LUsurioRequerido.Visible = false;
             }
@@ -195,13 +196,13 @@ namespace gymsy.UserControls
             {
                 //Ahora se cargan los demas elementos
 
-                var trainingPlans = this.dbContext.TrainingPlans.ToList();
+                List<TrainingPlan> trainingPlans = AddClientPresenter.TraerPlanes();
 
-                var trainingPlan = trainingPlans.FirstOrDefault();
+                TrainingPlan trainingPlan = AddClientPresenter.TraerPrimerPlan();
 
                 if (trainingPlan != null)
                 {
-                    if(trainingPlan.IdInstructorNavigation != null)
+                    if(trainingPlan != null)
                     {
                         LidPlan.Text = trainingPlan.IdTrainingPlan.ToString();
                         TBPrecio.Text = trainingPlan.Price.ToString();
@@ -273,53 +274,11 @@ namespace gymsy.UserControls
                     {
                         sexo = "F";
                     }
-
-
-                    Person persona = new Person
-                    {
-                        Nickname = usuario,
-                        FirstName = TBNombre.Text,
-                        Avatar = SaveImage(TBRutaImagen.Text),
-                        Password = Bcrypt.HashPassoword(TBContraseña.Text),
-                        CreatedAt = DateTime.Now,
-                        LastName = TBApellido.Text,
-                        CBU = usuario,
-                        NumberPhone = TBTelefono.Text,
-                        Birthday = DPFechaNacimiento.Value,
-                        Gender = sexo,
-                        RolId = 3,//3 es el rol de cliente
-                        Inactive = true
-                    };
-
-                    //se guarda en la base de datos, primero la persona por la relacion de la llave foranea
-                    this.dbContext.People.Add(persona);
-                    this.dbContext.SaveChanges();
-
-                    Client cliente = new Client
-                    {
-                        LastExpiration = DPVencimiento.Value,//Se le añade un mes mas a la fecha actual
-                        IdPerson = persona.IdPerson,
-                        IdTrainingPlan = idPlan,
-                    };
-
-                    //Se guarda en AppState
-                    AppState.clients.Add(persona);
-
-                    Wallet wallet = new Wallet
-                    {
-                        Total = 0.0,
-                        Retirable = 0.0,
-                        Inactive = false,
-                        IdPerson = persona.IdPerson
-                    };
-
-                    this.dbContext.Add(wallet);
-                    this.dbContext.SaveChanges();
-
-
-
-                    this.dbContext.Clients.Add(cliente);
-                    this.dbContext.SaveChanges();
+                   
+         
+        
+                    AddClientPresenter.guardarCliente(usuario, TBNombre.Text, TBApellido.Text, TBRutaImagen.Text, Bcrypt.HashPassoword(TBContraseña.Text),
+                    TBTelefono.Text, DPFechaNacimiento.Value, sexo, DPVencimiento.Value, idPlan);
 
                     AppState.needRefreshClientsUserControl = true;
                     MessageBox.Show("Se Guardaron correcctamente los datos");
@@ -340,41 +299,7 @@ namespace gymsy.UserControls
         /**
          * Guarda en Mis domumentos la imagen seleccionada
          */
-        private string SaveImage(string imagePath)
-        {
-            try
-            {
-
-                //Ruta completa para guardar la imagen en la carpeta
-                string pathDestinationFolder = AppState.pathDestinationFolder + AppState.nameCarpetImageClient;
-
-
-                // Asegúrate de que la carpeta exista, y si no, créala
-                if (!Directory.Exists(pathDestinationFolder))
-                {
-                    Directory.CreateDirectory(pathDestinationFolder);
-                }
-
-                // Obtén la extensión de archivo de la imagen original
-                string extension = Path.GetExtension(imagePath);
-
-                // Genera un nombre de archivo único usando un GUID y la fecha/hora actual
-                string uniqueFileName = Guid.NewGuid().ToString() + DateTime.Now.ToString("yyyyMMddHHmmssfff") + extension;
-
-                // Ruta completa para guardar la imagen en la carpeta
-                string destinationPath = Path.Combine(pathDestinationFolder, uniqueFileName);
-
-                // Copia la imagen desde la ubicación original a la carpeta de destino
-                File.Copy(imagePath, destinationPath, true);
-
-                return uniqueFileName;//nombre del archivo 
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                return "";
-            }
-        }
+        
 
 
         private void CBPlanes_OnSelectedIndexChanged(object sender, EventArgs e)
@@ -391,9 +316,7 @@ namespace gymsy.UserControls
                 int selectedPlanId = int.Parse(parts[0]);
                 string selectedPlanDescription = parts[1];
 
-                var trainingPlan = this.dbContext.TrainingPlans
-                    .Where(trainingPlan => trainingPlan.IdTrainingPlan == selectedPlanId)
-                    .First();
+                var trainingPlan = AddClientPresenter.BuscarPlan(selectedPlanId);
 
                 LidPlan.Text = trainingPlan.IdTrainingPlan.ToString();
                 TBPrecio.Text = trainingPlan.Price.ToString();
@@ -418,31 +341,7 @@ namespace gymsy.UserControls
         }
 
         // Función para verificar si el 'nickname' es único
-        private bool IsNicknameUnique(string nickname)
-        {
-                try
-                {
-                    // Consulta la base de datos para verificar si ya existe un registro con el mismo 'nickname'
-                    var existingPerson = this.dbContext.People.FirstOrDefault(p => p.Nickname == nickname);
-
-                    // Si 'existingPerson' no es nulo, significa que ya existe un registro con el mismo 'nickname'
-                    if (existingPerson == null)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        MessageBox.Show("El nombre de usuario ya existe");
-                        return false;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al verificar el nombre de usuario: " + ex.Message);
-                    return false;
-                }
-            
-        }
+        
 
         public override void Refresh()
         {

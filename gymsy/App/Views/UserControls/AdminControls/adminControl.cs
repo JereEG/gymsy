@@ -1,4 +1,5 @@
 ﻿using gymsy.App.Models;
+using gymsy.App.Presenters;
 using gymsy.Context;
 using gymsy.Properties;
 using Microsoft.Data.SqlClient;
@@ -17,11 +18,11 @@ namespace gymsy.App.Views.UserControls.AdminControls
 {
     public partial class adminControl : UserControl
     {
-        private GymsyDbContext dbContext;
+
+        private AdminPresenter presenter;
         public adminControl()
         {
-            //Se trae el contexto de la base de datos
-            this.dbContext = GymsyContext.GymsyContextDB;
+            presenter = new AdminPresenter();
             InitializeComponent();
         }
 
@@ -29,25 +30,9 @@ namespace gymsy.App.Views.UserControls.AdminControls
         {
             try
             {
-                string rutaDeCopiaDeSeguridad = "C:\\backup";
-
-                if (!Directory.Exists(rutaDeCopiaDeSeguridad))
-                {
-                    Directory.CreateDirectory(rutaDeCopiaDeSeguridad);
-                }
-
-                rutaDeCopiaDeSeguridad += "\\" + $"Backup_{DateTime.Now.ToString("yyyyMMddHHmmss")}.bak";
-
-                using (var connection = new SqlConnection(Resources.stringConnection))
-                {
-                    connection.Open();
-                    using (var command = new SqlCommand($"BACKUP DATABASE [gymsy] TO DISK = '{rutaDeCopiaDeSeguridad}'", connection))
-                    {
-                        command.ExecuteNonQuery();
-                    }
-                }
-
-                MessageBox.Show($"Copia de seguridad creada exitosamente.\nLo puede encontrar en {rutaDeCopiaDeSeguridad}", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                string ruta=presenter.backup();
+                
+                MessageBox.Show($"Copia de seguridad creada exitosamente.\nLo puede encontrar en {ruta}", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -59,38 +44,12 @@ namespace gymsy.App.Views.UserControls.AdminControls
 
         public void RealizarRestauracion(string backupPath)
         {
-            string databaseName;
-            string connectionString;
-
-            using (var context = this.dbContext)
-            {
-                connectionString = Resources.stringConnection;
-                databaseName = "gymsy";
-            }
+            
 
             try
             {
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-                    string sqlsingleuser = $"ALTER DATABASE {databaseName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;";
-                    using (SqlCommand singleusercommand = new SqlCommand(sqlsingleuser, connection))
-                    {
-                        singleusercommand.ExecuteNonQuery();
-                    }
-                    string sqlUseMaster = "USE master;";
-                    using (SqlCommand useMasterCommand = new SqlCommand(sqlUseMaster, connection))
-                    {
-                        useMasterCommand.ExecuteNonQuery();
-                    }
-                    string sqlRestore = $"RESTORE DATABASE {databaseName} FROM DISK = '{backupPath}';";
-
-                    using (SqlCommand restoreCommand = new SqlCommand(sqlRestore, connection))
-                    {
-                        restoreCommand.ExecuteNonQuery();
-                    }
-                }
+                presenter.restore(backupPath);
+                
 
                 MessageBox.Show("Restauración completada con éxito.");
             }
@@ -102,29 +61,7 @@ namespace gymsy.App.Views.UserControls.AdminControls
 
         private void BBuscarArchivo_Click_1(object sender, EventArgs e)
         {
-
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Archivos .bak|*.bak";
-
-            // Muestra el cuadro de diálogo para seleccionar un archivo .bak
-            DialogResult result = openFileDialog.ShowDialog();
-
-            if (result == DialogResult.OK)
-            {
-                try
-                {
-                    string rutaArchivo = openFileDialog.FileName;
-
-
-                    // Muestra el contenido en el TextBox
-                    TBRutaArchivo.Text = rutaArchivo;
-
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Ocurrió un error al cargar el archivo .bak: " + ex.Message);
-                }
-            }
+            TBRutaArchivo.Text= presenter.buscar();
         }
 
         private void rjButton1_Click(object sender, EventArgs e)

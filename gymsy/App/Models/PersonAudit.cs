@@ -11,7 +11,7 @@ public partial class PersonAudit
 
     public string ActionUser { get; set; } = null!;
 
-    public string ActionType { get; set; } = null!;
+    public char ActionType { get; set; } = ' ';
 
     public int? IdPerson { get; set; }
 
@@ -22,10 +22,6 @@ public partial class PersonAudit
     public string? NicknameAntigua { get; set; }
 
     public string? NicknameNueva { get; set; }
-
-    public string? CbuAntigua { get; set; }
-
-    public string? CbuNueva { get; set; }
 
     public bool? InactiveAntigua { get; set; }
 

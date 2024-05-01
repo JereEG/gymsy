@@ -11,6 +11,7 @@ public partial class Wallet
 
     public double Retirable { get; set; }
 
+    public string? CBU { get; set; }
     public bool Inactive { get; set; }
 
     public int IdPerson { get; set; }

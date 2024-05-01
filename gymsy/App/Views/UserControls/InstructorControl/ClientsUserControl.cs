@@ -13,13 +13,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.EntityFrameworkCore;
+using gymsy.App.Presenters;
 
 
 namespace gymsy.UserControls
 {
     public partial class ClientsUserControl : UserControl
     {
-        private GymsyDbContext dbContext;
+        //private GymsyDbContext dbContext;
         private int indexRowSelect = 0;
         /*
          * Por defecto se muestran los usuarios que no han sido eliminados, Por lo que el modo es delete
@@ -34,7 +35,7 @@ namespace gymsy.UserControls
         public ClientsUserControl()
         {
             //Se trae el contexto de la base de datos
-            this.dbContext = GymsyContext.GymsyContextDB;
+            //this.dbContext = GymsyContext.GymsyContextDB;
 
             InitializeComponent();
 
@@ -57,9 +58,7 @@ namespace gymsy.UserControls
 
                 int IdClientSelected = int.Parse(DGUsers.Rows[rowIndex].Cells["IdClient"].Value.ToString());
 
-                var clientSelected = this.dbContext.Clients
-                                .Where(client => client.IdClient == IdClientSelected)
-                                .First();
+                var clientSelected = ClientePresenter.BuscarCliente(IdClientSelected);
 
 
 
@@ -336,18 +335,7 @@ namespace gymsy.UserControls
                     */
                     int idClient = int.Parse(DGUsers.Rows[this.indexRowSelect].Cells["IdClient"].Value.ToString());
 
-                    var clientUpdated = this.dbContext.Clients
-                    .Where(client => client.IdClient == idClient)
-                    .First();
-
-                    if (clientUpdated != null)
-                    {
-                        clientUpdated.IdPersonNavigation.Inactive = deleteOrActive;
-
-                        this.dbContext.SaveChanges();
-                    }
-
-
+                    ClientePresenter.EliminarOActivarCliente(idClient, deleteOrActive);
 
                     //Se actualiza el datagrid con el 
                     this.mostrar(!this.isModeVerNoDelete);
@@ -425,16 +413,24 @@ namespace gymsy.UserControls
 
         private void rjButton2_Click_1(object sender, EventArgs e)
         {
+            try
+            {
+                if (DGUsers.SelectedRows.Count > 0)
+                {
+                    //se guarda su indice
+                    this.indexRowSelect = DGUsers.SelectedRows[0].Index;
 
-            //se guarda su indice
-            this.indexRowSelect = DGUsers.SelectedRows[0].Index;
+                    // Accede a la celda "id" del cliente
 
-            // Accede a la celda "id" del cliente
+                    int IdClientSelected = int.Parse(DGUsers.Rows[this.indexRowSelect].Cells["IdClient"].Value.ToString());
 
-            int IdClientSelected = int.Parse(DGUsers.Rows[this.indexRowSelect].Cells["IdClient"].Value.ToString());
-
-            AppState.auxIdClient = IdClientSelected;
-            MainView.navigationControl.Display(7);
+                    AppState.auxIdClient = IdClientSelected;
+                    MainView.navigationControl.Display(7, true);
+                }
+            } catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         public override void Refresh()

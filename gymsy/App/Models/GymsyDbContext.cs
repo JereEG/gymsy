@@ -510,10 +510,6 @@ public partial class GymsyDbContext : DbContext
             entity.Property(e => e.Birthday)
                 .HasColumnType("date")
                 .HasColumnName("birthday");
-            entity.Property(e => e.CBU)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("CBU");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("date")
                 .HasColumnName("createdAt");
@@ -581,14 +577,6 @@ public partial class GymsyDbContext : DbContext
             entity.Property(e => e.BirthdayNueva)
                 .HasColumnType("date")
                 .HasColumnName("birthday_nueva");
-            entity.Property(e => e.CbuAntigua)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("CBU_antigua");
-            entity.Property(e => e.CbuNueva)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("CBU_nueva");
             entity.Property(e => e.CreatedAtAntigua)
                 .HasColumnType("date")
                 .HasColumnName("createdAt_antigua");
@@ -781,6 +769,12 @@ public partial class GymsyDbContext : DbContext
             entity.Property(e => e.Retirable).HasColumnName("retirable");
             entity.Property(e => e.Total).HasColumnName("total");
 
+            entity.Property(e => e.CBU)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("CBU");
+
+
             entity.HasOne(d => d.IdPersonNavigation).WithMany(p => p.Wallets)
                 .HasForeignKey(d => d.IdPerson)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -813,6 +807,8 @@ public partial class GymsyDbContext : DbContext
             entity.Property(e => e.RetirableNueva).HasColumnName("retirable_nueva");
             entity.Property(e => e.TotalAntigua).HasColumnName("total_antigua");
             entity.Property(e => e.TotalNueva).HasColumnName("total_nueva");
+            entity.Property(e => e.CBU_antigua).HasColumnName("CBU_antigua");
+            entity.Property(e => e.CBU_nueva).HasColumnName("CBU_nueva");
 
             entity.HasOne(d => d.IdPersonNavigation).WithMany(p => p.WalletAudits)
                 .HasForeignKey(d => d.IdPerson)

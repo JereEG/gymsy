@@ -14,20 +14,21 @@ using gymsy.Context;
 using gymsy.App.Models;
 using System.Collections;
 using gymsy.Utilities;
+using gymsy.App.Presenters;
 
 namespace gymsy.UserControls
 {
     public partial class EditClient : UserControl
     {
         private int indexRowSelect = 0;
-        private GymsyDbContext dbContext;
+        //private GymsyDbContext dbContext;
 
         //private Dictionary<int, string> descripcionPorValor = new Dictionary<int, string>();
 
         public EditClient()
         {
             //Se trae el contexto de la base de datos
-            this.dbContext = GymsyContext.GymsyContextDB;
+           // this.dbContext = GymsyContext.GymsyContextDB;
 
             InitializeComponent();
 
@@ -251,9 +252,7 @@ namespace gymsy.UserControls
 
                     CBPlanes.Items.Clear();
 
-                    var trainingPlan = this.dbContext.TrainingPlans
-                        .Where(trainingPlan => trainingPlan.IdTrainingPlan == AppState.ClientActive.IdTrainingPlan)
-                        .First();
+                    var trainingPlan = EditClientPresenter.PlanDelCliente();
 
                     LidPlan.Text = trainingPlan.IdTrainingPlan.ToString();
                     TBPrecio.Text = trainingPlan.Price.ToString();
@@ -264,9 +263,7 @@ namespace gymsy.UserControls
 
                     //Ahora se cargan los demas elementos
 
-                    var trainingPlans = this.dbContext.TrainingPlans
-                        .Where(trainingPlan => trainingPlan.IdTrainingPlan != AppState.ClientActive.IdTrainingPlan)
-                        .ToList();
+                    var trainingPlans = EditClientPresenter.PlanesQueNoSonDelCliente(); 
 
                     foreach (TrainingPlan plan in trainingPlans)
                     {
@@ -339,14 +336,6 @@ namespace gymsy.UserControls
         {
             try
             {
-                var personUpdated = this.dbContext.People
-                                .Where(people => people.IdPerson == AppState.ClientActive.IdPersonNavigation.IdPerson)
-                                .First();
-
-
-                var clientUpdated = this.dbContext.Clients
-                                .Where(client => client.IdClient == AppState.ClientActive.IdClient)
-                                .First();
 
                 string usuario = TBUsuario.Text;
 
@@ -361,33 +350,10 @@ namespace gymsy.UserControls
                 {
                     sexo = "F";
                 }
+           
 
-                if (personUpdated != null && clientUpdated != null)
-                {
-                    // Actualiza las propiedades de la tabla person
-                    personUpdated.Nickname = usuario;
-                    personUpdated.FirstName = TBNombre.Text;
-                    if(personUpdated.Avatar != TBRutaImagen.Text)
-                    {
-                        personUpdated.Avatar = SaveImage(TBRutaImagen.Text);
-                    }
-                    //Si se cambio la contraseña se actualizara
-                    if (personUpdated.Password != TBContraseña.Text)
-                    {
-                        personUpdated.Password = Bcrypt.HashPassoword( TBContraseña.Text);
-                    }
-                    personUpdated.LastName = TBApellido.Text;
-                    personUpdated.CBU = usuario;
-                    personUpdated.NumberPhone = TBTelefono.Text;
-                    personUpdated.Gender = sexo;
-                    personUpdated.Birthday = DPFechaNacimiento.Value;
-
-                    // Actualiza las propiedades de la tabla client
-                    clientUpdated.LastExpiration = DPVencimiento.Value;
-                    clientUpdated.IdTrainingPlan = idPlan;
-
-                    this.dbContext.SaveChanges();
-                }
+                EditClientPresenter.ActualizarCliente(usuario, TBNombre.Text, TBApellido.Text, TBRutaImagen.Text, TBContraseña.Text,
+                     TBTelefono.Text, sexo, DPFechaNacimiento.Value, DPVencimiento.Value, idPlan);
 
 
                 MessageBox.Show("Se Editaron correcctamente los datos");
@@ -410,41 +376,7 @@ namespace gymsy.UserControls
             }
 
         }
-        private string SaveImage(string imagePath)
-        {
-            try
-            {
-
-                //Ruta completa para guardar la imagen en la carpeta
-                string pathDestinationFolder = AppState.pathDestinationFolder + AppState.nameCarpetImageClient;
-
-
-                // Asegúrate de que la carpeta exista, y si no, créala
-                if (!Directory.Exists(pathDestinationFolder))
-                {
-                    Directory.CreateDirectory(pathDestinationFolder);
-                }
-
-                // Obtén la extensión de archivo de la imagen original
-                string extension = Path.GetExtension(imagePath);
-
-                // Genera un nombre de archivo único usando un GUID y la fecha/hora actual
-                string uniqueFileName = Guid.NewGuid().ToString() + DateTime.Now.ToString("yyyyMMddHHmmssfff") + extension;
-
-                // Ruta completa para guardar la imagen en la carpeta
-                string destinationPath = Path.Combine(pathDestinationFolder, uniqueFileName);
-
-                // Copia la imagen desde la ubicación original a la carpeta de destino
-                File.Copy(imagePath, destinationPath, true);
-
-                return uniqueFileName;//nombre del archivo 
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                return "";
-            }
-        }
+       
         private void CBPlanes_OnSelectedIndexChanged(object sender, EventArgs e)
         {
             // Obtén la descripción seleccionada del ComboBox
@@ -459,9 +391,7 @@ namespace gymsy.UserControls
                 int selectedPlanId = int.Parse(parts[0]);
                 string selectedPlanDescription = parts[1];
 
-                var trainingPlan = this.dbContext.TrainingPlans
-                    .Where(trainingPlan => trainingPlan.IdTrainingPlan == selectedPlanId)
-                    .First();
+                var trainingPlan = EditClientPresenter.BuscarPlan(selectedPlanId);
 
                 LidPlan.Text = trainingPlan.IdTrainingPlan.ToString();
                 TBPrecio.Text = trainingPlan.Price.ToString();

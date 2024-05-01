@@ -1,4 +1,5 @@
 ﻿using gymsy.App.Models;
+using gymsy.App.Presenters;
 using gymsy.Context;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,11 @@ namespace gymsy.UserControls.ClientControls
     {
 
         Person person;
-        private GymsyDbContext dbContext;
 
+        private ClientPresenter presenter;
         public AboutClientControl()
         {
-            this.dbContext = GymsyContext.GymsyContextDB;
+            presenter = new ClientPresenter();
             this.person = AppState.person;
             InitializeComponent();
             InitializeDataClient();
@@ -30,8 +31,8 @@ namespace gymsy.UserControls.ClientControls
         {
 
             //this.dbContext.TrainingPlans.ToList();
-            var client = this.dbContext.Clients.Where(cl => cl.IdPerson == this.person.IdPerson).First();
-
+            
+            var client = presenter.getClient(this.person.IdPerson);
             LbName.Text = $"{this.person.LastName}, {this.person.FirstName}";
 
 

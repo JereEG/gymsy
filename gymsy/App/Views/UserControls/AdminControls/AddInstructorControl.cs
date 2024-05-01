@@ -1,6 +1,7 @@
 ﻿using gymsy.App.Models;
 using gymsy.Context;
 using gymsy.Utilities;
+using gymsy.UserControls.AdminControls;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using gymsy.App.Views.UserControls.AdminControls;
+using gymsy.App.Presenters;
 
 namespace gymsy.UserControls.AdminControls
 {
@@ -18,80 +21,42 @@ namespace gymsy.UserControls.AdminControls
     {
         private bool isEditMode = false; // Variable para saber si se esta editando o agregando 
 
-        private GymsyDbContext dbContext;
+        private AdminPresenter presenter;
         public AddInstructorControl()
         {
-            this.dbContext = GymsyContext.GymsyContextDB;
+
             InitializeComponent();
+            presenter = new AdminPresenter();
         }
 
         private void BGuardarCliente_Click(object sender, EventArgs e)
         {
+
+            string nombre = TBNombre.Text;
+            string apellido = TBApellido.Text;
+            string telefono = TBTelefono.Text;
+            string usuario = TBUsuario.Text;
+            string contraseña = Bcrypt.HashPassoword(TBContraseña.Text);
+            string nameImagen = SaveImage(TBRutaImagen.Text);
+            DateTime birthday = DPFechaNacimiento.Value;
+            string sexo = "";
+
+            if (RBMasculino.Checked)
+            {
+                sexo = "M";
+            }
+            else
+            {
+                sexo = "F";
+            }
+
             try
             { //Se verifica que se hayan ingresado todos los datos
                 bool isValidTextBoxes = isValidTextsBoxesMostrarError();
                 if (isValidTextBoxes)
                 {
-
-                    string nombre = TBNombre.Text;
-                    string apellido = TBApellido.Text;
-                    string telefono = TBTelefono.Text;
-                    string usuario = TBUsuario.Text;
-                    string contraseña = Bcrypt.HashPassoword(TBContraseña.Text);
-                    string nameImagen = SaveImage(TBRutaImagen.Text);
-
-                    string sexo = "";
-
-                    if (RBMasculino.Checked)
-                    {
-                        sexo = "M";
-                    }
-                    else
-                    {
-                        sexo = "F";
-                    }
-
-                    Person persona = new Person
-                    {
-                        Nickname = usuario,
-                        FirstName = nombre,
-                        Avatar = nameImagen,
-                        Password = contraseña,
-                        CreatedAt = DateTime.Now,
-                        LastName = apellido,
-                        CBU = usuario,
-                        NumberPhone = telefono,
-                        Birthday = DPFechaNacimiento.Value,
-                        Gender = sexo,
-                        RolId = 2,//2 es el rol de Instructor
-                        Inactive = false
-                    };
-                    //se guarda en la base de datos, primero la persona por la relacion de la llave foranea
-                    this.dbContext.People.Add(persona);
-                    this.dbContext.SaveChanges();
-
-                    Instructor newInstructor = new Instructor
-                    {
-                        IdPerson = persona.IdPerson
-                    };
-
-                    //Se guarda en AppState
-                    //AppState.clients.Add(persona);
-
-                    Wallet wallet = new Wallet
-                    {
-                        Total = 0.0,
-                        Retirable = 0.0,
-                        Inactive = false,
-                        IdPerson = persona.IdPerson
-                    };
-
-                    this.dbContext.Add(wallet);
-                    this.dbContext.SaveChanges();
-
-                    this.dbContext.Instructors.Add(newInstructor);
-                    this.dbContext.SaveChanges();
-
+                    presenter.GuardarCliente(nombre,apellido,telefono,usuario,contraseña,nameImagen,sexo,birthday);
+                    
                     AppState.needRefreshClientsUserControl = true;
                     MessageBox.Show("Se Guardaron correcctamente los datos");
                     this.restablecerTextBoxes();
@@ -99,15 +64,21 @@ namespace gymsy.UserControls.AdminControls
 
                     MessageBox.Show("Se Guardaron correcctamente los datos");
 
-                } else
+                }
+                else
                 {
                     MessageBox.Show("Revise y complete correctamente los campos.");
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("Error al guardar el perfil instructor.");
+                MessageBox.Show($"Mensaje de la excepción: {ex.Message}\n\n" +
+                                $"Stack Trace: {ex.StackTrace}\n\n" +
+                                $"Excepción interna: {ex.InnerException}\n\n" +
+                                $"Data: {ex.Data}\n\n" +
+                                $"Origen: {ex.Source}\n\n" +
+                                $"Tipo de excepción: {ex.GetType().ToString()}");
                 throw;
             }
         }
@@ -143,9 +114,11 @@ namespace gymsy.UserControls.AdminControls
             {
                 MessageBox.Show("Exepcion Inesperado");
             }
+        
         }
         private bool isValidTextsBoxesMostrarError()
         {
+
             bool isValid = true;
 
             //Se verifica que se hay ingresado un nombre
@@ -270,28 +243,7 @@ namespace gymsy.UserControls.AdminControls
         }
         private bool IsNicknameUnique(string nickname)
         {
-            try
-            {
-                // Consulta la base de datos para verificar si ya existe un registro con el mismo 'nickname'
-                var existingPerson = this.dbContext.People.FirstOrDefault(p => p.Nickname == nickname);
-
-                // Si 'existingPerson' no es nulo, significa que ya existe un registro con el mismo 'nickname'
-                if (existingPerson == null)
-                {
-                    return true;
-                }
-                else
-                {
-                    MessageBox.Show("El nombre de usuario ya existe");
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al verificar el nombre de usuario: " + ex.Message);
-                return false;
-            }
-
+           return  presenter.NicknameUnique(nickname);
 
         }
         public override void Refresh()
@@ -301,7 +253,6 @@ namespace gymsy.UserControls.AdminControls
 
         private void BBack_Click(object sender, EventArgs e)
         {
-
             MainView.navigationControl.Display(1, true);
             AppState.isModeAdd = false;
         }

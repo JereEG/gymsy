@@ -1,4 +1,5 @@
 ﻿using gymsy.App.Models;
+using gymsy.App.Presenters;
 using gymsy.App.Views.Interfaces;
 using gymsy.Context;
 using System;
@@ -17,7 +18,7 @@ namespace gymsy.UserControls.ClientControls
     public partial class ProgressClientControl : UserControl
     {
 
-        private GymsyDbContext gymsydb = GymsyContext.GymsyContextDB;
+       
   
         public ProgressClientControl()
         {
@@ -62,32 +63,65 @@ namespace gymsy.UserControls.ClientControls
 
         public void UpdateComponent()
         {
-
-            int edad = DateTime.Now.Year - AppState.ClientActive.IdPersonNavigation.Birthday.Year;
-            TimeSpan TimeTraning = AppState.ClientActive.IdPersonNavigation.CreatedAt - DateTime.Now;
-
-            TBDescripcionClient.Text = $"{AppState.ClientActive.IdPersonNavigation.FirstName + " " + AppState.ClientActive.IdPersonNavigation.LastName}, " +
-            $"{edad} años comenzo a enrenarse hace {TimeTraning.Days * -1} días, " +
-            $"cuenta con {AppState.ClientActive.DataFisics.Count()} registros guardados";
-
-
-            if (AppState.ClientActive.DataFisics.Count() > 0)
+            if(AppState.auxIdClient > 0)
             {
-                PanelMessageCount.Visible = false;
+                Client clienteBuscado = ClientePresenter.BuscarCliente(AppState.auxIdClient);
 
-                foreach (var DataFisic in AppState.ClientActive.DataFisics)
+                int edad = DateTime.Now.Year - clienteBuscado.IdPersonNavigation.Birthday.Year;
+                TimeSpan TimeTraning = clienteBuscado.IdPersonNavigation.CreatedAt - DateTime.Now;
+
+                TBDescripcionClient.Text = $"{clienteBuscado.IdPersonNavigation.FirstName + " " + clienteBuscado.IdPersonNavigation.LastName}, " +
+                $"{edad} años comenzo a enrenarse hace {TimeTraning.Days * -1} días, " +
+                $"cuenta con {clienteBuscado.DataFisics.Count()} registros guardados";
+
+
+                if (clienteBuscado.DataFisics.Count() > 0)
                 {
-                    TimeSpan diferencia = DateTime.Now - DataFisic.CreatedAt;
-                    String formart = $"Hace {diferencia.Days} dias";
-                    dataGridProgress.Rows.Add(DataFisic.IdDataFisic, formart, null, $"{DataFisic.Weight} KG", DataFisic.Title);
+                    PanelMessageCount.Visible = false;
+
+                    foreach (var DataFisic in clienteBuscado.DataFisics)
+                    {
+                        TimeSpan diferencia = DateTime.Now - DataFisic.CreatedAt;
+                        String formart = $"Hace {diferencia.Days} dias";
+                        dataGridProgress.Rows.Add(DataFisic.IdDataFisic, formart, null, $"{DataFisic.Weight} KG", DataFisic.Title);
+                    }
+
+                    updateProgressActive(clienteBuscado.DataFisics.First());
+                }
+                else
+                {
+                    PanelMessageCount.Visible = true;
                 }
 
-                updateProgressActive(AppState.ClientActive.DataFisics.First());
-            }
-            else
+            } else
             {
-                PanelMessageCount.Visible = true;
+                int edad = DateTime.Now.Year - AppState.ClientActive.IdPersonNavigation.Birthday.Year;
+                TimeSpan TimeTraning = AppState.ClientActive.IdPersonNavigation.CreatedAt - DateTime.Now;
+
+                TBDescripcionClient.Text = $"{AppState.ClientActive.IdPersonNavigation.FirstName + " " + AppState.ClientActive.IdPersonNavigation.LastName}, " +
+                $"{edad} años comenzo a enrenarse hace {TimeTraning.Days * -1} días, " +
+                $"cuenta con {AppState.ClientActive.DataFisics.Count()} registros guardados";
+
+
+                if (AppState.ClientActive.DataFisics.Count() > 0)
+                {
+                    PanelMessageCount.Visible = false;
+
+                    foreach (var DataFisic in AppState.ClientActive.DataFisics)
+                    {
+                        TimeSpan diferencia = DateTime.Now - DataFisic.CreatedAt;
+                        String formart = $"Hace {diferencia.Days} dias";
+                        dataGridProgress.Rows.Add(DataFisic.IdDataFisic, formart, null, $"{DataFisic.Weight} KG", DataFisic.Title);
+                    }
+
+                    updateProgressActive(AppState.ClientActive.DataFisics.First());
+                }
+                else
+                {
+                    PanelMessageCount.Visible = true;
+                }
             }
+            
 
         }
 

@@ -1,4 +1,5 @@
 ﻿using gymsy.App.Models;
+using gymsy.App.Presenters;
 using gymsy.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,6 +8,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Resources.Extensions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,10 +20,10 @@ namespace gymsy.UserControls.AdminControls
     {
 
         private GymsyDbContext dbContext;
-
+        private AdminPresenter presenter;
         public DashboardAdminControl()
         {
-            this.dbContext = GymsyContext.GymsyContextDB;
+            presenter= new AdminPresenter();
             InitializeComponent();
             InitilizeChar();
             InitilizeCharPie();
@@ -31,25 +33,12 @@ namespace gymsy.UserControls.AdminControls
         private void InitializeDataGridPays()
         {
 
-            var ultimosPagos = this.dbContext.Pays
-            .OrderByDescending(p => p.CreatedAt)
-            .Take(5) // Puedes ajustar la cantidad de pagos que deseas obtener
-            .Include(p => p.Remitente)
-            .ToList();
-
             DataGridViewRow row = this.DataGridPays.RowTemplate;
             row.Height = 35;
             row.MinimumHeight = 20;
 
-            foreach (Pay pay in ultimosPagos)
-            {
-                DataGridPays.Rows.Add(
-                    pay.IdPay,
-                    pay.CreatedAt,
-                    $"$ {pay.Amount}",
-                    $"{pay.Remitente.LastName}, {pay.Remitente.FirstName}"
-                );
-            }
+            DataGridPays= presenter.DatagridPay(DataGridPays);
+
         }
 
         public void InitilizeChar()
@@ -72,32 +61,12 @@ namespace gymsy.UserControls.AdminControls
                     "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nob", "Dec"
                 };
 
-                var resultado = dbContext.Pays
-                 .GroupBy(p => new { Mes = p.CreatedAt.Month, Anio = p.CreatedAt.Year })
-                 .Select(g => new
-                 {
-                     Mes = g.Key.Mes,
-                     Anio = g.Key.Anio,
-                     SumaPagos = g.Sum(p => p.Amount)
-                 })
-                 .Select(item => new
-                 {
-                     Mes = item.Mes,
-                     Amount = item.SumaPagos
-                 })
-                 .ToArray();
 
                 // Crear un arreglo con todos los meses del año y establecer el monto en 0 para aquellos meses sin pagos
-                var mesesCompletos = Enumerable.Range(1, 12)
-                    .Select(mes => resultado.FirstOrDefault(r => r.Mes == mes) ?? new { Mes = mes, Amount = 0.0 })
-                    .ToArray();
+                //                var mesesCompletos = presenter.mes();
 
                 // Trabaja con 'resultado' según sea necesario
-                foreach (var data in mesesCompletos)
-                {
-                    series.Points.AddXY(listMonths[data.Mes - 1], data.Amount);
-                    series.LegendToolTip = $"Ganancia obtenida por mes";
-                }
+                series = presenter.mes(listMonths, series);
             }
         }
 
@@ -114,25 +83,11 @@ namespace gymsy.UserControls.AdminControls
                 series.BorderColor = Color.White;
                 series.Font = new System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold);
                 series.MarkerStyle = MarkerStyle.Cross;
+                series = presenter.InstructorCant(series);
 
-                var resultado = dbContext.Instructors
-                    .Select(instructor => new
-                    {
-                        Instructor = instructor,
-                        CantidadClientes = instructor.TrainingPlans.SelectMany(plan => plan.Clients).Count()
-                    })
-                    .ToList();
 
                 // Agrega los nuevos datos a la serie
-                foreach (var data in resultado)
-                {
-                    if(data.CantidadClientes > 0)
-                    {
-                        series.Points.AddXY($"{data.Instructor.IdPersonNavigation.FirstName} - {data.CantidadClientes} Clientes.", data.CantidadClientes);
-                        series.LegendToolTip = $"{data.Instructor.IdPersonNavigation.LastName}, {data.Instructor.IdPersonNavigation.FirstName} - {data.CantidadClientes} Clientes.";
-
-                    }
-                }
+            
             }
 
         }

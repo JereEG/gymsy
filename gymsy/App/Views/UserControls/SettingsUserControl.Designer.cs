@@ -86,9 +86,9 @@
             a.AutoSize = true;
             a.Font = new Font("Segoe UI", 29F, FontStyle.Regular, GraphicsUnit.Point);
             a.ForeColor = Color.White;
-            a.Location = new Point(372, 12);
+            a.Location = new Point(425, 16);
             a.Name = "a";
-            a.Size = new Size(263, 52);
+            a.Size = new Size(333, 66);
             a.TabIndex = 0;
             a.Text = "Configuracion";
             // 
@@ -121,7 +121,7 @@
             settingsWrapper.Location = new Point(0, 0);
             settingsWrapper.Margin = new Padding(0);
             settingsWrapper.Name = "settingsWrapper";
-            settingsWrapper.Size = new Size(1038, 703);
+            settingsWrapper.Size = new Size(1186, 937);
             settingsWrapper.TabIndex = 1;
             // 
             // back
@@ -140,10 +140,11 @@
             back.IconFont = FontAwesome.Sharp.IconFont.Auto;
             back.IconSize = 90;
             back.ImageAlign = ContentAlignment.MiddleRight;
-            back.Location = new Point(23, 12);
+            back.Location = new Point(26, 16);
+            back.Margin = new Padding(3, 4, 3, 4);
             back.Name = "back";
-            back.Padding = new Padding(10, 0, 0, 0);
-            back.Size = new Size(103, 64);
+            back.Padding = new Padding(11, 0, 0, 0);
+            back.Size = new Size(118, 85);
             back.TabIndex = 94;
             back.TextAlign = ContentAlignment.MiddleLeft;
             back.TextColor = Color.White;
@@ -161,9 +162,10 @@
             gorilla_avatar.BorderSize = 2;
             gorilla_avatar.ErrorImage = Properties.Resources.gorilla_avatar;
             gorilla_avatar.GradientAngle = 50F;
-            gorilla_avatar.Location = new Point(447, 67);
+            gorilla_avatar.Location = new Point(511, 89);
+            gorilla_avatar.Margin = new Padding(3, 4, 3, 4);
             gorilla_avatar.Name = "gorilla_avatar";
-            gorilla_avatar.Size = new Size(100, 100);
+            gorilla_avatar.Size = new Size(114, 114);
             gorilla_avatar.SizeMode = PictureBoxSizeMode.StretchImage;
             gorilla_avatar.TabIndex = 93;
             gorilla_avatar.TabStop = false;
@@ -174,20 +176,21 @@
             TBRutaImagen.BorderStyle = BorderStyle.None;
             TBRutaImagen.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             TBRutaImagen.ForeColor = Color.FromArgb(230, 237, 243);
-            TBRutaImagen.Location = new Point(412, 206);
+            TBRutaImagen.Location = new Point(471, 275);
+            TBRutaImagen.Margin = new Padding(3, 4, 3, 4);
             TBRutaImagen.Name = "TBRutaImagen";
             TBRutaImagen.PlaceholderText = "Ruta...";
             TBRutaImagen.ReadOnly = true;
-            TBRutaImagen.Size = new Size(186, 22);
+            TBRutaImagen.Size = new Size(213, 27);
             TBRutaImagen.TabIndex = 92;
             // 
             // label3
             // 
             label3.AutoSize = true;
             label3.ForeColor = Color.FromArgb(230, 237, 243);
-            label3.Location = new Point(442, 177);
+            label3.Location = new Point(505, 236);
             label3.Name = "label3";
-            label3.Size = new Size(102, 15);
+            label3.Size = new Size(130, 20);
             label3.TabIndex = 91;
             label3.Text = "Ruta de la imagen";
             // 
@@ -206,10 +209,11 @@
             BTAgregarImagen.IconColor = Color.FromArgb(230, 237, 243);
             BTAgregarImagen.IconFont = FontAwesome.Sharp.IconFont.Auto;
             BTAgregarImagen.ImageAlign = ContentAlignment.MiddleRight;
-            BTAgregarImagen.Location = new Point(620, 190);
+            BTAgregarImagen.Location = new Point(709, 253);
+            BTAgregarImagen.Margin = new Padding(3, 4, 3, 4);
             BTAgregarImagen.Name = "BTAgregarImagen";
-            BTAgregarImagen.Padding = new Padding(10, 0, 0, 0);
-            BTAgregarImagen.Size = new Size(186, 53);
+            BTAgregarImagen.Padding = new Padding(11, 0, 0, 0);
+            BTAgregarImagen.Size = new Size(213, 71);
             BTAgregarImagen.TabIndex = 90;
             BTAgregarImagen.Text = "Agregar Imagen";
             BTAgregarImagen.TextAlign = ContentAlignment.MiddleLeft;
@@ -221,9 +225,9 @@
             // 
             LRuraImagen.AutoSize = true;
             LRuraImagen.ForeColor = Color.Red;
-            LRuraImagen.Location = new Point(441, 231);
+            LRuraImagen.Location = new Point(504, 308);
             LRuraImagen.Name = "LRuraImagen";
-            LRuraImagen.Size = new Size(105, 15);
+            LRuraImagen.Size = new Size(132, 20);
             LRuraImagen.TabIndex = 89;
             LRuraImagen.Text = "*Campo requerido";
             LRuraImagen.Visible = false;
@@ -236,9 +240,9 @@
             LbErrorChangePass.FlatStyle = FlatStyle.Flat;
             LbErrorChangePass.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point);
             LbErrorChangePass.ForeColor = Color.Crimson;
-            LbErrorChangePass.Location = new Point(307, 487);
+            LbErrorChangePass.Location = new Point(351, 649);
             LbErrorChangePass.Name = "LbErrorChangePass";
-            LbErrorChangePass.Size = new Size(82, 19);
+            LbErrorChangePass.Size = new Size(97, 23);
             LbErrorChangePass.TabIndex = 30;
             LbErrorChangePass.Text = "*requerido";
             LbErrorChangePass.Visible = false;
@@ -251,10 +255,10 @@
             panelError.Controls.Add(panelErrorText);
             panelError.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
             panelError.ForeColor = Color.White;
-            panelError.Location = new Point(755, 653);
+            panelError.Location = new Point(863, 871);
             panelError.Margin = new Padding(0);
             panelError.Name = "panelError";
-            panelError.Size = new Size(280, 50);
+            panelError.Size = new Size(320, 67);
             panelError.TabIndex = 40;
             panelError.Visible = false;
             // 
@@ -266,9 +270,10 @@
             panelErrorBtnClose.FlatAppearance.MouseDownBackColor = Color.Transparent;
             panelErrorBtnClose.FlatStyle = FlatStyle.Flat;
             panelErrorBtnClose.ForeColor = Color.LightGray;
-            panelErrorBtnClose.Location = new Point(251, 3);
+            panelErrorBtnClose.Location = new Point(287, 4);
+            panelErrorBtnClose.Margin = new Padding(3, 4, 3, 4);
             panelErrorBtnClose.Name = "panelErrorBtnClose";
-            panelErrorBtnClose.Size = new Size(26, 23);
+            panelErrorBtnClose.Size = new Size(30, 31);
             panelErrorBtnClose.TabIndex = 1;
             panelErrorBtnClose.Text = "X";
             panelErrorBtnClose.UseVisualStyleBackColor = false;
@@ -278,9 +283,9 @@
             // 
             panelErrorText.AutoSize = true;
             panelErrorText.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            panelErrorText.Location = new Point(69, 17);
+            panelErrorText.Location = new Point(79, 23);
             panelErrorText.Name = "panelErrorText";
-            panelErrorText.Size = new Size(145, 18);
+            panelErrorText.Size = new Size(183, 24);
             panelErrorText.TabIndex = 0;
             panelErrorText.Text = "Campos Requeridos";
             // 
@@ -293,9 +298,10 @@
             btnChangePassword.FlatStyle = FlatStyle.Flat;
             btnChangePassword.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
             btnChangePassword.ForeColor = Color.White;
-            btnChangePassword.Location = new Point(755, 472);
+            btnChangePassword.Location = new Point(863, 629);
+            btnChangePassword.Margin = new Padding(3, 4, 3, 4);
             btnChangePassword.Name = "btnChangePassword";
-            btnChangePassword.Size = new Size(87, 34);
+            btnChangePassword.Size = new Size(99, 45);
             btnChangePassword.TabIndex = 39;
             btnChangePassword.Text = "Cambiar ";
             btnChangePassword.UseVisualStyleBackColor = false;
@@ -307,9 +313,9 @@
             label13.AutoSize = true;
             label13.Font = new Font("Segoe UI", 19F, FontStyle.Regular, GraphicsUnit.Point);
             label13.ForeColor = Color.White;
-            label13.Location = new Point(156, 473);
+            label13.Location = new Point(178, 631);
             label13.Name = "label13";
-            label13.Size = new Size(145, 36);
+            label13.Size = new Size(180, 45);
             label13.TabIndex = 38;
             label13.Text = "Contraseña";
             // 
@@ -319,9 +325,10 @@
             panel5.Controls.Add(tbCurrentPassword);
             panel5.Controls.Add(label9);
             panel5.Controls.Add(textErrorCurrPass);
-            panel5.Location = new Point(502, 512);
+            panel5.Location = new Point(574, 683);
+            panel5.Margin = new Padding(3, 4, 3, 4);
             panel5.Name = "panel5";
-            panel5.Size = new Size(340, 88);
+            panel5.Size = new Size(389, 117);
             panel5.TabIndex = 37;
             // 
             // tbCurrentPassword
@@ -330,12 +337,12 @@
             tbCurrentPassword.Cursor = Cursors.Hand;
             tbCurrentPassword.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
             tbCurrentPassword.ForeColor = Color.FromArgb(9, 0, 20);
-            tbCurrentPassword.Location = new Point(0, 37);
-            tbCurrentPassword.Margin = new Padding(5);
+            tbCurrentPassword.Location = new Point(0, 49);
+            tbCurrentPassword.Margin = new Padding(6, 7, 6, 7);
             tbCurrentPassword.Multiline = true;
             tbCurrentPassword.Name = "tbCurrentPassword";
             tbCurrentPassword.PasswordChar = '*';
-            tbCurrentPassword.Size = new Size(335, 40);
+            tbCurrentPassword.Size = new Size(382, 52);
             tbCurrentPassword.TabIndex = 11;
             // 
             // label9
@@ -344,9 +351,9 @@
             label9.AutoSize = true;
             label9.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
             label9.ForeColor = Color.White;
-            label9.Location = new Point(4, 12);
+            label9.Location = new Point(5, 16);
             label9.Name = "label9";
-            label9.Size = new Size(108, 25);
+            label9.Size = new Size(131, 30);
             label9.TabIndex = 1;
             label9.Text = "Actual Clave";
             // 
@@ -357,9 +364,9 @@
             textErrorCurrPass.FlatStyle = FlatStyle.Flat;
             textErrorCurrPass.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point);
             textErrorCurrPass.ForeColor = Color.Crimson;
-            textErrorCurrPass.Location = new Point(254, 18);
+            textErrorCurrPass.Location = new Point(290, 24);
             textErrorCurrPass.Name = "textErrorCurrPass";
-            textErrorCurrPass.Size = new Size(82, 19);
+            textErrorCurrPass.Size = new Size(97, 23);
             textErrorCurrPass.TabIndex = 29;
             textErrorCurrPass.Text = "*requerido";
             textErrorCurrPass.Visible = false;
@@ -370,9 +377,10 @@
             panel6.Controls.Add(tbNewPassword);
             panel6.Controls.Add(label11);
             panel6.Controls.Add(textErrorNewPass);
-            panel6.Location = new Point(156, 512);
+            panel6.Location = new Point(178, 683);
+            panel6.Margin = new Padding(3, 4, 3, 4);
             panel6.Name = "panel6";
-            panel6.Size = new Size(340, 88);
+            panel6.Size = new Size(389, 117);
             panel6.TabIndex = 36;
             // 
             // tbNewPassword
@@ -381,12 +389,12 @@
             tbNewPassword.Cursor = Cursors.Hand;
             tbNewPassword.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
             tbNewPassword.ForeColor = Color.FromArgb(9, 0, 20);
-            tbNewPassword.Location = new Point(2, 37);
-            tbNewPassword.Margin = new Padding(5);
+            tbNewPassword.Location = new Point(2, 49);
+            tbNewPassword.Margin = new Padding(6, 7, 6, 7);
             tbNewPassword.Multiline = true;
             tbNewPassword.Name = "tbNewPassword";
             tbNewPassword.PasswordChar = '*';
-            tbNewPassword.Size = new Size(335, 40);
+            tbNewPassword.Size = new Size(382, 52);
             tbNewPassword.TabIndex = 11;
             // 
             // label11
@@ -395,9 +403,9 @@
             label11.AutoSize = true;
             label11.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
             label11.ForeColor = Color.White;
-            label11.Location = new Point(4, 12);
+            label11.Location = new Point(5, 16);
             label11.Name = "label11";
-            label11.Size = new Size(106, 25);
+            label11.Size = new Size(130, 30);
             label11.TabIndex = 1;
             label11.Text = "Nueva clave";
             // 
@@ -408,9 +416,9 @@
             textErrorNewPass.FlatStyle = FlatStyle.Flat;
             textErrorNewPass.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point);
             textErrorNewPass.ForeColor = Color.Crimson;
-            textErrorNewPass.Location = new Point(256, 13);
+            textErrorNewPass.Location = new Point(293, 17);
             textErrorNewPass.Name = "textErrorNewPass";
-            textErrorNewPass.Size = new Size(82, 19);
+            textErrorNewPass.Size = new Size(97, 23);
             textErrorNewPass.TabIndex = 29;
             textErrorNewPass.Text = "*requerido";
             textErrorNewPass.Visible = false;
@@ -424,10 +432,11 @@
             btnSaveChanges.FlatStyle = FlatStyle.Flat;
             btnSaveChanges.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
             btnSaveChanges.ForeColor = Color.White;
-            btnSaveChanges.Location = new Point(397, 636);
+            btnSaveChanges.Location = new Point(454, 848);
+            btnSaveChanges.Margin = new Padding(3, 4, 3, 4);
             btnSaveChanges.Name = "btnSaveChanges";
-            btnSaveChanges.Padding = new Padding(10);
-            btnSaveChanges.Size = new Size(225, 55);
+            btnSaveChanges.Padding = new Padding(11, 13, 11, 13);
+            btnSaveChanges.Size = new Size(257, 73);
             btnSaveChanges.TabIndex = 10;
             btnSaveChanges.Text = "Guardar Cambios";
             btnSaveChanges.UseVisualStyleBackColor = false;
@@ -439,9 +448,10 @@
             panel2.Controls.Add(TbFirstName);
             panel2.Controls.Add(label1);
             panel2.Controls.Add(textErrorName);
-            panel2.Location = new Point(157, 263);
+            panel2.Location = new Point(179, 351);
+            panel2.Margin = new Padding(3, 4, 3, 4);
             panel2.Name = "panel2";
-            panel2.Size = new Size(340, 88);
+            panel2.Size = new Size(389, 117);
             panel2.TabIndex = 30;
             // 
             // TbFirstName
@@ -450,11 +460,11 @@
             TbFirstName.Cursor = Cursors.Hand;
             TbFirstName.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
             TbFirstName.ForeColor = Color.FromArgb(9, 0, 20);
-            TbFirstName.Location = new Point(5, 46);
-            TbFirstName.Margin = new Padding(5);
+            TbFirstName.Location = new Point(6, 61);
+            TbFirstName.Margin = new Padding(6, 7, 6, 7);
             TbFirstName.Multiline = true;
             TbFirstName.Name = "TbFirstName";
-            TbFirstName.Size = new Size(335, 37);
+            TbFirstName.Size = new Size(382, 48);
             TbFirstName.TabIndex = 11;
             // 
             // label1
@@ -463,9 +473,9 @@
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
             label1.ForeColor = Color.White;
-            label1.Location = new Point(2, 22);
+            label1.Location = new Point(2, 29);
             label1.Name = "label1";
-            label1.Size = new Size(78, 25);
+            label1.Size = new Size(94, 30);
             label1.TabIndex = 1;
             label1.Text = "Nombre";
             // 
@@ -476,9 +486,9 @@
             textErrorName.FlatStyle = FlatStyle.Flat;
             textErrorName.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point);
             textErrorName.ForeColor = Color.Crimson;
-            textErrorName.Location = new Point(257, 26);
+            textErrorName.Location = new Point(294, 35);
             textErrorName.Name = "textErrorName";
-            textErrorName.Size = new Size(82, 19);
+            textErrorName.Size = new Size(97, 23);
             textErrorName.TabIndex = 29;
             textErrorName.Text = "*requerido";
             textErrorName.Visible = false;
@@ -488,10 +498,10 @@
             textBox2.Anchor = AnchorStyles.Top;
             textBox2.Cursor = Cursors.Hand;
             textBox2.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
-            textBox2.Location = new Point(528, 531);
-            textBox2.Margin = new Padding(5);
+            textBox2.Location = new Point(603, 708);
+            textBox2.Margin = new Padding(6, 7, 6, 7);
             textBox2.Name = "textBox2";
-            textBox2.Size = new Size(0, 31);
+            textBox2.Size = new Size(0, 36);
             textBox2.TabIndex = 21;
             // 
             // panel3
@@ -500,9 +510,10 @@
             panel3.Controls.Add(TbPhone);
             panel3.Controls.Add(label5);
             panel3.Controls.Add(textErrorEmail);
-            panel3.Location = new Point(502, 357);
+            panel3.Location = new Point(574, 476);
+            panel3.Margin = new Padding(3, 4, 3, 4);
             panel3.Name = "panel3";
-            panel3.Size = new Size(340, 88);
+            panel3.Size = new Size(389, 117);
             panel3.TabIndex = 33;
             // 
             // TbPhone
@@ -511,11 +522,11 @@
             TbPhone.Cursor = Cursors.Hand;
             TbPhone.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
             TbPhone.ForeColor = Color.FromArgb(9, 0, 20);
-            TbPhone.Location = new Point(0, 43);
-            TbPhone.Margin = new Padding(5);
+            TbPhone.Location = new Point(0, 57);
+            TbPhone.Margin = new Padding(6, 7, 6, 7);
             TbPhone.Multiline = true;
             TbPhone.Name = "TbPhone";
-            TbPhone.Size = new Size(335, 40);
+            TbPhone.Size = new Size(382, 52);
             TbPhone.TabIndex = 11;
             // 
             // label5
@@ -524,9 +535,9 @@
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
             label5.ForeColor = Color.White;
-            label5.Location = new Point(3, 18);
+            label5.Location = new Point(3, 24);
             label5.Name = "label5";
-            label5.Size = new Size(79, 25);
+            label5.Size = new Size(97, 30);
             label5.TabIndex = 1;
             label5.Text = "Telefono";
             // 
@@ -537,9 +548,9 @@
             textErrorEmail.FlatStyle = FlatStyle.Flat;
             textErrorEmail.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point);
             textErrorEmail.ForeColor = Color.Crimson;
-            textErrorEmail.Location = new Point(253, 23);
+            textErrorEmail.Location = new Point(289, 31);
             textErrorEmail.Name = "textErrorEmail";
-            textErrorEmail.Size = new Size(82, 19);
+            textErrorEmail.Size = new Size(97, 23);
             textErrorEmail.TabIndex = 29;
             textErrorEmail.Text = "*requerido";
             textErrorEmail.Visible = false;
@@ -550,10 +561,12 @@
             panel1.Controls.Add(TbCBU);
             panel1.Controls.Add(label2);
             panel1.Controls.Add(textErrorNickname);
-            panel1.Location = new Point(157, 357);
+            panel1.Location = new Point(59, 139);
+            panel1.Margin = new Padding(3, 4, 3, 4);
             panel1.Name = "panel1";
-            panel1.Size = new Size(340, 88);
+            panel1.Size = new Size(389, 117);
             panel1.TabIndex = 31;
+            panel1.Visible = false;
             // 
             // TbCBU
             // 
@@ -561,11 +574,11 @@
             TbCBU.Cursor = Cursors.Hand;
             TbCBU.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
             TbCBU.ForeColor = Color.FromArgb(9, 0, 20);
-            TbCBU.Location = new Point(0, 43);
-            TbCBU.Margin = new Padding(5);
+            TbCBU.Location = new Point(0, 57);
+            TbCBU.Margin = new Padding(6, 7, 6, 7);
             TbCBU.Multiline = true;
             TbCBU.Name = "TbCBU";
-            TbCBU.Size = new Size(335, 40);
+            TbCBU.Size = new Size(382, 52);
             TbCBU.TabIndex = 11;
             // 
             // label2
@@ -574,9 +587,9 @@
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
             label2.ForeColor = Color.White;
-            label2.Location = new Point(3, 18);
+            label2.Location = new Point(3, 24);
             label2.Name = "label2";
-            label2.Size = new Size(45, 25);
+            label2.Size = new Size(55, 30);
             label2.TabIndex = 1;
             label2.Text = "CBU";
             // 
@@ -587,9 +600,9 @@
             textErrorNickname.FlatStyle = FlatStyle.Flat;
             textErrorNickname.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point);
             textErrorNickname.ForeColor = Color.Crimson;
-            textErrorNickname.Location = new Point(257, 23);
+            textErrorNickname.Location = new Point(294, 31);
             textErrorNickname.Name = "textErrorNickname";
-            textErrorNickname.Size = new Size(82, 19);
+            textErrorNickname.Size = new Size(97, 23);
             textErrorNickname.TabIndex = 29;
             textErrorNickname.Text = "*requerido";
             textErrorNickname.Visible = false;
@@ -600,9 +613,10 @@
             panel4.Controls.Add(TbLastName);
             panel4.Controls.Add(label7);
             panel4.Controls.Add(textErrorSurname);
-            panel4.Location = new Point(502, 263);
+            panel4.Location = new Point(574, 351);
+            panel4.Margin = new Padding(3, 4, 3, 4);
             panel4.Name = "panel4";
-            panel4.Size = new Size(340, 88);
+            panel4.Size = new Size(389, 117);
             panel4.TabIndex = 32;
             // 
             // TbLastName
@@ -611,11 +625,11 @@
             TbLastName.Cursor = Cursors.Hand;
             TbLastName.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
             TbLastName.ForeColor = Color.FromArgb(9, 0, 20);
-            TbLastName.Location = new Point(0, 46);
-            TbLastName.Margin = new Padding(5);
+            TbLastName.Location = new Point(0, 61);
+            TbLastName.Margin = new Padding(6, 7, 6, 7);
             TbLastName.Multiline = true;
             TbLastName.Name = "TbLastName";
-            TbLastName.Size = new Size(335, 37);
+            TbLastName.Size = new Size(382, 48);
             TbLastName.TabIndex = 11;
             // 
             // label7
@@ -624,9 +638,9 @@
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
             label7.ForeColor = Color.White;
-            label7.Location = new Point(2, 18);
+            label7.Location = new Point(2, 24);
             label7.Name = "label7";
-            label7.Size = new Size(78, 25);
+            label7.Size = new Size(93, 30);
             label7.TabIndex = 1;
             label7.Text = "Apellido";
             // 
@@ -637,9 +651,9 @@
             textErrorSurname.FlatStyle = FlatStyle.Flat;
             textErrorSurname.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point);
             textErrorSurname.ForeColor = Color.Crimson;
-            textErrorSurname.Location = new Point(255, 22);
+            textErrorSurname.Location = new Point(291, 29);
             textErrorSurname.Name = "textErrorSurname";
-            textErrorSurname.Size = new Size(82, 19);
+            textErrorSurname.Size = new Size(97, 23);
             textErrorSurname.TabIndex = 29;
             textErrorSurname.Text = "*requerido";
             textErrorSurname.Visible = false;
@@ -650,13 +664,13 @@
             // 
             // SettingsUserControl
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             Controls.Add(settingsWrapper);
-            Margin = new Padding(100);
+            Margin = new Padding(114, 133, 114, 133);
             Name = "SettingsUserControl";
-            Size = new Size(1038, 703);
+            Size = new Size(1186, 937);
             settingsWrapper.ResumeLayout(false);
             settingsWrapper.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)gorilla_avatar).EndInit();

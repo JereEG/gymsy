@@ -29,7 +29,7 @@ public partial class Person
 
     public bool Inactive { get; set; }
 
-    public string? CBU { get; set; }
+    
 
     public virtual ICollection<Admin> Admins { get; set; } = new List<Admin>();
 

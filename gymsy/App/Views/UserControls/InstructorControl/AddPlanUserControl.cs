@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Linq;
+using gymsy.App.Presenters;
 
 namespace gymsy.UserControls
 {
@@ -20,14 +21,14 @@ namespace gymsy.UserControls
         //private int idPlan = 0;
         private bool isEditMode = false;
         private int indexRowSelect = 0;
-        private GymsyDbContext dbContext;
+        //private GymsyDbContext dbContext;
 
 
         //private DataGridViewRow selectedRow; // Declara una variable para mantener la fila seleccionada.
         public AddPlanUserControl()
         {
             //Se trae el contexto de la base de datos
-            this.dbContext = GymsyContext.GymsyContextDB;
+            //this.dbContext = GymsyContext.GymsyContextDB;
 
             InitializeComponent();
             InitializeGridPlanes();
@@ -39,7 +40,7 @@ namespace gymsy.UserControls
 
         private void InitializeGridPlanes()
         {
-            var trainingPlans = this.dbContext.TrainingPlans.Where(p => p.IdInstructor == AppState.Instructor.IdInstructor).ToList();
+            var trainingPlans = AddPlanUserPresenter.listarPlanesInstructor();
 
             if (trainingPlans != null)
             {
@@ -97,16 +98,15 @@ namespace gymsy.UserControls
 
                             int idPlan = int.Parse(selectedRow.Cells["id_plan"].Value.ToString());
 
-                            var plan = this.dbContext.TrainingPlans.Where(p => p.IdTrainingPlan == idPlan).FirstOrDefault();
-                            if (DescripcionUnica(TBDescripcion.Text, idPlan))
+
+                            if (AddPlanUserPresenter.DescripcionUnica(TBDescripcion.Text, idPlan))
                             {
-                                plan.Description = TBDescripcion.Text;
-                                plan.Price = float.Parse(TBPrecio.Text);
 
-                                this.dbContext.SaveChanges();
 
-                                //Se actualiza el plan en la base de datos
 
+                                float precio = float.Parse(TBPrecio.Text);
+
+                                AddPlanUserPresenter.modificarPlan(idPlan, TBDescripcion.Text, precio);
 
                                 // Actualiza la vista del DataGridView.
                                 DGPlan.Refresh();
@@ -136,17 +136,13 @@ namespace gymsy.UserControls
                         else
                         {
 
-                            if (DescripcionUnica(TBDescripcion.Text))
+                            if (AddPlanUserPresenter.DescripcionUnica(TBDescripcion.Text))
                             {
-                                TrainingPlan plan = new TrainingPlan();
-                                plan.Description = TBDescripcion.Text;
-                                plan.Price = float.Parse(TBPrecio.Text);
-                                plan.IdInstructor = AppState.Instructor.IdInstructor;
+                                float precio_a_guardar = float.Parse(TBPrecio.Text);
 
-                                this.dbContext.TrainingPlans.Add(plan);
-                                this.dbContext.SaveChanges();
+                                TrainingPlan plan_guardado = AddPlanUserPresenter.guardarPlan(TBDescripcion.Text, precio_a_guardar);
 
-                                DGPlan.Rows.Add(plan.IdTrainingPlan, TBPrecio.Text, TBDescripcion.Text);
+                                DGPlan.Rows.Add(plan_guardado.IdTrainingPlan, TBPrecio.Text, TBDescripcion.Text, false);
 
                                 MessageBox.Show("Plan guardado correctamente.");
 
@@ -184,25 +180,6 @@ namespace gymsy.UserControls
             {
                 MessageBox.Show("Error al guardar el plan.");
             }
-        }
-        // Función para verificar si no existe otra descripción igual en la base de datos
-        public bool DescripcionUnica(string nuevaDescripcion, int? idPlanActual = null)
-        {
-            // Consulta para encontrar planes con la misma descripción
-            var planesConMismaDescripcion = dbContext.TrainingPlans
-                .Where(p => p.Description == nuevaDescripcion);
-
-            // Si se está modificando un plan, excluimos el plan actual de la consulta
-            if (idPlanActual.HasValue)
-            {
-                planesConMismaDescripcion = planesConMismaDescripcion.Where(p => p.IdTrainingPlan != idPlanActual);
-            }
-
-            // Verificamos si se encontró algún plan con la misma descripción
-            bool descripcionUnica = !planesConMismaDescripcion.Any();
-
-            // Devolvemos el resultado
-            return descripcionUnica;
         }
 
         /**
@@ -311,12 +288,7 @@ namespace gymsy.UserControls
 
                             var idPlan = int.Parse(DGPlan.SelectedRows[0].Cells["id_plan"].Value.ToString());
 
-                            var plan = this.dbContext.TrainingPlans.Where(p => p.IdTrainingPlan == idPlan).FirstOrDefault();
-                            if (plan != null)
-                            {
-                                plan.Inactive = deleteOrAcitive;
-                            }
-
+                            AddPlanUserPresenter.EliminarOActivarPlan(idPlan, deleteOrAcitive);
 
                             //Se limpia el indice
                             this.indexRowSelect = 0;
@@ -344,11 +316,7 @@ namespace gymsy.UserControls
 
                             var idPlan = int.Parse(DGPlan.SelectedRows[0].Cells["id_plan"].Value.ToString());
 
-                            var plan = this.dbContext.TrainingPlans.Where(p => p.IdTrainingPlan == idPlan).FirstOrDefault();
-                            if (plan != null)
-                            {
-                                plan.Inactive = deleteOrAcitive;
-                            }
+                            AddPlanUserPresenter.EliminarOActivarPlan(idPlan, deleteOrAcitive);
 
 
                             //Se limpia el indice
@@ -464,7 +432,7 @@ namespace gymsy.UserControls
             else
             {
                 this.isModeVerNoDelete = false;
-                BEliminarPlan.Text = "Activar Cliente";
+                BEliminarPlan.Text = "Activar Plan";
                 BEliminarPlan.BackColor = Color.FromArgb(255, 140, 0);
                 BEliminarPlan.IconChar = FontAwesome.Sharp.IconChar.Dumbbell;
 

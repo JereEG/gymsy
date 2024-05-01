@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using gymsy.App.Models;
+using gymsy.App.Presenters;
 
 namespace gymsy.UserControls.AdminControls
 {
@@ -20,11 +21,11 @@ namespace gymsy.UserControls.AdminControls
     {
         private bool isEditMode = false; // Variable para saber si se esta editando o agregando 
 
-        private GymsyDbContext dbContext;
+        private AdminPresenter presenter;
         public EditInstructor()
         {
-            this.dbContext = GymsyContext.GymsyContextDB;
             InitializeComponent();
+            presenter = new AdminPresenter();
         }
         public override void Refresh()
         {
@@ -104,61 +105,9 @@ namespace gymsy.UserControls.AdminControls
         }
         private void actualizarInstructor()
         {
-            try
-            {
-                var personUpdated = this.dbContext.People
-                                .Where(people => people.IdPerson == AppState.InstructorActive.IdPersonNavigation.IdPerson)
-                                .First();
-
-                string nombre = TBNombre.Text;
-                string apellido = TBApellido.Text;
-                string telefono = TBTelefono.Text;
-                string usuario = TBUsuario.Text;
-                string contraseña = TBContraseña.Text;
-                string rutaImagen = TBRutaImagen.Text;
-
-                string sexo = "";
-
-                if (RBMasculino.Checked)
-                {
-                    sexo = "M";
-                }
-                else
-                {
-                    sexo = "F";
-                }
-
-                if (personUpdated != null)
-                {
-                    // Actualiza las propiedades de la tabla person
-                    personUpdated.Nickname = usuario;
-                    personUpdated.FirstName = TBNombre.Text;
-                    if(personUpdated.Avatar != TBRutaImagen.Text)
-                    {
-                        personUpdated.Avatar = SaveImage(TBRutaImagen.Text);
-                    }
-                    
-                    //Si se cambio la contraseña se actualizara
-                    if (personUpdated.Password != TBContraseña.Text)
-                    {
-                        personUpdated.Password = Bcrypt.HashPassoword(TBContraseña.Text);
-                    }
-                    personUpdated.LastName = TBApellido.Text;
-                    personUpdated.CBU = usuario;
-                    personUpdated.NumberPhone = TBTelefono.Text;
-                    personUpdated.Gender = sexo;
-                    personUpdated.Birthday = DPFechaNacimiento.Value;
-
-                    this.dbContext.SaveChanges();
-                }
-                AppState.isModeEdit = false;
-
-                MessageBox.Show("Se Editaron correcctamente los datos");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message.ToString());
-            }
+            
+                presenter.personUpdated(TBNombre.Text, TBApellido.Text, TBTelefono.Text, TBUsuario.Text, TBContraseña.Text,TBRutaImagen.Text,RBMasculino.Checked, DPFechaNacimiento.Value);
+    
 
         }
 
@@ -272,12 +221,12 @@ namespace gymsy.UserControls.AdminControls
             return isValid;
         }
 
-        private string SaveImage(string imagePath)
+        public static string SaveImage(string imagePath)
         {
             try
             {
 
-                //Ruta completa para guardar la imagen en la carpeta
+                //Ruta completa para guardar la imagen en la carpetaS
                 string pathDestinationFolder = AppState.pathDestinationFolder + AppState.nameCarpetImageInstructor;
 
 
@@ -324,8 +273,9 @@ namespace gymsy.UserControls.AdminControls
                 try
                 {
                     // Consulta la base de datos para verificar si ya existe un registro con el mismo 'nickname'
-                    var existingPerson = this.dbContext.People.FirstOrDefault(p => p.Nickname == nickname);
 
+                    
+                    var existingPerson = presenter.NicknameUnique(nickname);
                     // Si 'existingPerson' no es nulo, significa que ya existe un registro con el mismo 'nickname'
                     if (existingPerson == null)
                     {

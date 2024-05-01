@@ -29,6 +29,9 @@ public partial class WalletAudit
 
     public bool? InactiveNueva { get; set; }
 
+    public string? CBU_antigua { get; set; }
+    public string? CBU_nueva { get; set; }
+
     public virtual Person IdPersonNavigation { get; set; } = null!;
 
     public virtual Wallet? IdWalletNavigation { get; set; }

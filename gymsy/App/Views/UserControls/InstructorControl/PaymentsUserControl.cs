@@ -1,4 +1,5 @@
 ﻿using gymsy.App.Models;
+using gymsy.App.Presenters;
 using gymsy.Context;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,11 @@ namespace gymsy.UserControls
     public partial class PaymentsUserControl : UserControl
     {
         private IEnumerable<Pay> PaysList;
-        private GymsyDbContext dbContext;
+       // private GymsyDbContext dbContext;
 
         public PaymentsUserControl()
         {
-            this.dbContext = GymsyContext.GymsyContextDB;
+            //this.dbContext = GymsyContext.GymsyContextDB;
             InitializeComponent();
             InitializeGridProgress();
         }
@@ -57,9 +58,7 @@ namespace gymsy.UserControls
 
                 int IdPaySelected = int.Parse(dataGridPayments.Rows[rowIndex].Cells["ID"].Value.ToString());
 
-                var PaySelected = this.dbContext.Pays
-                                .Where(pay => pay.IdPay == IdPaySelected)
-                                .First();
+                var PaySelected = PaymentsPresenter.BuscarPago(IdPaySelected);
 
                 // Navigate to training history
                 if (PaySelected != null)

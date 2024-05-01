@@ -1,6 +1,7 @@
 ﻿using gymsy.App.Models;
 using gymsy.Context;
 using gymsy.Properties;
+using gymsy.App.Presenters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,13 +17,13 @@ namespace gymsy.App.Views.UserControls.receptionist
     public partial class addPay : UserControl
     {
 
-        private GymsyDbContext dbContext;
+        //private GymsyDbContext dbContext;
         private int indexRowSelect = 0;
 
         public addPay()
         {
             //Se trae el contexto de la base de datos
-            this.dbContext = GymsyContext.GymsyContextDB;
+            //this.dbContext = GymsyContext.GymsyContextDB;
 
             InitializeComponent();
 
@@ -201,9 +202,7 @@ namespace gymsy.App.Views.UserControls.receptionist
 
                 int idClient = int.Parse(DGUsers.Rows[this.indexRowSelect].Cells["IdClient"].Value.ToString());
 
-                var clientSelected = this.dbContext.Clients
-                .Where(client => client.IdClient == idClient)
-                .First();
+                var clientSelected = AddPayPresenter.BuscarCliente(idClient);
 
                 //&& clientSelected.IdTrainingPlanNavigation != null && AppState.Instructor.IdPersonNavigation != null
                 if (clientSelected != null)
@@ -268,42 +267,14 @@ namespace gymsy.App.Views.UserControls.receptionist
         {
             try
             {
+                float monto = float.Parse(TbAmount.Text);
 
-                var admin = this.dbContext.Admins.FirstOrDefault();
-                var walletAdmin = this.dbContext.Wallets.FirstOrDefault(wallet => wallet.IdPerson == 1);
-                //var resepcionist = this.dbContext.People.FirstOrDefault(person => person.Rol.IdRol == 4);//rol de secretaria
-                var client = this.dbContext.Clients.First(c => c.IdClient == idClient);
+                AddPayPresenter.AgregarPago(idClient, monto);
 
-                if (admin != null && walletAdmin != null && client != null)
-                {
-                    float monto = float.Parse(TbAmount.Text);
-                    var newPay = new Pay
-                    {
-                        CreatedAt = DateTime.Now,
-                        Amount = monto,  // Aquí debes proporcionar el monto deseado
-                        Inactive = false,
-                        DestinatarioId = admin.IdPersonNavigation.IdPerson,
-                        RemitenteId = client.IdPerson,
-                        IdPayType = 1
-                    };
-                    this.dbContext.Pays.Add(newPay);
-                    this.dbContext.SaveChanges();
-
-                    client.LastExpiration = DateTime.Now.AddMonths(1);
-                    this.dbContext.SaveChanges();
-
-                    admin.Recaudacion += monto;
-                    this.dbContext.SaveChanges();
-                    //walletAdmin.Total += monto;
-                    walletAdmin.Retirable += monto;
-                    this.dbContext.SaveChanges();
-                    client.IdPersonNavigation.Inactive = false;
-                    this.dbContext.SaveChanges();
-
-                    //this.mostrar(false);
-                    eliminar(idClient);
+                //this.mostrar(false);
+                eliminar(idClient);
                     MessageBox.Show("Pago realizado con éxito.");
-                }
+                
             }
             catch (Exception e)
             {

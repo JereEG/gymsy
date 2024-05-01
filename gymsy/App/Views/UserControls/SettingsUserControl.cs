@@ -37,7 +37,7 @@ namespace gymsy.UserControls
         {
             TbFirstName.Text = person.FirstName;
             TbLastName.Text = person.LastName;
-            TbCBU.Text = person.CBU;
+           // TbCBU.Text = person.CBU;
             TbPhone.Text = person.NumberPhone;
             try
             {
@@ -78,14 +78,14 @@ namespace gymsy.UserControls
             // Validate textbox is not null
             List<TextBox> textBoxList = new List<TextBox>()
             {
-                TbFirstName, TbLastName, TbCBU, TbPhone
+                TbFirstName, TbLastName, /*TbCBU,*/ TbPhone
             };
             if (!this.ValidateTextBox(textBoxList)) return;
 
             // Update global state
             this.person.FirstName = TbFirstName.Text;
             this.person.LastName = TbLastName.Text;
-            this.person.CBU = TbCBU.Text;
+            //this.person.CBU = TbCBU.Text;
             this.person.NumberPhone = TbPhone.Text;
             if (this.person.Avatar != TBRutaImagen.Text)
             {

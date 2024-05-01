@@ -1,4 +1,5 @@
 ﻿using gymsy.App.Models;
+using gymsy.App.Presenters;
 using gymsy.Context;
 using System;
 using System.Collections.Generic;
@@ -53,26 +54,12 @@ namespace gymsy.UserControls
                 series.Color = Color.Transparent;
 
                 List<string> listMonths = new List<string>
-                {
-                    "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nob", "Dec"
-                };
-                Random rnd = new Random();
+        {
+            "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nob", "Dec"
+        };
 
-                // Definir el rango de meses y años que te interesa
-                var rangoMesesAnios = Enumerable.Range(1, 12)
-                    .SelectMany(mes => Enumerable.Range(2022, 2).Select(anio => new { Mes = mes, Anio = anio }));
-
-                // Realizar el left join con los pagos
-                var pagosAgrupadosPorMes = from mesAnio in rangoMesesAnios
-                                           join pago in dbContext.Pays
-                                               on new { Mes = mesAnio.Mes, Anio = mesAnio.Anio } equals new { Mes = pago.CreatedAt.Month, Anio = pago.CreatedAt.Year }
-                                               into pagosGrupo
-                                           from pagosEnMes in pagosGrupo.DefaultIfEmpty()
-                                           select new { Mes = mesAnio.Mes, Anio = mesAnio.Anio, Cantidad = (pagosEnMes != null ? pagosGrupo.Count() * 10 : rnd.Next(10, 14)) };
-
-
-                // Ordenar los resultados
-                pagosAgrupadosPorMes = pagosAgrupadosPorMes.OrderBy(g => g.Mes).ThenBy(g => g.Anio).ToList();
+                // Llamar al método del Presenter para obtener los datos
+                var pagosAgrupadosPorMes = DashboardInstructorPresenter.ObtenerPagosAgrupadosPorMes();
 
                 foreach (var data in pagosAgrupadosPorMes)
                 {
@@ -80,6 +67,7 @@ namespace gymsy.UserControls
                 }
             }
         }
+
         public void InitializeGrid()
         {
 
@@ -90,10 +78,7 @@ namespace gymsy.UserControls
                 ListIdPlans.Add(plan.IdTrainingPlan);
             }
 
-            var ClientsFound = this.dbContext.Clients
-                                .Where(cl => ListIdPlans.Contains(cl.IdTrainingPlan))
-                                .Where(cl => !cl.IdTrainingPlanNavigation.Inactive && cl.LastExpiration <= DateTime.UtcNow)
-                                .ToList();
+            var ClientsFound = DashboardInstructorPresenter.BuscarClientesActivosDelInstructor(ListIdPlans);
 
 
             if (ClientsFound.Count > 0)
@@ -149,8 +134,8 @@ namespace gymsy.UserControls
 
             TortaCuota.Points.Clear();
 
-            var Expirados = dbContext.Clients.Count(client => !client.IdTrainingPlanNavigation.Inactive && client.LastExpiration <= DateTime.Today); ;
-            var NoExpirados = dbContext.Clients.Count(client => !client.IdTrainingPlanNavigation.Inactive && client.LastExpiration > DateTime.Today);
+            int Expirados = DashboardInstructorPresenter.ContarExpiradosONoExp(true);
+            int NoExpirados = DashboardInstructorPresenter.ContarExpiradosONoExp(false);
 
             TortaCuota.Points.AddXY($"Al dia {NoExpirados}", NoExpirados);
             TortaCuota.Points.AddXY($"Vencidos {Expirados}", Expirados);

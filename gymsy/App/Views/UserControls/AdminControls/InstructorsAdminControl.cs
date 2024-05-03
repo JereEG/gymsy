@@ -182,7 +182,7 @@ namespace gymsy.UserControls.AdminControls
 
                 int idInstructorSelected = int.Parse(DGInstructors.Rows[this.indexRowSelect].Cells["id_instructor"].Value.ToString());
 
-                var instructorSelected = this.dbContext.Instructors.Where(i => i.IdInstructor == idInstructorSelected).FirstOrDefault();
+                var instructorSelected = presenter.getInstructor(idInstructorSelected);
 
                 AppState.InstructorActive = instructorSelected;
                 AppState.isModeEdit = true;

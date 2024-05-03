@@ -31,6 +31,9 @@ namespace gymsy.App.Presenters
 
 
         // ADD Instructor
+       
+
+
         public void GuardarCliente(string nombre,string apellido,string telefono,string usuario,string contraseña,string nameImage,string sexo,DateTime birthday)
         {
            
@@ -81,10 +84,13 @@ namespace gymsy.App.Presenters
                     
         }
 
+        public Instructor getInstructor(int idInstructor)
+        {
+            return this.dbContext.Instructors.Where(i => i.IdInstructor == idInstructor).FirstOrDefault();
+        }
 
-        
- 
-        public bool NicknameUnique(string nickname)
+
+    public bool NicknameUnique(string nickname)
         {
             try
             {

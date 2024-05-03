@@ -62,8 +62,6 @@ namespace gymsy.UserControls.AdminControls
                     this.restablecerTextBoxes();
 
 
-                    MessageBox.Show("Se Guardaron correcctamente los datos");
-
                 }
                 else
                 {

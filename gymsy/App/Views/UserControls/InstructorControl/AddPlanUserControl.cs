@@ -75,13 +75,21 @@ namespace gymsy.UserControls
         }
 
         private void BAgregarPlan_Click(object sender, EventArgs e)
-        {  try
+        {
+
+            this.AgregarPlan(TBPrecio.Text, TBDescripcion.Text);
+            
+        }
+
+        private void AgregarPlan(string precio, string descripcion)
+        {
+            try
             {
                 //en numeroIngresado se guarda el valor ingresado en el textbox de ser un numero valido
-                if (float.TryParse(TBPrecio.Text, out float numeroIngresado) && numeroIngresado >= 0)
+                if (float.TryParse(precio, out float numeroIngresado) && numeroIngresado >= 0)
                 {
                     //Se verifica que se ha ingresado una descripcion
-                    if (!string.IsNullOrWhiteSpace(TBDescripcion.Text))
+                    if (!string.IsNullOrWhiteSpace(descripcion))
                     {
                         // Aquí puedes realizar la acción que necesites con el número ingresado
                         LPrecioRequerido.Visible = false;
@@ -93,20 +101,20 @@ namespace gymsy.UserControls
 
 
                             DataGridViewRow selectedRow = DGPlan.Rows[this.indexRowSelect];
-                            selectedRow.Cells["Precio"].Value = TBPrecio.Text;
-                            selectedRow.Cells["Descripcion"].Value = TBDescripcion.Text;
+                            selectedRow.Cells["Precio"].Value = precio;
+                            selectedRow.Cells["Descripcion"].Value = descripcion;
 
                             int idPlan = int.Parse(selectedRow.Cells["id_plan"].Value.ToString());
 
 
-                            if (AddPlanUserPresenter.DescripcionUnica(TBDescripcion.Text, idPlan))
+                            if (AddPlanUserPresenter.DescripcionUnica(descripcion, idPlan))
                             {
 
 
 
-                                float precio = float.Parse(TBPrecio.Text);
+                                float Fprecio = float.Parse(precio);
 
-                                AddPlanUserPresenter.modificarPlan(idPlan, TBDescripcion.Text, precio);
+                                AddPlanUserPresenter.modificarPlan(idPlan, descripcion, Fprecio);
 
                                 // Actualiza la vista del DataGridView.
                                 DGPlan.Refresh();
@@ -176,7 +184,8 @@ namespace gymsy.UserControls
                     LPrecioRequerido.Visible = true;
                     MessageBox.Show("Por favor, verifique que haya ingresado correctamente todos los campos.");
                 }
-            } catch
+            }
+            catch
             {
                 MessageBox.Show("Error al guardar el plan.");
             }

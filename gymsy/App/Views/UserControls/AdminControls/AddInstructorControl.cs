@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using gymsy.App.Views.UserControls.AdminControls;
 using gymsy.App.Presenters;
+using System.Windows.Forms.DataVisualization.Charting;
+using Twilio.TwiML.Voice;
 
 namespace gymsy.UserControls.AdminControls
 {
@@ -39,24 +41,22 @@ namespace gymsy.UserControls.AdminControls
             string contraseña = Bcrypt.HashPassoword(TBContraseña.Text);
             string nameImagen = SaveImage(TBRutaImagen.Text);
             DateTime birthday = DPFechaNacimiento.Value;
-            string sexo = "";
+            string sexo = RBMasculino.Checked?"M":"F";
 
-            if (RBMasculino.Checked)
-            {
-                sexo = "M";
-            }
-            else
-            {
-                sexo = "F";
-            }
 
+            this.guardarInstructor(nombre, apellido, telefono, usuario, contraseña, nameImagen, sexo, birthday);
+            
+        }
+
+        private void guardarInstructor(string nombre,string apellido,string telefono,string usuario,string contraseña, string nameImagen,string sexo,DateTime birthday)
+        {
             try
             { //Se verifica que se hayan ingresado todos los datos
                 bool isValidTextBoxes = isValidTextsBoxesMostrarError();
                 if (isValidTextBoxes)
                 {
-                    presenter.GuardarCliente(nombre,apellido,telefono,usuario,contraseña,nameImagen,sexo,birthday);
-                    
+                    presenter.GuardarCliente(nombre, apellido, telefono, usuario, contraseña, nameImagen, sexo, birthday);
+
                     AppState.needRefreshClientsUserControl = true;
                     MessageBox.Show("Se Guardaron correcctamente los datos");
                     this.restablecerTextBoxes();

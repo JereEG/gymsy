@@ -124,6 +124,8 @@ namespace gymsy
             return Utility.IsValidTextBox(textBoxEmailUser, labelErrorNickname) && Utility.IsValidTextBox(textBoxPasswordUser, labelErrorPass);
         }
 
+      
+
         void IAuthView.HandleResponseDBMessage()
         {
             BtnMessageDB.Visible = false;

@@ -72,7 +72,7 @@ namespace gymsy.App.Presenters
                     }
                     else
                     {
-                        if (!peopleFound.Inactive)
+                        if (!peopleFound.Inactive && (peopleFound.RolId != 3))
                         {
                             this.authView.IsSuccessful = true;
                             this.authView.Message = "Hola, " + peopleFound.FirstName + "    ;)";
@@ -97,7 +97,7 @@ namespace gymsy.App.Presenters
                         else
                         {
                             this.authView.IsSuccessful = false;
-                            this.authView.Message = "Usuario inactivo!";
+                            this.authView.Message = "No tienes permiso de ingresar al sistema!";
                             this.authView.HandleResponseDBMessage();
                             return;
                         }

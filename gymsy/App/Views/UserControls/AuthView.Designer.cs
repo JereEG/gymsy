@@ -59,11 +59,12 @@
             textBoxPasswordUser.BorderStyle = BorderStyle.None;
             textBoxPasswordUser.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
             textBoxPasswordUser.ForeColor = SystemColors.WindowText;
-            textBoxPasswordUser.Location = new Point(19, 241);
+            textBoxPasswordUser.Location = new Point(22, 321);
+            textBoxPasswordUser.Margin = new Padding(3, 4, 3, 4);
             textBoxPasswordUser.MaxLength = 50;
             textBoxPasswordUser.Name = "textBoxPasswordUser";
             textBoxPasswordUser.PasswordChar = '*';
-            textBoxPasswordUser.Size = new Size(263, 24);
+            textBoxPasswordUser.Size = new Size(301, 29);
             textBoxPasswordUser.TabIndex = 4;
             textBoxPasswordUser.Text = "instruc";
             // 
@@ -72,9 +73,9 @@
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Point);
             label1.ForeColor = Color.White;
-            label1.Location = new Point(86, 65);
+            label1.Location = new Point(98, 87);
             label1.Name = "label1";
-            label1.Size = new Size(140, 30);
+            label1.Size = new Size(176, 37);
             label1.TabIndex = 0;
             label1.Text = "Inicia Sesión";
             // 
@@ -83,10 +84,10 @@
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             label2.ForeColor = Color.DarkCyan;
-            label2.Location = new Point(17, 139);
+            label2.Location = new Point(19, 185);
             label2.Margin = new Padding(0);
             label2.Name = "label2";
-            label2.Size = new Size(255, 15);
+            label2.Size = new Size(327, 20);
             label2.TabIndex = 1;
             label2.Text = "INICIA SESIÓN CON TU NOMBRE DE CUENTA";
             // 
@@ -95,10 +96,10 @@
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             label3.ForeColor = Color.White;
-            label3.Location = new Point(18, 220);
+            label3.Location = new Point(21, 293);
             label3.Margin = new Padding(0);
             label3.Name = "label3";
-            label3.Size = new Size(89, 21);
+            label3.Size = new Size(110, 28);
             label3.TabIndex = 2;
             label3.Text = "Contraseña";
             // 
@@ -108,11 +109,11 @@
             textBoxEmailUser.BorderStyle = BorderStyle.None;
             textBoxEmailUser.Cursor = Cursors.IBeam;
             textBoxEmailUser.Font = new Font("Segoe UI", 13F, FontStyle.Regular, GraphicsUnit.Point);
-            textBoxEmailUser.Location = new Point(18, 157);
+            textBoxEmailUser.Location = new Point(21, 209);
             textBoxEmailUser.Margin = new Padding(0);
             textBoxEmailUser.MaxLength = 7;
             textBoxEmailUser.Name = "textBoxEmailUser";
-            textBoxEmailUser.Size = new Size(264, 24);
+            textBoxEmailUser.Size = new Size(302, 29);
             textBoxEmailUser.TabIndex = 3;
             textBoxEmailUser.Text = "instruc";
             // 
@@ -127,10 +128,10 @@
             ButtonSignIn.FlatStyle = FlatStyle.Flat;
             ButtonSignIn.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             ButtonSignIn.ForeColor = Color.White;
-            ButtonSignIn.Location = new Point(62, 305);
+            ButtonSignIn.Location = new Point(71, 407);
             ButtonSignIn.Margin = new Padding(0);
             ButtonSignIn.Name = "ButtonSignIn";
-            ButtonSignIn.Size = new Size(185, 38);
+            ButtonSignIn.Size = new Size(211, 51);
             ButtonSignIn.TabIndex = 5;
             ButtonSignIn.Text = "Iniciar sesión";
             ButtonSignIn.UseVisualStyleBackColor = false;
@@ -140,10 +141,10 @@
             pictureBox1.BackColor = Color.White;
             pictureBox1.BorderStyle = BorderStyle.Fixed3D;
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(302, 49);
+            pictureBox1.Location = new Point(345, 65);
             pictureBox1.Margin = new Padding(0);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(283, 352);
+            pictureBox1.Size = new Size(323, 468);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 7;
             pictureBox1.TabStop = false;
@@ -154,9 +155,9 @@
             labelErrorPass.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             labelErrorPass.ForeColor = Color.Crimson;
             labelErrorPass.ImageAlign = ContentAlignment.MiddleLeft;
-            labelErrorPass.Location = new Point(19, 270);
+            labelErrorPass.Location = new Point(22, 360);
             labelErrorPass.Name = "labelErrorPass";
-            labelErrorPass.Size = new Size(78, 19);
+            labelErrorPass.Size = new Size(96, 23);
             labelErrorPass.TabIndex = 9;
             labelErrorPass.Text = "Obligatorio";
             labelErrorPass.TextAlign = ContentAlignment.MiddleRight;
@@ -171,13 +172,13 @@
             button1.FlatStyle = FlatStyle.Flat;
             button1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             button1.ForeColor = Color.White;
-            button1.Location = new Point(493, 59);
+            button1.Location = new Point(563, 79);
+            button1.Margin = new Padding(3, 4, 3, 4);
             button1.Name = "button1";
-            button1.Size = new Size(81, 36);
+            button1.Size = new Size(93, 48);
             button1.TabIndex = 10;
             button1.Text = "DEMO";
             button1.UseVisualStyleBackColor = false;
-           
             // 
             // button2
             // 
@@ -189,9 +190,10 @@
             button2.FlatStyle = FlatStyle.Flat;
             button2.Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point);
             button2.ForeColor = Color.DarkCyan;
-            button2.Location = new Point(563, 2);
+            button2.Location = new Point(643, 3);
+            button2.Margin = new Padding(3, 4, 3, 4);
             button2.Name = "button2";
-            button2.Size = new Size(28, 42);
+            button2.Size = new Size(32, 56);
             button2.TabIndex = 11;
             button2.Text = "X";
             button2.UseVisualStyleBackColor = false;
@@ -202,9 +204,9 @@
             labelErrorNickname.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             labelErrorNickname.ForeColor = Color.Crimson;
             labelErrorNickname.ImageAlign = ContentAlignment.MiddleLeft;
-            labelErrorNickname.Location = new Point(19, 186);
+            labelErrorNickname.Location = new Point(22, 248);
             labelErrorNickname.Name = "labelErrorNickname";
-            labelErrorNickname.Size = new Size(78, 19);
+            labelErrorNickname.Size = new Size(96, 23);
             labelErrorNickname.TabIndex = 12;
             labelErrorNickname.Text = "Obligatorio";
             labelErrorNickname.TextAlign = ContentAlignment.MiddleRight;
@@ -234,10 +236,10 @@
             BtnMessageDB.IconFont = FontAwesome.Sharp.IconFont.Auto;
             BtnMessageDB.IconSize = 1;
             BtnMessageDB.ImageAlign = ContentAlignment.MiddleLeft;
-            BtnMessageDB.Location = new Point(3, 370);
+            BtnMessageDB.Location = new Point(3, 493);
             BtnMessageDB.Margin = new Padding(0);
             BtnMessageDB.Name = "BtnMessageDB";
-            BtnMessageDB.Size = new Size(293, 31);
+            BtnMessageDB.Size = new Size(335, 41);
             BtnMessageDB.TabIndex = 47;
             BtnMessageDB.Text = "Retirar";
             BtnMessageDB.TextColor = Color.Red;
@@ -252,9 +254,10 @@
             loading_gif.ErrorImage = Properties.Resources.output_onlinegiftoolsw;
             loading_gif.Image = Properties.Resources.output_onlinegiftoolsw;
             loading_gif.InitialImage = Properties.Resources.output_onlinegiftoolsw;
-            loading_gif.Location = new Point(119, 176);
+            loading_gif.Location = new Point(136, 235);
+            loading_gif.Margin = new Padding(3, 4, 3, 4);
             loading_gif.Name = "loading_gif";
-            loading_gif.Size = new Size(60, 64);
+            loading_gif.Size = new Size(68, 85);
             loading_gif.SizeMode = PictureBoxSizeMode.Zoom;
             loading_gif.TabIndex = 48;
             loading_gif.TabStop = false;
@@ -269,10 +272,10 @@
             panelWelcome.Controls.Add(loading_gif);
             panelWelcome.Font = new Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
             panelWelcome.ForeColor = Color.White;
-            panelWelcome.Location = new Point(3, 49);
+            panelWelcome.Location = new Point(3, 65);
             panelWelcome.Margin = new Padding(0);
             panelWelcome.Name = "panelWelcome";
-            panelWelcome.Size = new Size(297, 352);
+            panelWelcome.Size = new Size(339, 469);
             panelWelcome.TabIndex = 49;
             panelWelcome.Visible = false;
             // 
@@ -282,10 +285,10 @@
             label6.FlatStyle = FlatStyle.Flat;
             label6.Font = new Font("Yu Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             label6.ForeColor = Color.DarkOrange;
-            label6.Location = new Point(16, 140);
+            label6.Location = new Point(18, 187);
             label6.Margin = new Padding(0);
             label6.Name = "label6";
-            label6.Size = new Size(267, 16);
+            label6.Size = new Size(329, 20);
             label6.TabIndex = 52;
             label6.Text = "\"Entrena duro, trabaja fuerte, logra tus sueños\"";
             // 
@@ -294,10 +297,10 @@
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             label5.ForeColor = Color.White;
-            label5.Location = new Point(53, 328);
+            label5.Location = new Point(61, 437);
             label5.Margin = new Padding(0);
             label5.Name = "label5";
-            label5.Size = new Size(191, 19);
+            label5.Size = new Size(238, 23);
             label5.TabIndex = 51;
             label5.Text = "Estamos preparando la App ...";
             // 
@@ -306,19 +309,19 @@
             TBNameUser.AutoSize = true;
             TBNameUser.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point);
             TBNameUser.ForeColor = Color.DarkCyan;
-            TBNameUser.Location = new Point(58, 90);
+            TBNameUser.Location = new Point(66, 120);
             TBNameUser.Margin = new Padding(0);
             TBNameUser.Name = "TBNameUser";
-            TBNameUser.Size = new Size(186, 32);
+            TBNameUser.Size = new Size(227, 41);
             TBNameUser.TabIndex = 50;
             TBNameUser.Text = "Hola, BRIC     :)";
             // 
             // AuthView
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(9, 0, 15);
-            ClientSize = new Size(600, 420);
+            ClientSize = new Size(686, 560);
             Controls.Add(panelWelcome);
             Controls.Add(BtnMessageDB);
             Controls.Add(labelErrorNickname);
@@ -333,7 +336,8 @@
             Controls.Add(label2);
             Controls.Add(label1);
             FormBorderStyle = FormBorderStyle.None;
-            MaximumSize = new Size(600, 420);
+            Margin = new Padding(3, 4, 3, 4);
+            MaximumSize = new Size(686, 560);
             Name = "AuthView";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "LoginDesing";

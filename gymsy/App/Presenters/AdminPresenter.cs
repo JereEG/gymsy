@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Forms.DataVisualization.Charting;
 using Twilio.Rest.Trunking.V1;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace gymsy.App.Presenters
 {
@@ -34,52 +35,9 @@ namespace gymsy.App.Presenters
        
 
 
-        public void GuardarCliente(string nombre,string apellido,string telefono,string usuario,string contraseña,string nameImage,string sexo,DateTime birthday)
+        public void GuardarInstructor(string nombre,string apellido,string telefono,string usuario,string contraseña,string nameImage,string sexo,DateTime birthday)
         {
-           
 
-
-                    Person persona = new Person
-                    {
-                        Nickname = usuario,
-                        FirstName = nombre,
-                        Avatar = nameImage,
-                        Password = contraseña,
-                        CreatedAt = DateTime.Now,
-                        LastName = apellido,
-
-                        NumberPhone = telefono,
-                        Birthday = birthday,
-                        Gender = sexo,
-                        RolId = 2,//2 es el rol de Instructor
-                        Inactive = false
-                    };
-                    //se guarda en la base de datos, primero la persona por la relacion de la llave foranea
-                    this.dbContext.People.Add(persona);
-                    this.dbContext.SaveChanges();
-
-                    Instructor newInstructor = new Instructor
-                    {
-                        IdPerson = persona.IdPerson
-                    };
-
-                    //Se guarda en AppState
-                    //AppState.clients.Add(persona);
-
-                    Wallet wallet = new Wallet
-                    {
-                        Total = 0.0,
-                        Retirable = 0.0,
-                        CBU = usuario,
-                        Inactive = false,
-                        IdPerson = persona.IdPerson
-                    };
-
-                    this.dbContext.Add(wallet);
-                    this.dbContext.SaveChanges();
-
-                    this.dbContext.Instructors.Add(newInstructor);
-                    this.dbContext.SaveChanges();
 
                     
         }

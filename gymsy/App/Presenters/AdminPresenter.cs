@@ -33,20 +33,7 @@ namespace gymsy.App.Presenters
         // Método para agregar un nuevo usuario (Instructor)
         public void GuardarInstructor(string nombre, string apellido, string telefono, string usuario, string contraseña, string nameImage, string sexo)
         {
-            var nuevoUsuario = new Usuario
-            {
-                IdRol = 2, // 2 es el ID para Instructor
-                Apodo = usuario,
-                Nombre = nombre,
-                Apellido = apellido,
-                AvatarUrl = nameImage,
-                Contrasena = contraseña,
-                NumeroTelefono = telefono,
-                Sexo = sexo
-            };
-
-            dbContext.Usuarios.Add(nuevoUsuario);
-            dbContext.SaveChanges();
+            ProcedimientoAlmacenado.CrearInstructor(usuario, nombre, apellido, nameImage, contraseña, telefono, sexo);
         }
 
         // Método para obtener un usuario por su ID

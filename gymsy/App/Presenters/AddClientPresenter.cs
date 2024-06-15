@@ -1,5 +1,4 @@
-﻿using gymsy.App.Models;
-using gymsy.Context;
+﻿using gymsy.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,86 +6,72 @@ using System.Text;
 using System.Threading.Tasks;
 using gymsy.Utilities;
 using System.Runtime.CompilerServices;
+using gymsy.Models;
 
 namespace gymsy.App.Presenters
 {
     internal static class AddClientPresenter
     {
-        private static GymsyDbContext gymsydb = ViejoGymsyContext.GymsyContextDB;
+        private static GymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
 
-        public static TrainingPlan TraerPrimerPlan()
+        public static PlanEntrenamiento TraerPrimerPlan()
         {
-            return gymsydb.TrainingPlans.FirstOrDefault();
+            return gymsydb.PlanEntrenamientos.FirstOrDefault();
         }
-        public static TrainingPlan BuscarPlan(int pIdPlanBuscado)
+
+        public static PlanEntrenamiento BuscarPlan(int pIdPlanBuscado)
         {
-            return gymsydb.TrainingPlans
-                    .Where(trainingPlan => trainingPlan.IdTrainingPlan == pIdPlanBuscado)
+            return gymsydb.PlanEntrenamientos
+                    .Where(plan => plan.IdPlanEntrenamiento == pIdPlanBuscado)
                     .First();
         }
-        public static List<TrainingPlan> TraerPlanes()
+
+        public static List<PlanEntrenamiento> TraerPlanes()
         {
-            return gymsydb.TrainingPlans.ToList();
+            return gymsydb.PlanEntrenamientos.ToList();
         }
 
-        public static void guardarCliente( string pUsuario, string pNombre, string pApellido, string pAvatar, string pPassword, string pNumberPhone, 
-            DateTime pBirthday, string pSexo, DateTime pExpiration, int pIdPlan)
+        public static void GuardarCliente(string pUsuario, string pNombre, string pApellido, string pAvatar, string pPassword, string pNumberPhone,
+            string pSexo, DateTime pExpiration, int pIdPlan)
         {
-            Person persona = new Person
+            Usuario usuario = new Usuario
             {
-                Nickname = pUsuario,
-                FirstName = pNombre,
-                Avatar = SaveImage(pAvatar),
-                Password = Bcrypt.HashPassoword(pPassword),
-                CreatedAt = DateTime.Now,
-                LastName = pApellido,
-                //CBU = usuario,
-                NumberPhone = pNumberPhone,
-                Birthday = pBirthday, //DPFechaNacimiento.Value,
-                Gender = pSexo,
-                RolId = 3,//3 es el rol de cliente
-                Inactive = true // ya que aun no ha pagado
+                Apodo = pUsuario,
+                Nombre = pNombre,
+                Apellido = pApellido,
+                AvatarUrl = SaveImage(pAvatar),
+                Contrasena = Bcrypt.HashPassoword(pPassword),
+                FechaCreacion = DateTime.Now,
+                NumeroTelefono = pNumberPhone,
+                Sexo = pSexo,
+                IdRol = 3, // 3 es el rol de cliente
+                UsuarioInactivo = true // ya que aun no ha pagado
             };
 
-            //se guarda en la base de datos, primero la persona por la relacion de la llave foranea
-            gymsydb.People.Add(persona);
+            // Se guarda en la base de datos
+            gymsydb.Usuarios.Add(usuario);
             gymsydb.SaveChanges();
 
-            Client cliente = new Client
+            AlumnoSuscripcion suscripcion = new AlumnoSuscripcion
             {
-                LastExpiration = pExpiration,//Se le añade un mes mas a la fecha actual
-                IdPerson = persona.IdPerson,
-                IdTrainingPlan = pIdPlan,
+                IdUsuario = usuario.IdUsuario,
+                IdPlanEntrenamiento = pIdPlan,
+                FechaExpiracion = pExpiration
             };
 
-            //Se guarda en AppState
-            AppState.clients.Add(persona);
-
-            Wallet wallet = new Wallet
-            {
-                Total = 0.0,
-                Retirable = 0.0,
-                Inactive = false,
-                CBU = pUsuario,
-                IdPerson = persona.IdPerson
-            };
-
-            gymsydb.Add(wallet);
+            gymsydb.AlumnoSuscripcions.Add(suscripcion);
             gymsydb.SaveChanges();
 
-
-
-            gymsydb.Clients.Add(cliente);
-            gymsydb.SaveChanges();
+            // Se guarda en AppState
+            AppState.clients.Add(usuario);
         }
+
         private static string SaveImage(string imagePath)
         {
             try
             {
-
-                //Ruta completa para guardar la imagen en la carpeta
+                // Ruta completa para guardar la imagen en la carpeta
                 string pathDestinationFolder = AppState.pathDestinationFolder + AppState.nameCarpetImageClient;
-
 
                 // Asegúrate de que la carpeta exista, y si no, créala
                 if (!Directory.Exists(pathDestinationFolder))
@@ -106,7 +91,7 @@ namespace gymsy.App.Presenters
                 // Copia la imagen desde la ubicación original a la carpeta de destino
                 File.Copy(imagePath, destinationPath, true);
 
-                return uniqueFileName;//nombre del archivo 
+                return uniqueFileName; // nombre del archivo 
             }
             catch (Exception e)
             {
@@ -114,12 +99,13 @@ namespace gymsy.App.Presenters
                 return "";
             }
         }
+
         public static bool IsNicknameUnique(string nickname)
         {
             try
             {
                 // Consulta la base de datos para verificar si ya existe un registro con el mismo 'nickname'
-                var existingPerson = gymsydb.People.FirstOrDefault(p => p.Nickname == nickname);
+                var existingPerson = gymsydb.Usuarios.FirstOrDefault(u => u.Apodo == nickname);
 
                 // Si 'existingPerson' no es nulo, significa que ya existe un registro con el mismo 'nickname'
                 if (existingPerson == null)
@@ -137,9 +123,6 @@ namespace gymsy.App.Presenters
                 MessageBox.Show("Error al verificar el nombre de usuario: " + ex.Message);
                 return false;
             }
-
         }
     }
-
-   
 }

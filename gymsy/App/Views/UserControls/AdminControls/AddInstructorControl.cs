@@ -55,7 +55,7 @@ namespace gymsy.UserControls.AdminControls
                 bool isValidTextBoxes = isValidTextsBoxesMostrarError();
                 if (isValidTextBoxes)
                 {
-                    presenter.GuardarCliente(nombre, apellido, telefono, usuario, contraseña, nameImagen, sexo, birthday);
+                    presenter.Guardarinstructor(nombre, apellido, telefono, usuario, contraseña, nameImagen, sexo, birthday);
 
                     AppState.needRefreshClientsUserControl = true;
                     MessageBox.Show("Se Guardaron correcctamente los datos");

@@ -34,7 +34,7 @@ namespace gymsy.App.Presenters
        
 
 
-        public void GuardarCliente(string nombre,string apellido,string telefono,string usuario,string contraseña,string nameImage,string sexo,DateTime birthday)
+        public void Guardarinstructor(string nombre,string apellido,string telefono,string usuario,string contraseña,string nameImage,string sexo,DateTime birthday)
         {
            
 

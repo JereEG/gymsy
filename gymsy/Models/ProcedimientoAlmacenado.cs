@@ -12,18 +12,14 @@ using System.Threading.Tasks;
 
 namespace gymsy.Models
 {
-    internal class ProcedimientoAlmacenado
+    internal static class ProcedimientoAlmacenado
     {
-        private GymsyContext dbContext;
+        private static GymsyContext dbContext = StacticGymsyContext.GymsyContextDB;
 
-        public ProcedimientoAlmacenado()
-        {
-            this.dbContext = StacticGymsyContext.GymsyContextDB;
-        }
 
-        public void CrearInstructor(string apodo, string nombre, string apellido, string avatarUrl, string contrasena, string numeroTelefono, string sexo)
+        public static void CrearInstructor(string apodo, string nombre, string apellido, string avatarUrl, string contrasena, string numeroTelefono, string sexo)
         {
-            var command = this.dbContext.Database.GetDbConnection().CreateCommand();
+            var command = dbContext.Database.GetDbConnection().CreateCommand();
             command.CommandText = "CrearInstructor";
             command.CommandType = CommandType.StoredProcedure;
 
@@ -36,7 +32,7 @@ namespace gymsy.Models
             command.Parameters.Add(new SqlParameter("@sexo", sexo));
 
             // Abre la conexión a la base de datos
-            this.dbContext.Database.OpenConnection();
+            dbContext.Database.OpenConnection();
             try
             {
                 // Ejecuta el procedimiento almacenado
@@ -45,7 +41,7 @@ namespace gymsy.Models
             finally
             {
                 // Cierra la conexión a la base de datos
-                this.dbContext.Database.CloseConnection();
+                dbContext.Database.CloseConnection();
             }
         }
     }

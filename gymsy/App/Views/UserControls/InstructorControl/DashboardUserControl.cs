@@ -25,7 +25,7 @@ namespace gymsy.UserControls
 
         public DashboardUserControl()
         {
-            this.dbContext = GymsyContext.GymsyContextDB;
+            this.dbContext = ViejoGymsyContext.GymsyContextDB;
             InitializeComponent();
             InitializeData();
         }

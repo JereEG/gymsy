@@ -11,7 +11,7 @@ namespace gymsy.App.Presenters
 {
     internal static class EditClientPresenter
     {
-        private static GymsyDbContext gymsydb = GymsyContext.GymsyContextDB;
+        private static GymsyDbContext gymsydb = ViejoGymsyContext.GymsyContextDB;
 
         public static TrainingPlan PlanDelCliente()
         {

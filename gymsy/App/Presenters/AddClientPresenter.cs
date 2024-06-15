@@ -12,7 +12,7 @@ namespace gymsy.App.Presenters
 {
     internal static class AddClientPresenter
     {
-        private static GymsyDbContext gymsydb = GymsyContext.GymsyContextDB;
+        private static GymsyDbContext gymsydb = ViejoGymsyContext.GymsyContextDB;
 
         public static TrainingPlan TraerPrimerPlan()
         {

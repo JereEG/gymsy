@@ -20,7 +20,7 @@ namespace gymsy
                optionsBuilder.UseSqlServer(stringConnection).Options
             );
 
-            GymsyContext.GymsyContextDB = GymsyContextDb!;
+            ViejoGymsyContext.GymsyContextDB = GymsyContextDb!;
             ApplicationConfiguration.Initialize();
 
             IAuthView view = new AuthView();

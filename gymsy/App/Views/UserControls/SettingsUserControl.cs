@@ -27,7 +27,7 @@ namespace gymsy.UserControls
         public SettingsUserControl()
         {
             this.person = AppState.person;
-            this.dbContext = GymsyContext.GymsyContextDB;
+            this.dbContext = ViejoGymsyContext.GymsyContextDB;
 
             InitializeComponent();
             InitializeDataComponent();

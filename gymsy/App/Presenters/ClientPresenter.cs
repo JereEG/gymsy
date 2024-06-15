@@ -14,7 +14,7 @@ namespace gymsy.App.Presenters
         private GymsyDbContext dbContext;
 
         public ClientPresenter() {
-            this.dbContext = GymsyContext.GymsyContextDB;
+            this.dbContext = ViejoGymsyContext.GymsyContextDB;
             this.person = AppState.person;
         }
 

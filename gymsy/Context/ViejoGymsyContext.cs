@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace gymsy.Context
 {
-    public static class GymsyContext
+    public static class ViejoGymsyContext
     {
         public static GymsyDbContext? GymsyContextDB { get; set; }
     }

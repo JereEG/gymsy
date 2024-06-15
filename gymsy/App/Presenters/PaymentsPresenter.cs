@@ -10,7 +10,7 @@ namespace gymsy.App.Presenters
 {
     internal static class PaymentsPresenter
     {
-        private static GymsyDbContext gymsydb = GymsyContext.GymsyContextDB;
+        private static GymsyDbContext gymsydb = ViejoGymsyContext.GymsyContextDB;
 
        public static Pay BuscarPago(int pIdPaySelected)
         {

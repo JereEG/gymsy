@@ -29,7 +29,7 @@ namespace gymsy.UserControls
     public partial class WalletUserControl : UserControl, IWalletView
     {
 
-        private GymsyDbContext gymsydb = GymsyContext.GymsyContextDB;
+        private GymsyDbContext gymsydb = ViejoGymsyContext.GymsyContextDB;
         private IEnumerable<Pay> PaysList;
         private Pay PayActive;
         private GymsyDbContext dbContext;
@@ -39,7 +39,7 @@ namespace gymsy.UserControls
             InitializeComponent();
             InitializeData();
             InitializeGridTransactions();
-            this.dbContext = GymsyContext.GymsyContextDB;
+            this.dbContext = ViejoGymsyContext.GymsyContextDB;
         }
 
         private void InitializeData()

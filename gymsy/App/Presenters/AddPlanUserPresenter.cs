@@ -1,5 +1,5 @@
-﻿using gymsy.App.Models;
-using gymsy.Context;
+﻿using gymsy.Context;
+using gymsy.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,18 +11,18 @@ namespace gymsy.App.Presenters
 {
     internal static class AddPlanUserPresenter
     {
-        private static GymsyDbContext gymsydb = ViejoGymsyContext.GymsyContextDB;
+        private static GymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
 
-        public static List<TrainingPlan> listarPlanesInstructor()
+        public static List<AlumnoSuscripcion> listarPlanesInstructor()
         {
-            return gymsydb.TrainingPlans.Where(p => p.IdInstructor == AppState.Instructor.IdInstructor).ToList();
+            return gymsydb.AlumnoSuscripcions.Where(p => p.IdUsuario == AppState.Instructor.IdUsuario).ToList();
         }
 
-        public static void modificarPlan(int pidPlan, string pDescripcion, float pPrecio)
+        public static void modificarPlan(int pidPlan, string pDescripcion, decimal pPrecio)
         {
-            var plan = gymsydb.TrainingPlans.Where(p => p.IdTrainingPlan == pidPlan).FirstOrDefault();
-            plan.Description = pDescripcion;
-            plan.Price = pPrecio;
+            var plan = gymsydb.AlumnoSuscripcions.Where(p => p.IdPlanEntrenamiento == pidPlan).FirstOrDefault();
+            plan.IdPlanEntrenamientoNavigation.Descripcion = pDescripcion;
+            plan.IdPlanEntrenamientoNavigation.Precio = pPrecio;
 
             gymsydb.SaveChanges();
 
@@ -30,28 +30,28 @@ namespace gymsy.App.Presenters
 
 
         }
-        public static TrainingPlan guardarPlan(string pDescripcion, float pPrecio)
+        public static PlanEntrenamiento guardarPlan(string pDescripcion, decimal pPrecio)
         {
-            TrainingPlan plan = new TrainingPlan();
-            plan.Description = pDescripcion;
-            plan.Price = pPrecio;
-            plan.Inactive = false;
-            plan.IdInstructor = AppState.Instructor.IdInstructor;
+            PlanEntrenamiento plan = new PlanEntrenamiento();
+            plan.Descripcion = pDescripcion;
+            plan.Precio = pPrecio;
+            plan.PlanEntrenamientoInactivo = false;
+            plan.IdUsuario = AppState.Instructor.IdUsuario;
 
-            gymsydb.TrainingPlans.Add(plan);
+            gymsydb.PlanEntrenamientos.Add(plan);
             gymsydb.SaveChanges();
             return plan;
         }
         public static bool DescripcionUnica(string nuevaDescripcion, int? idPlanActual = null)
         {
             // Consulta para encontrar planes con la misma descripción
-            var planesConMismaDescripcion = gymsydb.TrainingPlans
-                .Where(p => p.Description == nuevaDescripcion);
+            var planesConMismaDescripcion = gymsydb.PlanEntrenamientos
+                .Where(p => p.Descripcion == nuevaDescripcion);
 
             // Si se está modificando un plan, excluimos el plan actual de la consulta
             if (idPlanActual.HasValue)
             {
-                planesConMismaDescripcion = planesConMismaDescripcion.Where(p => p.IdTrainingPlan != idPlanActual);
+                planesConMismaDescripcion = planesConMismaDescripcion.Where(p => p.IdPlanEntrenamiento != idPlanActual);
             }
 
             // Verificamos si se encontró algún plan con la misma descripción
@@ -63,17 +63,17 @@ namespace gymsy.App.Presenters
         public static void EliminarOActivarPlan( int pIdPlan, bool pDeleteOrAcitive)
         {
 
-           var plan = gymsydb.TrainingPlans.Where(p => p.IdTrainingPlan == pIdPlan).FirstOrDefault();
+           var plan = gymsydb.PlanEntrenamientos.Where(p => p.IdPlanEntrenamiento == pIdPlan).FirstOrDefault();
             if (plan != null)
             {
-                plan.Inactive = pDeleteOrAcitive;
+                plan.PlanEntrenamientoInactivo = pDeleteOrAcitive;
                 gymsydb.SaveChanges();
             }
             
         }
-        public static TrainingPlan buscarPlan(int pidPlan)
+        public static PlanEntrenamiento buscarPlan(int pidPlan)
         {
-            return gymsydb.TrainingPlans.Where(p => p.IdTrainingPlan == pidPlan).FirstOrDefault();
+            return gymsydb.PlanEntrenamientos.Where(p => p.IdPlanEntrenamiento == pidPlan).FirstOrDefault();
         }
 
 

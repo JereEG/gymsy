@@ -1,5 +1,4 @@
 ﻿using CustomControls.RJControls;
-using gymsy.App.Models;
 using gymsy.Context;
 using System;
 using System.Collections.Generic;
@@ -12,6 +11,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Linq;
 using gymsy.App.Presenters;
+using gymsy;
+using gymsy.Models;
 
 namespace gymsy.UserControls
 {
@@ -44,9 +45,9 @@ namespace gymsy.UserControls
 
             if (trainingPlans != null)
             {
-                foreach (TrainingPlan plan in trainingPlans)
+                foreach (AlumnoSuscripcion plan in trainingPlans)
                 {
-                    DGPlan.Rows.Add(plan.IdTrainingPlan, plan.Price, plan.Description, plan.Inactive);
+                    DGPlan.Rows.Add(plan.IdPlanEntrenamientoNavigation.IdPlanEntrenamiento, plan.IdPlanEntrenamientoNavigation.Precio, plan.IdPlanEntrenamientoNavigation.Descripcion, plan.IdPlanEntrenamientoNavigation.PlanEntrenamientoInactivo);
 
                 }
             }
@@ -112,7 +113,7 @@ namespace gymsy.UserControls
 
 
 
-                                float Fprecio = float.Parse(precio);
+                                decimal Fprecio = decimal.Parse(precio);
 
                                 AddPlanUserPresenter.modificarPlan(idPlan, descripcion, Fprecio);
 
@@ -146,11 +147,11 @@ namespace gymsy.UserControls
 
                             if (AddPlanUserPresenter.DescripcionUnica(TBDescripcion.Text))
                             {
-                                float precio_a_guardar = float.Parse(TBPrecio.Text);
+                                decimal precio_a_guardar = decimal.Parse(TBPrecio.Text);
 
-                                TrainingPlan plan_guardado = AddPlanUserPresenter.guardarPlan(TBDescripcion.Text, precio_a_guardar);
+                                PlanEntrenamiento plan_guardado = AddPlanUserPresenter.guardarPlan(TBDescripcion.Text, precio_a_guardar);
 
-                                DGPlan.Rows.Add(plan_guardado.IdTrainingPlan, TBPrecio.Text, TBDescripcion.Text, false);
+                                DGPlan.Rows.Add(plan_guardado.IdPlanEntrenamiento, TBPrecio.Text, TBDescripcion.Text, false);
 
                                 MessageBox.Show("Plan guardado correctamente.");
 

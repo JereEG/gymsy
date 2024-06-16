@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Models;
 using gymsy.Context;
 using gymsy.Properties;
 using System;
@@ -11,7 +11,7 @@ using Twilio;
 using Twilio.Rest.Api.V2010.Account;
 using Twilio.TwiML.Voice;
 using Twilio.Types;
-using ClientModel = gymsy.App.Models.Client;
+using ClientModel = gymsy.Models.Usuario;
 
 namespace gymsy.utilities
 {
@@ -27,7 +27,7 @@ namespace gymsy.utilities
             new Uri(path)
         }.ToList();
             var messageOptions = new CreateMessageOptions(
-                new PhoneNumber($"whatsapp:{AppState.person.NumberPhone}"));
+                new PhoneNumber($"whatsapp:{AppState.person.NumeroTelefono}"));
             messageOptions.From = new PhoneNumber("whatsapp:+14155238886");
             messageOptions.Body = "Nuevo comprobante Emitido";
             messageOptions.MediaUrl = multimedia;
@@ -41,7 +41,7 @@ namespace gymsy.utilities
             List<string> numerosDestino = new List<string>();
             clients.ForEach(client =>
             {
-                numerosDestino.Add(client.IdPersonNavigation.NumberPhone);
+                numerosDestino.Add(client.NumeroTelefono);
             });
 
             MessageBox.Show("SENDING MESSAGE...");

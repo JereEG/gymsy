@@ -1,4 +1,4 @@
-using gymsy.App.Models;
+using gymsy.Models;
 using gymsy.App.Presenters;
 using gymsy.App.Views;
 using gymsy.App.Views.Interfaces;
@@ -38,7 +38,7 @@ namespace gymsy
 
         // properties
         private bool IsSuccessful;
-        private Person person;
+        private Usuario person;
         private string Message;
 
         public MainView()
@@ -46,18 +46,18 @@ namespace gymsy
             this.person = AppState.person;
             InitializeComponent();
             InitializeUser();
-            InitializeNavigationControl(this.rols[person.RolId]);
-            InitializeNavigationButtons(this.rols[person.RolId]);
-            InitializeUserRol(this.rols[person.RolId]);
+            InitializeNavigationControl(this.rols[person.IdRol ?? 0] );
+            InitializeNavigationButtons(this.rols[person.IdRol ?? 0] );
+            InitializeUserRol(this.rols[person.IdRol ?? 0]);
 
             try
             {
                 string ruta = "";
-                if (person.RolId == 2)
+                if (person.IdRol == 2)
                 {
                     ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageInstructor;
                 }
-                else if (person.RolId == 3)
+                else if (person.IdRol == 3)
                 {
                     ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageClient;
                 }
@@ -65,7 +65,7 @@ namespace gymsy
                 {
                     ruta = AppState.pathDestinationFolder;
                 }
-                ruta += "\\" + person.Avatar;
+                ruta += "\\" + person.AvatarUrl;
                 PimagenPerson.BackgroundImage = System.Drawing.Image.FromFile(ruta);
             }
             catch (Exception ex)
@@ -76,7 +76,7 @@ namespace gymsy
         }
 
         // Getters and Setters
-        Person IMainView.person
+        Usuario IMainView.person
         {
             get { return person; }
             set { person = value; }
@@ -96,11 +96,12 @@ namespace gymsy
 
         private void InitializeUser()
         {
-            BtnUserAvatar.Text = this.person.Nickname;
-            LabelNavRol.Text = this.rols[this.person.RolId].ToUpper();
-            if (this.person.Wallets.Count() > 0 && this.person.RolId != 3)
+            BtnUserAvatar.Text = this.person.Apodo;
+            LabelNavRol.Text = this.rols[this.person.IdRol ?? 0].ToUpper();
+            if (this.person.IdRol != 3)
             {
-                LabelAmuntWallet.Text = $"${this.person.Wallets.First().Retirable}K";
+                LabelAmuntWallet.Text = "0";//$"${this.person.Wallets.First().Retirable}K";
+                //ya no existe
             }
             else
             {

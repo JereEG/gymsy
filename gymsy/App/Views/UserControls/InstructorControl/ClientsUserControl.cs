@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Models;
 using gymsy.App.Views;
 using gymsy.Context;
 using gymsy.Properties;
@@ -179,7 +179,7 @@ namespace gymsy.UserControls
                 Client clientSelected = null;
                 //this.dbContext = GymsyContext.GymsyContextDB;
 
-                foreach (Person person in AppState.clients)
+                foreach (Usuario person in AppState.clients)
                 {
                     foreach (Client client in person.Clients)
                     {
@@ -456,7 +456,7 @@ namespace gymsy.UserControls
                 return;
             }
             //    viernes que viene            hoy            vie q vie               jueves que viene
-            List<Client> clientsFound = this.clients.Where(cl => cl.LastExpiration >= DateTime.Now.AddDays(-1) && cl.LastExpiration <= DateTime.Now.AddDays(7)).ToList();
+            List<Usuario> clientsFound = this.clients.Where(cl => cl.LastExpiration >= DateTime.Now.AddDays(-1) && cl.LastExpiration <= DateTime.Now.AddDays(7) && cl.IdRol==3).ToList();
             utilities.TwilioMSG.SendAlertClients(clientsFound);
             MessageBox.Show($"Se ha enviado a {clientsFound.Count().ToString()} clientes");
 

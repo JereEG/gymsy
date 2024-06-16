@@ -45,9 +45,9 @@ namespace gymsy.UserControls
 
             if (trainingPlans != null)
             {
-                foreach (AlumnoSuscripcion plan in trainingPlans)
+                foreach (PlanEntrenamiento plan in trainingPlans)
                 {
-                    DGPlan.Rows.Add(plan.IdPlanEntrenamientoNavigation.IdPlanEntrenamiento, plan.IdPlanEntrenamientoNavigation.Precio, plan.IdPlanEntrenamientoNavigation.Descripcion, plan.IdPlanEntrenamientoNavigation.PlanEntrenamientoInactivo);
+                    DGPlan.Rows.Add(plan.IdPlanEntrenamiento, plan.Precio, plan.Descripcion, plan.PlanEntrenamientoInactivo);
 
                 }
             }

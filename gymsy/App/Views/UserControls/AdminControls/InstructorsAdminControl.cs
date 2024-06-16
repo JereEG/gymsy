@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Models;
 using gymsy.App.Presenters;
 using gymsy.Context;
 using gymsy.Properties;
@@ -16,7 +16,7 @@ namespace gymsy.UserControls.AdminControls
 {
     public partial class InstructorsAdminControl : UserControl
     {
-        private GymsyDbContext dbContext;
+        private GymsyContext dbContext;
         private int indexRowSelect = 0;
         private bool isModeVerNoDelete = true;
         private AdminPresenter presenter;
@@ -230,13 +230,13 @@ namespace gymsy.UserControls.AdminControls
 
                     int idInstructor = int.Parse(DGInstructors.Rows[this.indexRowSelect].Cells["id_instructor"].Value.ToString());
 
-                    var InstructorUpdated = this.dbContext.Instructors
-                    .Where(i => i.IdInstructor == idInstructor)
+                    var InstructorUpdated = this.dbContext.Usuarios
+                    .Where(i => i.IdUsuario == idInstructor && i.IdRol==2)
                     .First();
 
                     if (InstructorUpdated != null)
                     {
-                        InstructorUpdated.IdPersonNavigation.Inactive = deleteOrActive;
+                        InstructorUpdated.UsuarioInactivo = deleteOrActive;
 
                         this.dbContext.SaveChanges();
                     }

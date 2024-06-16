@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using gymsy.Context;
-using gymsy.App.Models;
+using gymsy.Models;
 using System.Collections;
 using gymsy.Utilities;
 using gymsy.App.Presenters;

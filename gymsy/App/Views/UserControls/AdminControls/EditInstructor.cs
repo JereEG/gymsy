@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Models;
 using gymsy.Context;
 using gymsy.Utilities;
 using Microsoft.Win32;
@@ -12,7 +12,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using gymsy.App.Models;
 using gymsy.App.Presenters;
 
 namespace gymsy.UserControls.AdminControls
@@ -40,10 +39,10 @@ namespace gymsy.UserControls.AdminControls
         {
             if (AppState.InstructorActive != null && AppState.InstructorActive.IdPersonNavigation != null)
             {
-                string name = AppState.InstructorActive.IdPersonNavigation.FirstName.ToString();
-                string lastName = AppState.InstructorActive.IdPersonNavigation.LastName.ToString();
-                string numberPhone = AppState.InstructorActive.IdPersonNavigation.NumberPhone.ToString();
-                string nickname = AppState.InstructorActive.IdPersonNavigation.Nickname.ToString();
+                string name = AppState.InstructorActive.Nombre.ToString();
+                string lastName = AppState.InstructorActive.Apellido.ToString();
+                string numberPhone = AppState.InstructorActive.NumeroTelefono.ToString();
+                string nickname = AppState.InstructorActive.Apodo.ToString();
 
                 TBNombre.Text = name;
                 TBApellido.Text = lastName;

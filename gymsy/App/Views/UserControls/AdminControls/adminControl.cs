@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Models;
 using gymsy.App.Presenters;
 using gymsy.Context;
 using gymsy.Properties;

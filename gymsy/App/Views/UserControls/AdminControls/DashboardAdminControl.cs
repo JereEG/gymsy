@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Models;
 using gymsy.App.Presenters;
 using gymsy.Context;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +19,7 @@ namespace gymsy.UserControls.AdminControls
     public partial class DashboardAdminControl : UserControl
     {
 
-        private GymsyDbContext dbContext;
+        private GymsyContext dbContext;
         private AdminPresenter presenter;
         public DashboardAdminControl()
         {

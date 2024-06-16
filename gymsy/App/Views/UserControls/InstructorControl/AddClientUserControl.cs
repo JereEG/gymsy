@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using gymsy.Context;
-using gymsy.App.Models;
+using gymsy.Models;
 using System.Numerics;
 using System.Reflection;
 using gymsy.Utilities;
@@ -196,29 +196,29 @@ namespace gymsy.UserControls
             {
                 //Ahora se cargan los demas elementos
 
-                List<TrainingPlan> trainingPlans = AddClientPresenter.TraerPlanes();
+                List<PlanEntrenamiento> trainingPlans = AddClientPresenter.TraerPlanes();
 
-                TrainingPlan trainingPlan = AddClientPresenter.TraerPrimerPlan();
+                PlanEntrenamiento trainingPlan = AddClientPresenter.TraerPrimerPlan();
 
                 if (trainingPlan != null)
                 {
                     if(trainingPlan != null)
                     {
-                        LidPlan.Text = trainingPlan.IdTrainingPlan.ToString();
-                        TBPrecio.Text = trainingPlan.Price.ToString();
-                        TBDescripcion.Text = trainingPlan.Description;
-                        TBNombreInstructor.Text = trainingPlan.IdInstructorNavigation.IdPersonNavigation.FirstName + " " + trainingPlan.IdInstructorNavigation.IdPersonNavigation.LastName;
+                        LidPlan.Text = trainingPlan.IdPlanEntrenamiento.ToString();
+                        TBPrecio.Text = trainingPlan.Precio.ToString();
+                        TBDescripcion.Text = trainingPlan.Descripcion;
+                        TBNombreInstructor.Text = trainingPlan.IdUsuarioNavigation.Nombre + " " + trainingPlan.IdUsuarioNavigation.Apellido;
 
-                        CBPlanes.Items.Add(trainingPlan.Description);
+                        CBPlanes.Items.Add(trainingPlan.Descripcion);
                     }
                     
                 }
 
-                foreach (TrainingPlan plan in trainingPlans)
+                foreach (PlanEntrenamiento plan in trainingPlans)
                 {
-                    if (!plan.Inactive && trainingPlan.IdTrainingPlan != plan.IdTrainingPlan)
+                    if (!plan.PlanEntrenamientoInactivo && trainingPlan.IdPlanEntrenamiento != plan.IdPlanEntrenamiento)
                     {
-                        CBPlanes.Items.Add(plan.IdTrainingPlan + "-" + plan.Description);
+                        CBPlanes.Items.Add(plan.IdPlanEntrenamiento + "-" + plan.Descripcion);
                     }
 
                 }

@@ -15,7 +15,7 @@ namespace gymsy.App.Presenters
 
         public static List<AlumnoSuscripcion> listarPlanesInstructor()
         {
-            return gymsydb.AlumnoSuscripcions.Where(p => p.IdUsuario == AppState.Instructor.IdUsuario).ToList();
+            return gymsydb.AlumnoSuscripcions.Where(p => p.IdUsuarioNavigation.IdRol == 2).ToList();
         }
 
         public static void modificarPlan(int pidPlan, string pDescripcion, decimal pPrecio)

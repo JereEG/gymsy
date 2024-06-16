@@ -99,7 +99,8 @@ namespace gymsy.UserControls
         }
         public AlumnoSuscripcion getAlumnoSuscripcion(int idusuario)
         {
-            return Context.GymsyContext.GymsyContextDB.AlumnoSuscripcions.Where(a => a.IdUsuario == idusuario).FirstOrDefault();
+            
+            return Context.ViejoGymsyContext.GymsyContextDB.AlumnoSuscripcions.Where(a => a.IdUsuario == idusuario).FirstOrDefault();
         }
 
         public void InitializeChartTorta()

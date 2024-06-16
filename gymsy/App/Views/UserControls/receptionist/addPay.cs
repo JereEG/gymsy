@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Models;
 using gymsy.Context;
 using gymsy.Properties;
 using gymsy.App.Presenters;
@@ -102,7 +102,7 @@ namespace gymsy.App.Views.UserControls.receptionist
             // Limpia cualquier ordenación previa en el DataGridView
             DGUsers.Sort(DGUsers.Columns[0], ListSortDirection.Ascending);
 
-            foreach (TrainingPlan plan in AppState.planes)
+            foreach (AlumnoSuscripcion plan in AppState.planes)
             {
                 foreach (Client client in plan.Clients.ToArray())
                 {
@@ -207,15 +207,15 @@ namespace gymsy.App.Views.UserControls.receptionist
                 //&& clientSelected.IdTrainingPlanNavigation != null && AppState.Instructor.IdPersonNavigation != null
                 if (clientSelected != null)
                 {
-                    Lid_client.Text = clientSelected.IdClient.ToString();
-                    LClientFullName.Text = clientSelected.IdPersonNavigation.FirstName + " " + clientSelected.IdPersonNavigation.LastName;
-                    LPlan.Text = clientSelected.IdTrainingPlanNavigation.Description;
+                    Lid_client.Text = clientSelected.IdUsuario.ToString();
+                    LClientFullName.Text = clientSelected.Nombre + " " + clientSelected.Apellido;
+                    LPlan.Text = clientSelected.IdTrainingPlanNavigation.Descripcion;
                     LInstructorFullName.Text = clientSelected.IdTrainingPlanNavigation.IdInstructorNavigation.IdPersonNavigation.FirstName + " " + clientSelected.IdTrainingPlanNavigation.IdInstructorNavigation.IdPersonNavigation.LastName;
 
                     TbAmount.Text = clientSelected.IdTrainingPlanNavigation.Price.ToString();
                     try
                     {
-                        string ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageClient + "\\" + clientSelected.IdPersonNavigation.Avatar;
+                        string ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageClient + "\\" + clientSelected.AvatarUrl;
                         PimagenPerson.BackgroundImage = System.Drawing.Image.FromFile(ruta);
                     }
                     catch (Exception ex)

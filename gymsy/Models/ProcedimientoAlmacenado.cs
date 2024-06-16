@@ -1,5 +1,5 @@
 ﻿using gymsy;
-using gymsy.App.Models;
+using gymsy.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;

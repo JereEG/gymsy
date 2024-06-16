@@ -12,7 +12,7 @@ namespace gymsy.App.Presenters
 {
     internal static class AddProgressClientPresenter
     {
-        private static GymsyDbContext gymsydb = ViejoGymsyContext.GymsyContextDB;
+        private static GymsyContext gymsydb = ViejoGymsyContext.GymsyContextDB;
 
         public static bool TituloUnico(string nuevoTitulo)
         {

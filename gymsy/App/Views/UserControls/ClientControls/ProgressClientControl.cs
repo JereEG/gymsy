@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Models;
 using gymsy.App.Presenters;
 using gymsy.App.Views.Interfaces;
 using gymsy.Context;
@@ -34,14 +34,14 @@ namespace gymsy.UserControls.ClientControls
             PhotoActive.InitialImage = PhotoActive.Image;
         }
 
-        public void updateProgressActive(DataFisic DataFisicActive)
+        public void updateProgressActive(EstadoFisico DataFisicActive)
         {
-            TBRegDescription.Text = DataFisicActive.Notes;
-            TBRegFecha.Text = "Datos " + DataFisicActive.CreatedAt.ToString("dd/MM/yyyy");
-            if (DataFisicActive.Images.Count > 0)
+            TBRegDescription.Text = DataFisicActive.Notas;
+            TBRegFecha.Text = "Datos " + DataFisicActive.FechaCreacion.ToString("dd/MM/yyyy");
+            if (DataFisicActive.ImagenUrl != null)
             {
                 string directory = AppDomain.CurrentDomain.BaseDirectory;
-                string rutaImagen = Path.GetFullPath(Path.Combine(directory, @"..\..\..\App\Public\" + DataFisicActive.Images.First().ImageUrl));
+                string rutaImagen = Path.GetFullPath(Path.Combine(directory, @"..\..\..\App\Public\" + DataFisicActive.ImagenUrl.First()));
                 System.Drawing.Image imagen = System.Drawing.Image.FromFile(rutaImagen);
 
                 PhotoActive.Image = imagen;
@@ -51,7 +51,7 @@ namespace gymsy.UserControls.ClientControls
                 PhotoActive.Image = PhotoActive.InitialImage;
             }
 
-            if (DataFisicActive.Inactive)
+            if (DataFisicActive.EstadoFisicoInactivo)
             {
                 BtnInactiveReg.BackColor = Color.Green;
             }
@@ -159,7 +159,7 @@ namespace gymsy.UserControls.ClientControls
 
                 var ListDataFisics = AppState.ClientActive.DataFisics.ToList();
 
-                DataFisic DataFisicSelected = ListDataFisics.Find(df => IdDfSelected.Equals(df.IdDataFisic));
+                EstadoFisico DataFisicSelected = ListDataFisics.Find(df => IdDfSelected.Equals(df.IdDataFisic));
 
                 if (DataFisicSelected != null)
                 {

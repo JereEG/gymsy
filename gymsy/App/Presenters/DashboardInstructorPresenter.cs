@@ -11,7 +11,7 @@ namespace gymsy.App.Presenters
 {
     internal static class DashboardInstructorPresenter
     {
-        private static GymsyDbContext gymsydb = ViejoGymsyContext.GymsyContextDB;
+        private static GymsyContext gymsydb = ViejoGymsyContext.GymsyContextDB;
 
         // Método para obtener pagos agrupados por mes
         public static List<PagoPorMes> ObtenerPagosAgrupadosPorMes()

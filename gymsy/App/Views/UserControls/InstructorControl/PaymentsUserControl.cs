@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Models;
 using gymsy.App.Presenters;
 using gymsy.Context;
 using System;
@@ -15,7 +15,7 @@ namespace gymsy.UserControls
 {
     public partial class PaymentsUserControl : UserControl
     {
-        private IEnumerable<Pay> PaysList;
+        private IEnumerable<Pago> PaysList;
        // private GymsyDbContext dbContext;
 
         public PaymentsUserControl()
@@ -36,12 +36,12 @@ namespace gymsy.UserControls
             if (this.PaysList.Count() > 0)
             {
                 PanelMsg.Visible = false;
-                foreach (Pay pay in this.PaysList)
+                foreach (Pago pay in this.PaysList)
                 {
-                    TimeSpan diferencia = (DateTime.Now - pay.CreatedAt);
+                    TimeSpan diferencia = (DateTime.Now - pay.FechaCreacion);
                     String formart = $"Hace {diferencia.Days} dias";
-                    String descripcion = pay.DestinatarioId == AppState.person.IdPerson ? $"Recibiste" : $"Pagaste";
-                    dataGridPayments.Rows.Add(pay.IdPay, formart, pay.IdPayTypeNavigation.Name, pay.Amount, descripcion);
+                    String descripcion = pay.DestinatarioId == AppState.person.IdUsuario ? $"Recibiste" : $"Pagaste";
+                    dataGridPayments.Rows.Add(pay.IdPago, formart, pay.IdTipoPagoNavigation.Nombre, pay.Monto, descripcion);
                 }
             }
 

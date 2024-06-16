@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Models;
 using gymsy.Context;
 using System;
 using System.Collections.Generic;
@@ -10,16 +10,16 @@ namespace gymsy.App.Presenters
 {
     internal static class AddPayPresenter
     {
-        private static GymsyDbContext gymsydb = ViejoGymsyContext.GymsyContextDB;
-        public static Client BuscarCliente(int pIdCliente)
+        private static GymsyContext gymsydb = ViejoGymsyContext.GymsyContextDB;
+        public static Usuario BuscarCliente(int pIdCliente)
         {
-            return gymsydb.Clients
-                                .Where(client => client.IdClient == pIdCliente)
+            return gymsydb.Usuarios
+                                .Where(client => client.IdUsuario == pIdCliente)
                                 .First();
         }
-        public static Admin TraerAdmin()
+        public static Usuario TraerAdmin()
         {
-            return gymsydb.Admins.FirstOrDefault();
+            return gymsydb.Usuarios.Where(u=>u.IdRol==1).FirstOrDefault();
         }
         public static void AgregarPago(int pIdCliente, float pMonto)
         {
@@ -33,16 +33,16 @@ namespace gymsy.App.Presenters
             if (admin != null && walletAdmin != null && client != null)
             {
 
-                var newPay = new Pay
+                var newPay = new Pago
                 {
-                    CreatedAt = DateTime.Now,
-                    Amount = pMonto,  // Aquí debes proporcionar el monto deseado
-                    Inactive = false,
-                    DestinatarioId = admin.IdPersonNavigation.IdPerson,
-                    RemitenteId = client.IdPerson,
-                    IdPayType = 1
+                    FechaCreacion = DateTime.Now,
+                    Monto = (decimal)pMonto,  // Aquí debes proporcionar el monto deseado
+                    InactivoPago = false,
+                    DestinatarioId = admin.IdUsuario,
+                    RemitenteId = client.IdUsuario,
+                    IdTipoPago = 1
                 };
-                gymsydb.Pays.Add(newPay);
+                gymsydb.Pagos.Add(newPay);
                 gymsydb.SaveChanges();
 
                 client.LastExpiration = DateTime.Now.AddMonths(1);

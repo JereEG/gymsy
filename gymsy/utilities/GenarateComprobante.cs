@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Models;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -9,7 +9,7 @@ namespace gymsy.utilities
     public class GenarateComprobante
     {
 
-        public static string GeneratePdfComprobante(Pay Pay)
+        public static string GeneratePdfComprobante(Pago pay)
         {
             try
             {
@@ -21,7 +21,7 @@ namespace gymsy.utilities
                 string rutaArchivo = Path.Combine(rutaDescargas, nombreArchivoPDF);
 
                 // Contenido HTML que deseas generar
-                string contenidoHTML = GenerateFactura(Pay);
+                string contenidoHTML = GenerateFactura(pay);
 
                 // Escribir el contenido HTML en un archivo en el directorio de descargas
                 File.WriteAllText(rutaArchivo, contenidoHTML);
@@ -38,7 +38,7 @@ namespace gymsy.utilities
         }
 
 
-        private static string GenerateFactura(Pay Pay)
+        private static string GenerateFactura(Pago Pay)
         {
             string contenidoHTML = @"
                 <!DOCTYPE html>
@@ -142,11 +142,11 @@ namespace gymsy.utilities
                 </html>
                 ";
 
-            contenidoHTML = contenidoHTML.Replace("[Fecha]", Pay.CreatedAt.ToString("dd/MM/yyyy"))
+            contenidoHTML = contenidoHTML.Replace("[Fecha]", Pay.FechaCreacion.ToString("dd/MM/yyyy"))
                                         .Replace("[Remitente]", $"{Pay.Remitente.LastName + ", " + Pay.Remitente.FirstName}")
                                          .Replace("[Destinatario]", $"{Pay.Destinatario.LastName + ", " + Pay.Destinatario.FirstName}")
-                                        .Replace("[Type]", Pay.IdPayTypeNavigation.Name)
-                                        .Replace("[Amount]", Pay.Amount.ToString());
+                                        .Replace("[Type]", Pay.IdTipoPagoNavigation.Nombre)
+                                        .Replace("[Amount]", Pay.Monto.ToString());
 
             return contenidoHTML;
         }

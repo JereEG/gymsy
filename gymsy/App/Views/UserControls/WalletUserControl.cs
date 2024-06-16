@@ -10,8 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Twilio.TwiML.Voice;
-using gymsy.App.Models;
-using Pay = gymsy.App.Models.Pay;
+using gymsy.Models;
+using Pay = gymsy.Models.Pago;
 using gymsy.App.Views.Interfaces;
 using PdfSharp.Pdf;
 using PdfSharp;
@@ -29,10 +29,10 @@ namespace gymsy.UserControls
     public partial class WalletUserControl : UserControl, IWalletView
     {
 
-        private GymsyDbContext gymsydb = ViejoGymsyContext.GymsyContextDB;
+        private GymsyContext gymsydb = ViejoGymsyContext.GymsyContextDB;
         private IEnumerable<Pay> PaysList;
         private Pay PayActive;
-        private GymsyDbContext dbContext;
+        private GymsyContext dbContext;
 
         public WalletUserControl()
         {
@@ -58,9 +58,9 @@ namespace gymsy.UserControls
 
             AppState.persons.ForEach(per =>
             {
-                if (per.RolId != 3 && per.IdPerson != AppState.person.IdPerson)
+                if (per.IdRol != 3 && per.IdUsuario != AppState.person.IdUsuario)
                 {
-                    diccionario.Add(per.IdPerson.ToString(), per.FirstName);
+                    diccionario.Add(per.IdUsuario.ToString(), per.Nombre);
                 }
             });
 
@@ -80,15 +80,15 @@ namespace gymsy.UserControls
 
                 foreach (Pay pay in PaysList)
                 {
-                    TimeSpan diferencia = (DateTime.Now - pay.CreatedAt);
+                    TimeSpan diferencia = (DateTime.Now - pay.FechaCreacion);
                     String formart = $"Hace {diferencia.Days} dias";
                     int destinoId = pay.RemitenteId == AppState.person.IdPerson ? pay.DestinatarioId : pay.RemitenteId;
 
                     dataGridTransactions.Rows.Add(
-                        pay.IdPay,
+                        pay.IdPago,
                         formart,
-                        pay.IdPayTypeNavigation.Name,
-                        $"$ {pay.Amount}",
+                        pay.IdTipoPagoNavigation.Nombre,
+                        $"$ {pay.Monto}",
                         $"Destino: {destinoId}"
                     );
                 }
@@ -104,15 +104,15 @@ namespace gymsy.UserControls
 
         private void AddTransaction(Pay pay)
         {
-            TimeSpan diferencia = (DateTime.Now - pay.CreatedAt);
+            TimeSpan diferencia = (DateTime.Now - pay.FechaCreacion);
             String formart = $"Hace {diferencia.Days} dias";
             int destinoId = pay.RemitenteId == AppState.person.IdPerson ? pay.DestinatarioId : pay.RemitenteId;
 
             dataGridTransactions.Rows.Add(
-                pay.IdPay,
+                pay.IdPago,
                 formart,
-                pay.IdPayTypeNavigation.Name,
-                $"$ {pay.Amount}",
+                pay.IdTipoPagoNavigation.Nombre,
+                $"$ {pay.Monto}",
                 $"Destino: {destinoId}"
             );
 
@@ -151,11 +151,11 @@ namespace gymsy.UserControls
 
                 // se hace la transaccion
                 Pay ModelPay = new Pay();
-                ModelPay.CreatedAt = DateTime.Now;
-                ModelPay.Amount = double.Parse(TbAmountTran.Text);
-                ModelPay.RemitenteId = AppState.person.IdPerson;
-                ModelPay.IdPayType = 1;
-                ModelPay.Inactive = false;
+                ModelPay.FechaCreacion = DateTime.Now;
+                ModelPay.Monto =(decimal) double.Parse(TbAmountTran.Text);
+                ModelPay.RemitenteId = AppState.person.IdUsuario;
+                ModelPay.IdTipoPago = 1;
+                ModelPay.InactivoPago = false;
                 ModelPay.DestinatarioId = int.Parse(comboBoxInstructors.SelectedValue.ToString());
 
 
@@ -163,7 +163,7 @@ namespace gymsy.UserControls
                 Wallet WalletModel = AppState.person.Wallets.First();
                 WalletModel.Retirable -= double.Parse(TbAmountTran.Text);
 
-                this.gymsydb.Pays.Add(ModelPay);
+                this.gymsydb.Pagos.Add(ModelPay);
                 var PaysResponse = this.gymsydb.SaveChanges();
 
                 if (PaysResponse != 0)
@@ -255,8 +255,8 @@ namespace gymsy.UserControls
 
                 int IdPaySelected = int.Parse(dataGridTransactions.Rows[rowIndex].Cells["ID"].Value.ToString());
 
-                var PaySelected = this.dbContext.Pays
-                                .Where(pay => pay.IdPay == IdPaySelected)
+                var PaySelected = this.dbContext.Pagos
+                                .Where(pay => pay.IdPago == IdPaySelected)
                                 .First();
 
                 // Navigate to training history

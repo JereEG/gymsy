@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Models;
 using gymsy.App.Views.Interfaces;
 using gymsy.Context;
 using gymsy.Properties;
@@ -19,8 +19,8 @@ namespace gymsy.UserControls
 {
     public partial class SettingsUserControl : UserControl, ISettingView
     {
-        Person person;
-        GymsyDbContext dbContext;
+        Usuario person;
+        GymsyContext dbContext;
         public bool IsSuccessful { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string Message { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
@@ -35,18 +35,18 @@ namespace gymsy.UserControls
 
         private void InitializeDataComponent()
         {
-            TbFirstName.Text = person.FirstName;
-            TbLastName.Text = person.LastName;
+            TbFirstName.Text = person.Nombre;
+            TbLastName.Text = person.Apellido;
            // TbCBU.Text = person.CBU;
-            TbPhone.Text = person.NumberPhone;
+            TbPhone.Text = person.NumeroTelefono;
             try
             {
                 string ruta = "";
-                if (person.RolId == 2)
+                if (person.IdRol == 2)
                 {
                     ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageInstructor;
                 }
-                else if (person.RolId == 3)
+                else if (person.IdRol == 3)
                 {
                     ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageClient;
                 }
@@ -54,7 +54,7 @@ namespace gymsy.UserControls
                 {
                     ruta = AppState.pathDestinationFolder;
                 }
-                ruta += "\\" + person.Avatar;
+                ruta += "\\" + person.AvatarUrl;
                 gorilla_avatar.BackgroundImage = System.Drawing.Image.FromFile(ruta);
             }
             catch (Exception ex)
@@ -64,7 +64,7 @@ namespace gymsy.UserControls
             }
         }
 
-        Person ISettingView.person
+        Usuario ISettingView.person
         {
             get { return person; }
             set { person = value; }
@@ -83,13 +83,13 @@ namespace gymsy.UserControls
             if (!this.ValidateTextBox(textBoxList)) return;
 
             // Update global state
-            this.person.FirstName = TbFirstName.Text;
-            this.person.LastName = TbLastName.Text;
+            this.person.Nombre = TbFirstName.Text;
+            this.person.Apellido = TbLastName.Text;
             //this.person.CBU = TbCBU.Text;
-            this.person.NumberPhone = TbPhone.Text;
-            if (this.person.Avatar != TBRutaImagen.Text)
+            this.person.NumeroTelefono = TbPhone.Text;
+            if (this.person.AvatarUrl != TBRutaImagen.Text)
             {
-                this.person.Avatar = SaveImage(TBRutaImagen.Text);
+                this.person.AvatarUrl = SaveImage(TBRutaImagen.Text);
             }
 
 
@@ -124,11 +124,11 @@ namespace gymsy.UserControls
                 //string pathDestinationFolder = AppState.pathDestinationFolder + AppState.nameCarpetImageInstructor;
 
                 string pathDestinationFolder = "";
-                if (person.RolId == 2)
+                if (person.IdRol == 2)
                 {
                     pathDestinationFolder = AppState.pathDestinationFolder + AppState.nameCarpetImageInstructor;
                 }
-                else if (person.RolId == 3)
+                else if (person.IdRol == 3)
                 {
                     pathDestinationFolder = AppState.pathDestinationFolder + AppState.nameCarpetImageClient;
                 }
@@ -224,8 +224,8 @@ namespace gymsy.UserControls
         {
             try
             {
-                var personUpdated = this.dbContext.People
-                                .Where(people => people.IdPerson == this.person.IdPerson)
+                var personUpdated = this.dbContext.Usuarios
+                                .Where(people => people.IdUsuario == this.person.IdUsuario)
                                 .First();
                 personUpdated = this.person;
                 this.dbContext.SaveChanges();
@@ -244,16 +244,16 @@ namespace gymsy.UserControls
         {
             try
             {
-                var personUpdated = this.dbContext.People
-                               .Where(people => people.IdPerson == this.person.IdPerson)
+                var personUpdated = this.dbContext.Usuarios
+                               .Where(people => people.IdUsuario == this.person.IdUsuario)
                                .First();
 
                 if (personUpdated != null)
                 {
-                    if (Bcrypt.ComparePassowrd(tbCurrentPassword.Text, personUpdated.Password))
+                    if (Bcrypt.ComparePassowrd(tbCurrentPassword.Text, personUpdated.Contrasena))
                     {
                         string encryptNewPass = Bcrypt.HashPassoword(tbNewPassword.Text);
-                        personUpdated.Password = encryptNewPass;
+                        personUpdated.Contrasena = encryptNewPass;
 
                         this.dbContext.SaveChanges();
 

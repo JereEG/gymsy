@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace gymsy.App.Views.Interfaces
 {
     public interface IMainView
     {
-        Person person { get; set; }
+        Usuario person { get; set; }
         bool IsSuccessful { get; set; }
         string Message { get; set; }
 

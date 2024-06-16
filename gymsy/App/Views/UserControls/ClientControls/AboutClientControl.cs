@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Models;
 using gymsy.App.Presenters;
 using gymsy.Context;
 using System;
@@ -10,18 +10,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+//cliente ya no existe como usuario accesible
 namespace gymsy.UserControls.ClientControls
 {
     public partial class AboutClientControl : UserControl
     {
 
-        Person person;
+        Usuario person;
 
-        private ClientPresenter presenter;
+        //private ClientPresenter presenter;
         public AboutClientControl()
         {
-            presenter = new ClientPresenter();
+          //  presenter = new ClientPresenter();
             this.person = AppState.person;
             InitializeComponent();
             InitializeDataClient();
@@ -31,7 +31,7 @@ namespace gymsy.UserControls.ClientControls
         {
 
             //this.dbContext.TrainingPlans.ToList();
-            
+            /*
             var client = presenter.getClient(this.person.IdPerson);
             LbName.Text = $"{this.person.LastName}, {this.person.FirstName}";
 
@@ -52,7 +52,7 @@ namespace gymsy.UserControls.ClientControls
 
                 BeforePeso.Text = $"{client.DataFisics.First().Weight}kg";
                 BeforePeso.Text = $"{client.DataFisics.Last().Weight}kg";
-            }
+            }*/
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)

@@ -10,14 +10,8 @@
 
   <ItemGroup>
     <Compile Remove="App\Dto\**" />
-    <Compile Remove="App\Models\DTO\**" />
-    <Compile Remove="App\Models\Tools\**" />
     <EmbeddedResource Remove="App\Dto\**" />
-    <EmbeddedResource Remove="App\Models\DTO\**" />
-    <EmbeddedResource Remove="App\Models\Tools\**" />
     <None Remove="App\Dto\**" />
-    <None Remove="App\Models\DTO\**" />
-    <None Remove="App\Models\Tools\**" />
   </ItemGroup>
 
   <ItemGroup>

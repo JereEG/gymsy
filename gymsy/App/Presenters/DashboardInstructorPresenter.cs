@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Models;
 using gymsy.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -28,8 +28,8 @@ namespace gymsy.App.Presenters
 
             // Realizar el left join con los pagos
             var pagosAgrupadosPorMes = from mesAnio in rangoMesesAnios
-                                       join pago in gymsydb.Pays
-                                           on new { Mes = mesAnio.Mes, Anio = mesAnio.Anio } equals new { Mes = pago.CreatedAt.Month, Anio = pago.CreatedAt.Year }
+                                       join pago in gymsydb.Pagos
+                                           on new { Mes = mesAnio.Mes, Anio = mesAnio.Anio } equals new { Mes = pago.FechaCreacion.Month, Anio = pago.FechaCreacion.Year }
                                            into pagosGrupo
                                        from pagosEnMes in pagosGrupo.DefaultIfEmpty()
                                        select new PagoPorMes { Mes = mesAnio.Mes, Anio = mesAnio.Anio, Cantidad = (pagosEnMes != null ? pagosGrupo.Count() * 10 : rnd.Next(10, 14)) };
@@ -38,22 +38,65 @@ namespace gymsy.App.Presenters
             return pagosAgrupadosPorMes.OrderBy(g => g.Mes).ThenBy(g => g.Anio).ToList();
         }
 
-        public static List<Client> BuscarClientesActivosDelInstructor(List<int> pIdsPlanesIntructor)
+        public static List<Usuario> BuscarClientesActivosDelInstructor(List<int> pIdsPlanesIntructor)
         {
-            return gymsydb.Clients
-                                .Where(cl => pIdsPlanesIntructor.Contains(cl.IdTrainingPlan))
-                                .Where(cl => !cl.IdTrainingPlanNavigation.Inactive && cl.LastExpiration <= DateTime.UtcNow)
-                                .ToList();  
+            // Step 1: Filter Usuarios with the role of Client (IdRol == 4) and IDs in pIdsPlanesInstructor
+            var filteredUsuarios = gymsydb.Usuarios
+                                          .Where(cl => pIdsPlanesIntructor.Contains(cl.IdUsuario) &&
+                                                       cl.IdRol == 3);
+
+            // Step 2: Filter PlanEntrenamientos to include only active plans
+            var activePlans = gymsydb.PlanEntrenamientos
+                                     .Where(pl => !pl.PlanEntrenamientoInactivo);
+
+            // Step 3: Filter AlumnoSuscripcions to include subscriptions that are not expired
+            var activeSubscriptions = gymsydb.AlumnoSuscripcions
+                                             .Where(sus => sus.FechaExpiracion > DateTime.UtcNow);
+
+            // Step 4: Combine results to get active clients of the instructor
+            var activeClients = (from usuario in filteredUsuarios
+                                 join sus in activeSubscriptions on usuario.IdUsuario equals sus.IdUsuario
+                                 join plan in activePlans on sus.IdPlanEntrenamiento equals plan.IdPlanEntrenamiento
+                                 select usuario).Distinct().ToList();
+
+            return activeClients;
         }
 
         public static int ContarExpiradosONoExp(bool Expirado)
         {
+            var activePlans = gymsydb.PlanEntrenamientos
+                             .Where(pl => !pl.PlanEntrenamientoInactivo)
+                             .Select(pl => pl.IdPlanEntrenamiento)
+                             .ToList();
             if (Expirado)
             {
-                return gymsydb.Clients.Count(client => !client.IdTrainingPlanNavigation.Inactive && client.LastExpiration <= DateTime.Today); 
+
+
+                // Step 2: Filter AlumnoSuscripcions to include subscriptions that are not expired
+                var inactiveSubscriptions = gymsydb.AlumnoSuscripcions
+                                                 .Where(sus => sus.FechaExpiracion <= DateTime.Today &&
+                                                               activePlans.Contains(sus.IdPlanEntrenamiento))
+                                                 .Select(sus => sus.IdUsuario)
+                                                 .ToList();
+
+                // Step 3: Count the number of Usuarios who are clients and have active subscriptions
+                var inactiveClientCount = gymsydb.Usuarios
+                                               .Count(cl => inactiveSubscriptions.Contains(cl.IdUsuario) &&
+                                                            cl.IdRol == 3);
+
+                return inactiveClientCount;
             } else
             {
-               return gymsydb.Clients.Count(client => !client.IdTrainingPlanNavigation.Inactive && client.LastExpiration > DateTime.Today);
+                // Step 2: Filter AlumnoSuscripcions to include subscriptions that are not expired
+                var activeSubscriptions = gymsydb.AlumnoSuscripcions
+                                                 .Where(sus => sus.FechaExpiracion > DateTime.Today &&
+                                                               activePlans.Contains(sus.IdPlanEntrenamiento))
+                                                 .Select(sus => sus.IdUsuario)
+                                                 .ToList();
+                var activeClientCount = gymsydb.Usuarios
+                                              .Count(cl => activeSubscriptions.Contains(cl.IdUsuario) &&
+                                                           cl.IdRol == 3);
+                return activeClientCount;
             }
         }
     }

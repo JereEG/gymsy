@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +9,6 @@ namespace gymsy.Context
 {
     public static class ViejoGymsyContext
     {
-        public static GymsyDbContext? GymsyContextDB { get; set; }
+        public static Models.GymsyContext? GymsyContextDB { get; set; }
     }
 }

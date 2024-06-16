@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Models;
 using gymsy.Context;
 using System;
 using System.Collections.Generic;
@@ -12,10 +12,10 @@ namespace gymsy.App.Presenters
     {
         private static GymsyDbContext gymsydb = ViejoGymsyContext.GymsyContextDB;
 
-       public static Pay BuscarPago(int pIdPaySelected)
+       public static Pago BuscarPago(int pIdPaySelected)
         {
-            return gymsydb.Pays
-                                .Where(pay => pay.IdPay == pIdPaySelected)
+            return gymsydb.Pagos
+                                .Where(pay => pay.IdPago == pIdPaySelected)
                                 .First();
         }
     }

@@ -1,5 +1,5 @@
 ﻿using CustomControls.RJControls;
-using gymsy.App.Models;
+using gymsy.Models;
 using gymsy.Context;
 using System;
 using System.Collections.Generic;
@@ -17,8 +17,8 @@ namespace gymsy.App.Presenters
         public static bool TituloUnico(string nuevoTitulo)
         {
             // Consulta para encontrar registros con el mismo título
-            var registrosConMismoTitulo = gymsydb.DataFisics
-                .Where(d => d.Title == nuevoTitulo);
+            var registrosConMismoTitulo = gymsydb.EstadoFisicos
+                .Where(d => d.Titulo == nuevoTitulo);
 
             // Verificamos si se encontró algún registro con el mismo título
             bool tituloUnico = !registrosConMismoTitulo.Any();
@@ -44,34 +44,29 @@ namespace gymsy.App.Presenters
 
 
 
-            DataFisic DataFisicModel = new DataFisic();
-            DataFisicModel.CreatedAt = DateTime.Now;
+            EstadoFisico DataFisicModel = new EstadoFisico();
+            DataFisicModel.FechaCreacion = DateTime.Now;
             if (AppState.ClientActive == null)
             {
-                DataFisicModel.IdClient = AppState.auxIdClient;
+                DataFisicModel.IdAlumnoSuscripcionNavigation.IdUsuario = AppState.auxIdClient;
             }
             else
             {
-                DataFisicModel.IdClient = AppState.ClientActive.IdClient;
+                DataFisicModel.IdAlumnoSuscripcionNavigation.IdUsuario = AppState.ClientActive.IdClient;
             }
 
-            DataFisicModel.Inactive = false;
-            DataFisicModel.Title = ptitle_dataFisic;
-            DataFisicModel.Notes = pnotes_dataFisic;
-            DataFisicModel.Weight = pweight_dataFisic;
-            DataFisicModel.Height = pheight_dataFisic;
-
+            DataFisicModel.EstadoFisicoInactivo = false;    
+            DataFisicModel.Titulo = ptitle_dataFisic;
+            DataFisicModel.Notas = pnotes_dataFisic;
+            DataFisicModel.Peso = (decimal)pweight_dataFisic;
+            DataFisicModel.Altura = (decimal)pheight_dataFisic;
+            DataFisicModel.ImagenUrl = NameImage;
             var DataFisicSave = gymsydb.Add(DataFisicModel);
             gymsydb.SaveChanges();
 
             if (DataFisicSave != null)
             {
-                Models.Image ImageModel = new Models.Image();
-                ImageModel.ImageUrl = NameImage;
-                ImageModel.IdDataFisic = DataFisicSave.Entity.IdDataFisic;
-                ImageModel.Inactive = false;
-
-                gymsydb.Add(ImageModel);
+              
                 gymsydb.SaveChanges();
 
                 return true;

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using gymsy.App.Models;
 using gymsy.Models;
 
 namespace gymsy.App.Presenters

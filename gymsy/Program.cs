@@ -14,9 +14,9 @@ namespace gymsy
         {
             //Config & Conect to database
             string stringConnection = Resources.stringConnection;
-            DbContextOptionsBuilder<GymsyDbContext> optionsBuilder = new();
+            DbContextOptionsBuilder<Models.GymsyContext> optionsBuilder = new();
 
-            GymsyDbContext GymsyContextDb = new(
+            Models.GymsyContext GymsyContextDb = new(
                optionsBuilder.UseSqlServer(stringConnection).Options
             );
 

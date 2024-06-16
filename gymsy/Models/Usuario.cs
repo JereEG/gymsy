@@ -34,4 +34,9 @@ public partial class Usuario
     public virtual ICollection<Pago> Pagos { get; set; } = new List<Pago>();
 
     public virtual ICollection<PlanEntrenamiento> PlanEntrenamientos { get; set; } = new List<PlanEntrenamiento>();
+
+    public Usuario(int rol)
+    {
+        IdRol = rol;
+    }
 }

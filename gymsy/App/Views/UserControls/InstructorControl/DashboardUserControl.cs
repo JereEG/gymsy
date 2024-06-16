@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Models;
 using gymsy.App.Presenters;
 using gymsy.Context;
 using System;
@@ -21,7 +21,7 @@ namespace gymsy.UserControls
     public partial class DashboardUserControl : UserControl
     {
 
-        private GymsyDbContext dbContext;
+        private Models.GymsyContext dbContext;
 
         public DashboardUserControl()
         {
@@ -73,9 +73,9 @@ namespace gymsy.UserControls
 
             List<int> ListIdPlans = new List<int>();
 
-            foreach (TrainingPlan plan in AppState.Instructor.TrainingPlans)
+            foreach (PlanEntrenamiento plan in AppState.Instructor.TrainingPlans)
             {
-                ListIdPlans.Add(plan.IdTrainingPlan);
+                ListIdPlans.Add(plan.IdPlanEntrenamiento);
             }
 
             var ClientsFound = DashboardInstructorPresenter.BuscarClientesActivosDelInstructor(ListIdPlans);
@@ -84,17 +84,23 @@ namespace gymsy.UserControls
             if (ClientsFound.Count > 0)
             {
                 PanelMsg.Visible = false;
-                foreach (App.Models.Client cl in ClientsFound)
+                foreach (Usuario cl in ClientsFound)
                 {
-                    dataGridView2.Rows.Add(cl.IdClient,
-                                            $"{cl.IdPersonNavigation.LastName}, {cl.IdPersonNavigation.FirstName}",
-                                            string.Format("{0:yyyy-MM-dd}", cl.LastExpiration),
+                    var sus = getAlumnoSuscripcion(cl.IdUsuario);
+
+                    
+                    dataGridView2.Rows.Add(cl.IdUsuario,
+                                            $"{cl.Apellido}, {cl.Nombre}",
+                                            string.Format("{0:yyyy-MM-dd}", sus.FechaExpiracion),
                                             null);
                 }
             }
 
         }
-
+        public AlumnoSuscripcion getAlumnoSuscripcion(int idusuario)
+        {
+            return Context.GymsyContext.GymsyContextDB.AlumnoSuscripcions.Where(a => a.IdUsuario == idusuario).FirstOrDefault();
+        }
 
         public void InitializeChartTorta()
         {
@@ -114,12 +120,13 @@ namespace gymsy.UserControls
                 seriesTorta.Font = new System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold);
                 seriesTorta.MarkerStyle = MarkerStyle.Cross;
 
-                foreach (TrainingPlan plan in AppState.Instructor.TrainingPlans)
+                foreach (PlanEntrenamiento plan in AppState.Instructor.TrainingPlans)
                 {
-                    if (!plan.Inactive && plan.Clients.Count > 0)
+                    //en duda el segundo if
+                    if (!plan.PlanEntrenamientoInactivo && plan.IdUsuarioNavigation.AlumnoSuscripcions.Count > 0)
                     {
-                        seriesTorta.Points.AddXY("", plan.Clients.Count());
-                        seriesTorta.LegendText = $"{plan.Description} - {plan.Clients.Count()} Clientes.";
+                        seriesTorta.Points.AddXY("", plan.IdUsuarioNavigation.AlumnoSuscripcions.Count());
+                        seriesTorta.LegendText = $"{plan.Descripcion} - {plan.IdUsuarioNavigation.AlumnoSuscripcions.Count()} Clientes.";
                     }
                 }
 

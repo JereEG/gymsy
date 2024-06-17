@@ -316,10 +316,10 @@ namespace gymsy.App.Presenters
             int cantidadClientes = gymsydb.AlumnoSuscripcions
                 .Where(suscripcion =>
                     gymsydb.PlanEntrenamientos
-                        .Where(plan => plan.IdEntrenador == instructor.IdUsuario)
+                        .Where(plan => plan.IdUsuario == instructor.IdUsuario)
                         .Select(plan => plan.IdPlanEntrenamiento)
                         .Contains(suscripcion.IdPlanEntrenamiento))
-                .Select(suscripcion => suscripcion.IdAlumno)
+                .Select(suscripcion => suscripcion.IdUsuario)
                 .Distinct()
                 .Count();
 
@@ -330,7 +330,7 @@ namespace gymsy.App.Presenters
         {
             // Consulta para calcular el ingreso total
             decimal ingresoTotal = gymsydb.PlanEntrenamientos
-                .Where(plan => plan.IdEntrenador == instructor.IdUsuario) // Filtrar planes por instructor
+                .Where(plan => plan.IdUsuario == instructor.IdUsuario) // Filtrar planes por instructor
                 .Join(gymsydb.AlumnoSuscripcions,
                       plan => plan.IdPlanEntrenamiento,
                       suscripcion => suscripcion.IdPlanEntrenamiento,

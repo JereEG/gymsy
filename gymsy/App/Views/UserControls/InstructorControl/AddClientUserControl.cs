@@ -202,15 +202,15 @@ namespace gymsy.UserControls
 
                 if (trainingPlan != null)
                 {
-                    if(trainingPlan != null)
-                    {
+                    
                         LidPlan.Text = trainingPlan.IdPlanEntrenamiento.ToString();
                         TBPrecio.Text = trainingPlan.Precio.ToString();
                         TBDescripcion.Text = trainingPlan.Descripcion;
-                        TBNombreInstructor.Text = trainingPlan.IdEntrenadorNavigation.Nombre + " " + trainingPlan.IdEntrenadorNavigation.Apellido;
+                        
+                        TBNombreInstructor.Text =AddClientPresenter.getUsuario(trainingPlan.IdUsuario).Nombre + " " + AddClientPresenter.getUsuario(trainingPlan.IdUsuario).Apellido;
 
                         CBPlanes.Items.Add(trainingPlan.Descripcion);
-                    }
+                    
                     
                 }
 

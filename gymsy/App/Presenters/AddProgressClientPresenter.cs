@@ -49,11 +49,11 @@ namespace gymsy.App.Presenters
             DataFisicModel.FechaCreacion = DateTime.Now;
             if (AppState.ClientActive == null)
             {
-                DataFisicModel.IdAlumnoSuscripcionNavigation.IdAlumno = AppState.auxIdClient;
+                DataFisicModel.IdAlumnoSuscripcionNavigation.IdUsuario = AppState.auxIdClient;
             }
             else
             {
-                DataFisicModel.IdAlumnoSuscripcionNavigation.IdAlumno = AppState.ClientActive.IdUsuario;
+                DataFisicModel.IdAlumnoSuscripcionNavigation.IdUsuario = AppState.ClientActive.IdUsuario;
             }
 
             DataFisicModel.EstadoFisicoInactivo = false;    

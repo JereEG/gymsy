@@ -33,10 +33,14 @@ namespace gymsy.App.Presenters
 
         public static List<Pago> listarTodasTransferencias(int pIdUsuario)
         {
-            return gymsydb.Pagos
-            .Where(p => p.IdUsuario == pIdUsuario)
-            .Include(p => p.IdTipoPagoNavigation)
-            .ToList();
+            using (var gymsydb=new GymsyContext())
+            {
+                return gymsydb.Pagos
+                .Where(p => p.IdUsuario == pIdUsuario)
+                .Include(p => p.IdTipoPagoNavigation)
+                .ToList();
+            }
+                
         }
 
 

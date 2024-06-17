@@ -6,13 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using gymsy.Models;
+using gymsy.Modelos;
 
 
 namespace gymsy.App.Presenters
 {
     internal static class DashboardInstructorPresenter
     {
-        private static GymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
+        private static gymsy.Models.NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
 
         // Método para obtener pagos agrupados por mes
         public static List<PagoPorMes> ObtenerPagosAgrupadosPorMes()

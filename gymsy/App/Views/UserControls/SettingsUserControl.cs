@@ -1,4 +1,4 @@
-﻿using gymsy.Modelos;
+﻿using gymsy.Models;
 using gymsy.App.Views.Interfaces;
 using gymsy.Context;
 using gymsy.Properties;
@@ -14,13 +14,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TextBox = System.Windows.Forms.TextBox;
+using gymsy.Modelos;
 
 namespace gymsy.UserControls
 {
     public partial class SettingsUserControl : UserControl, ISettingView
     {
         Usuario person;
-        GymsyContext dbContext;
+        NuevoGymsyContext dbContext;
         public bool IsSuccessful { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string Message { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 

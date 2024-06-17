@@ -13,7 +13,7 @@ namespace gymsy.App.Presenters
 {
     internal static class ControlPagosAlumnoPresenter
     {
-        private static GymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
+        private static NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
         //Corregir
         public static List<Pago> listarPagosRealizados(int pIdUsuario)
         {

@@ -5,16 +5,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using gymsy.Modelos;
+using gymsy.Models;
 
 namespace gymsy.App.Presenters
 {
     public class MainPresenter
     {
         private IMainView mainView;
-        private GymsyContext gymsydb;
+        private NuevoGymsyContext gymsydb;
 
-        public MainPresenter(IMainView mainView, GymsyContext gymsyDb){
+        public MainPresenter(IMainView mainView, NuevoGymsyContext gymsyDb){
             
             this.mainView = mainView;
             this.gymsydb = gymsyDb;

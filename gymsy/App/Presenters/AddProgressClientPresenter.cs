@@ -1,5 +1,5 @@
 ﻿using CustomControls.RJControls;
-using gymsy.Modelos;
+using gymsy.Models;
 using gymsy.Context;
 using System;
 using System.Collections.Generic;
@@ -7,12 +7,13 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using gymsy.Modelos;
 
 namespace gymsy.App.Presenters
 {
     internal static class AddProgressClientPresenter
     {
-        private static GymsyContext gymsydb = ViejoGymsyContext.GymsyContextDB;
+        private static NuevoGymsyContext gymsydb = ViejoGymsyContext.GymsyContextDB;
 
         public static bool TituloUnico(string nuevoTitulo)
         {

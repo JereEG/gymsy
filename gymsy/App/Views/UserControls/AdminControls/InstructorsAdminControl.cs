@@ -11,12 +11,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using gymsy.Models;
 
 namespace gymsy.UserControls.AdminControls
 {
     public partial class InstructorsAdminControl : UserControl
     {
-        private GymsyContext dbContext;
+        private NuevoGymsyContext dbContext;
         private int indexRowSelect = 0;
         private bool isModeVerNoDelete = true;
        

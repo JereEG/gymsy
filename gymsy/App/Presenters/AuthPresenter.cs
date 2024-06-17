@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using gymsy.Models;
 using gymsy.Modelos;
 //using GymsyContext = gymsy.Models.GymsyContext;
 
@@ -18,9 +19,9 @@ namespace gymsy.App.Presenters
     public class AuthPresenter
     {
         private IAuthView authView;
-        private GymsyContext gymsydb;
+        private NuevoGymsyContext gymsydb;
 
-        public AuthPresenter(IAuthView authView, GymsyContext gymsydb)
+        public AuthPresenter(IAuthView authView, NuevoGymsyContext gymsydb)
         {
 
             this.authView = authView;

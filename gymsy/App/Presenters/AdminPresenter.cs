@@ -24,7 +24,7 @@ namespace gymsy.App.Presenters
     {
         private static bool isEditMode = false; // Variable para saber si se está editando o agregando 
 
-        private static GymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
+        private static NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
 
        
 

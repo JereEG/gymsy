@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using gymsy.Modelos;
 using Microsoft.EntityFrameworkCore;
 
-namespace gymsy.Modelos;
+namespace gymsy.Models;
 
-public partial class GymsyContext : DbContext
+public partial class NuevoGymsyContext : DbContext
 {
-    public GymsyContext()
+    public NuevoGymsyContext()
     {
     }
 
-    public GymsyContext(DbContextOptions<GymsyContext> options)
+    public NuevoGymsyContext(DbContextOptions<NuevoGymsyContext> options)
         : base(options)
     {
     }

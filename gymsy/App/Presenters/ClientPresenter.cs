@@ -12,7 +12,7 @@ namespace gymsy.App.Presenters
     internal static class ClientPresenter
     {
         private static Usuario person = AppState.person;
-        private static GymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
+        private static NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
 
        
         //aboutClientControl

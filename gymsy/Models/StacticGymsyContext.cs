@@ -9,6 +9,6 @@ namespace gymsy.Models
 {
     internal static class StacticGymsyContext
     {
-        public static GymsyContext? GymsyContextDB { get; set; }
+        public static NuevoGymsyContext? GymsyContextDB { get; set; }
     }
 }

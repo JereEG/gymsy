@@ -23,16 +23,17 @@ using PdfSharp.Drawing;
 using System.Drawing.Imaging;
 using System.Net.NetworkInformation;
 using gymsy.Properties;
+using gymsy.Models;
 
 namespace gymsy.UserControls
 {
     public partial class WalletUserControl : UserControl, IWalletView
     {
 
-        private GymsyContext gymsydb = ViejoGymsyContext.GymsyContextDB;
+        private NuevoGymsyContext gymsydb = ViejoGymsyContext.GymsyContextDB;
         private IEnumerable<Pago> PaysList;
         private Pago PayActive;
-        private GymsyContext dbContext;
+        private NuevoGymsyContext dbContext;
 
         public WalletUserControl()
         {

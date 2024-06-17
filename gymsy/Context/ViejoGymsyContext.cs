@@ -10,6 +10,6 @@ namespace gymsy.Context
 {
     public static class ViejoGymsyContext
     {
-        public static GymsyContext? GymsyContextDB { get; set; }
+        public static NuevoGymsyContext? GymsyContextDB { get; set; }
     }
 }

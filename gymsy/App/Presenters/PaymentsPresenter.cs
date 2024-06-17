@@ -1,16 +1,17 @@
-﻿using gymsy.Modelos;
+﻿using gymsy.Models;
 using gymsy.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using gymsy.Modelos;
 
 namespace gymsy.App.Presenters
 {
     internal static class PaymentsPresenter
     {
-        private static GymsyContext gymsydb = ViejoGymsyContext.GymsyContextDB;
+        private static NuevoGymsyContext gymsydb = ViejoGymsyContext.GymsyContextDB;
 
        public static Pago BuscarPago(int pIdPaySelected)
         {

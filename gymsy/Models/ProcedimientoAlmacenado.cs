@@ -15,7 +15,7 @@ namespace gymsy.Models
 {
     internal static class ProcedimientoAlmacenado
     {
-        private static GymsyContext dbContext = StacticGymsyContext.GymsyContextDB;
+        private static NuevoGymsyContext dbContext = StacticGymsyContext.GymsyContextDB;
 
 
         public static void CrearInstructor(string apodo, string nombre, string apellido, string avatarUrl, string contrasena, string numeroTelefono, string sexo)

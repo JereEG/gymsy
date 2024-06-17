@@ -1,4 +1,5 @@
 ﻿using gymsy.Context;
+using gymsy.Modelos;
 using gymsy.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,7 +12,7 @@ namespace gymsy.App.Presenters
 {
     internal static class ClientePresenter
     {
-        private static GymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
+        private static gymsy.Models.NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
 
 
 

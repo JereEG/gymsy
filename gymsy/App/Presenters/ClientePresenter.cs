@@ -40,7 +40,7 @@ namespace gymsy.App.Presenters
        public static List<PlanEntrenamiento> buscarPlanesInstructor(int pIdInstructor)
         {
             // Obtener todos los planes de entrenamiento del instructor actual
-            using (var gymsydb =new GymsyContext())
+            using (var gymsydb =new NuevoGymsyContext())
             {
                 return gymsydb.PlanEntrenamientos
                    .Where(plan => plan.IdUsuario == pIdInstructor)

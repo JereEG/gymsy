@@ -31,7 +31,7 @@ namespace gymsy.App.Presenters
                     .SelectMany(mes => Enumerable.Range(2022, 2).Select(anio => new { Mes = mes, Anio = anio }));
 
                 // Realizar el left join con los pagos
-                using (var gymsydb = new GymsyContext())
+                using (var gymsydb = new NuevoGymsyContext())
                 {
                     var pagosAgrupadosPorMes = from mesAnio in rangoMesesAnios
                                                join pago in gymsydb.Pagos
@@ -59,7 +59,7 @@ namespace gymsy.App.Presenters
             try
             {
                 // Filtrar Usuarios con el rol de Cliente (IdRol == 3) y IDs en pIdsPlanesInstructor
-                using (var gymsydb=new GymsyContext())
+                using (var gymsydb=new NuevoGymsyContext())
                 {
                     var filteredUsuarios = gymsydb.AlumnoSuscripcions
       .Where(alumSub => alumSub.IdAlumnoNavigation != null

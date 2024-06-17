@@ -17,7 +17,7 @@ namespace gymsy.App.Presenters
 
         public static PlanEntrenamiento TraerPrimerPlan()
         {
-            using (var gymsydb = new GymsyContext())
+            using (var gymsydb = new NuevoGymsyContext())
             {
                 return gymsydb.PlanEntrenamientos.FirstOrDefault();
             }
@@ -25,7 +25,7 @@ namespace gymsy.App.Presenters
 
         public static PlanEntrenamiento BuscarPlan(int pIdPlanBuscado)
         {
-            using (var gymsydb = new GymsyContext())
+            using (var gymsydb = new NuevoGymsyContext())
             {
                 return gymsydb.PlanEntrenamientos
                     .Where(plan => plan.IdPlanEntrenamiento == pIdPlanBuscado)
@@ -35,7 +35,7 @@ namespace gymsy.App.Presenters
 
         public static List<PlanEntrenamiento> TraerPlanes()
         {
-            using (var gymsydb = new GymsyContext())
+            using (var gymsydb = new NuevoGymsyContext())
             {
                 return gymsydb.PlanEntrenamientos.ToList();
             }
@@ -111,14 +111,14 @@ namespace gymsy.App.Presenters
         }
         public static List<Usuario> getUsuarios(int idUsuario)
         {
-            using (var gymsydb = new GymsyContext())
+            using (var gymsydb = new NuevoGymsyContext())
             {
                 return (List<Usuario>)gymsydb.Usuarios.Where(u => u.IdUsuario == idUsuario);
             }
         }
         public static Usuario getUsuario(int idUsuario)
         {
-            using (var gymsydb=new GymsyContext())
+            using (var gymsydb=new NuevoGymsyContext())
             {
                 return gymsydb.Usuarios.FirstOrDefault(u => u.IdUsuario == idUsuario);
             }

@@ -16,7 +16,7 @@ namespace gymsy.App.Presenters
 
         public static List<PlanEntrenamiento> listarPlanesInstructor()
         {
-            using (var gymsydb=new GymsyContext())
+            using (var gymsydb=new NuevoGymsyContext())
             {
                 return gymsydb.PlanEntrenamientos
                     .Where(p => p.IdEntrenadorNavigation.IdRol == 2).ToList();
@@ -79,7 +79,7 @@ namespace gymsy.App.Presenters
         }
         public static PlanEntrenamiento buscarPlan(int pidPlan)
         {
-            using (var gymsydb=new GymsyContext())
+            using (var gymsydb=new NuevoGymsyContext())
             {
                 return gymsydb.PlanEntrenamientos.Where(p => p.IdPlanEntrenamiento == pidPlan).FirstOrDefault();
             }

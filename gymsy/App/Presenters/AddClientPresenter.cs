@@ -32,7 +32,7 @@ namespace gymsy.App.Presenters
         }
         
         public static void GuardarCliente(string pUsuario, string pNombre, string pApellido, string pAvatar, string pPassword, string pNumberPhone,
-            string pSexo, DateTime pExpiration, int pIdPlan)
+            string pSexo, DateTime pFechaNacimiento, DateTime pExpiration, int pIdPlan)
         {
             Usuario usuario = new Usuario
             {

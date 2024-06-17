@@ -278,7 +278,7 @@ namespace gymsy.UserControls
          
         
                     AddClientPresenter.GuardarCliente(usuario, TBNombre.Text, TBApellido.Text, TBRutaImagen.Text, Bcrypt.HashPassoword(TBContraseña.Text),
-                    TBTelefono.Text, DPFechaNacimiento.Value, sexo, DPVencimiento.Value, idPlan);
+                    TBTelefono.Text, sexo, DPFechaNacimiento.Value, DPVencimiento.Value, idPlan);
 
                     AppState.needRefreshClientsUserControl = true;
                     MessageBox.Show("Se Guardaron correcctamente los datos");
@@ -318,10 +318,10 @@ namespace gymsy.UserControls
 
                 var trainingPlan = AddClientPresenter.BuscarPlan(selectedPlanId);
 
-                LidPlan.Text = trainingPlan.IdTrainingPlan.ToString();
-                TBPrecio.Text = trainingPlan.Price.ToString();
-                TBDescripcion.Text = trainingPlan.Description;
-                TBNombreInstructor.Text = trainingPlan.IdInstructorNavigation.IdPersonNavigation.FirstName + " " + trainingPlan.IdInstructorNavigation.IdPersonNavigation.LastName;
+                LidPlan.Text = trainingPlan.IdPlanEntrenamiento.ToString();
+                TBPrecio.Text = trainingPlan.Precio.ToString();
+                TBDescripcion.Text = trainingPlan.Descripcion;
+                TBNombreInstructor.Text = trainingPlan.IdUsuarioNavigation.Nombre + " " + trainingPlan.IdUsuarioNavigation.Apellido;
 
 
             }

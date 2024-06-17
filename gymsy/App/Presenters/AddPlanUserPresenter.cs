@@ -13,9 +13,10 @@ namespace gymsy.App.Presenters
     {
         private static GymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
 
-        public static List<AlumnoSuscripcion> listarPlanesInstructor()
+        public static List<PlanEntrenamiento> listarPlanesInstructor()
         {
-            return gymsydb.AlumnoSuscripcions.Where(p => p.IdUsuarioNavigation.IdRol == 2).ToList();
+            return gymsydb.PlanEntrenamientos
+                .Where(p => p.IdUsuarioNavigation.IdRol == 2).ToList();
         }
 
         public static void modificarPlan(int pidPlan, string pDescripcion, decimal pPrecio)

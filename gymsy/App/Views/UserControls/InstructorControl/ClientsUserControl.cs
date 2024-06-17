@@ -100,56 +100,58 @@ namespace gymsy.UserControls
             // Limpia cualquier ordenación previa en el DataGridView
             DGUsers.Sort(DGUsers.Columns[0], ListSortDirection.Ascending);
 
-            foreach (TrainingPlan plan in AppState.Instructor.TrainingPlans)
-            {
-                foreach (Client client in plan.Clients.ToArray())
+
+
+            // Obtener todos los planes de entrenamiento del instructor actual
+            var planesEntrenamiento = ClientePresenter.buscarPlanesInstructor(AppState.Instructor.IdUsuario);
+
+                foreach (var plan in planesEntrenamiento)
                 {
+                    // Obtener todos los alumnos suscritos al plan actual
+                    var alumnosSuscripciones = plan.AlumnoSuscripcions.ToArray();
 
-                    //this.clients.Add(client);
-
-                    // Expiration 
-                    TimeSpan diferencia = client.LastExpiration - DateTime.Now;
-
-                    string ColumnExpirationMsg = diferencia.Days > 0 ?
-                        ("En " + diferencia.Days + " días") : ("Hace " + diferencia.Days * -1 + " días");
-
-                    if (client.IdPersonNavigation.Avatar.Length > 0)
+                    foreach (var suscripcion in alumnosSuscripciones)
                     {
-                        //Avatar.Image = Resources.wallet_free;
+                    var alumno = ClientePresenter.BuscarCliente(suscripcion.IdUsuario);
+                       
+                        if (alumno != null)
+                        {
+                            TimeSpan diferencia = suscripcion.FechaExpiracion - DateTime.Now;
+                            string ColumnExpirationMsg = diferencia.Days > 0 ?
+                                ("En " + diferencia.Days + " días") : ("Hace " + (diferencia.Days * -1) + " días");
+
+                            try
+                            {
+                                string ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageClient + "\\" + alumno.AvatarUrl;
+
+                                DGUsers.Rows.Add(
+                                    System.Drawing.Image.FromFile(ruta),
+                                    string.Format("{0:yyyy-MM-dd}", alumno.FechaCreacion),
+                                    alumno.Nombre + " " + alumno.Apellido,
+                                    alumno.NumeroTelefono,
+                                    plan.Descripcion,
+                                    ColumnExpirationMsg,
+                                    alumno.IdUsuario,
+                                    alumno.UsuarioInactivo
+                                );
+                            }
+                            catch (Exception e)
+                            {
+                                DGUsers.Rows.Add(
+                                    Resources.vector_fitness_couple_doing_exercise,
+                                    string.Format("{0:yyyy-MM-dd}", alumno.FechaCreacion),
+                                    alumno.Nombre + " " + alumno.Apellido,
+                                    alumno.NumeroTelefono,
+                                    plan.Descripcion,
+                                    ColumnExpirationMsg,
+                                    alumno.IdUsuario,
+                                    alumno.UsuarioInactivo
+                                );
+                            }
+                        }
                     }
-                    try
-                    {
-                        string ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageClient + "\\" + client.IdPersonNavigation.Avatar;
-
-
-
-                        DGUsers.Rows.Add(
-                        System.Drawing.Image.FromFile(ruta),
-                        string.Format("{0:yyyy-MM-dd}", client.IdPersonNavigation.CreatedAt),
-                        client.IdPersonNavigation.FirstName + " " + client.IdPersonNavigation.LastName,
-                        client.IdPersonNavigation.NumberPhone,
-                        client.IdTrainingPlanNavigation.Description,
-                        ColumnExpirationMsg,
-                        client.IdClient,
-                        client.IdPersonNavigation.Inactive);
-                    }
-                    catch (Exception e)
-                    {
-
-
-                        DGUsers.Rows.Add(
-                        Resources.vector_fitness_couple_doing_exercise,
-                        string.Format("{0:yyyy-MM-dd}", client.IdPersonNavigation.CreatedAt),
-                        client.IdPersonNavigation.FirstName + " " + client.IdPersonNavigation.LastName,
-                        client.IdPersonNavigation.NumberPhone,
-                        client.IdTrainingPlanNavigation.Description,
-                        ColumnExpirationMsg,
-                        client.IdClient,
-                        client.IdPersonNavigation.Inactive);
-                    }
-
                 }
-            }
+            
 
             // Actualiza la vista del DataGridView.
             DGUsers.Refresh();
@@ -176,19 +178,18 @@ namespace gymsy.UserControls
                 // Accede a la celda "id" del cliente
 
                 int IdClientSelected = int.Parse(DGUsers.Rows[this.indexRowSelect].Cells["IdClient"].Value.ToString());
-                Client clientSelected = null;
+                Usuario clientSelected = null;
                 //this.dbContext = GymsyContext.GymsyContextDB;
 
                 foreach (Usuario person in AppState.clients)
                 {
-                    foreach (Client client in person.Clients)
-                    {
-                        if (client.IdClient == IdClientSelected)
+                
+                        if (person.IdUsuario == IdClientSelected)
                         {
-                            clientSelected = client;
+                            clientSelected = person;
                             break;
                         }
-                    }
+                    
 
                 }
                 /*
@@ -450,6 +451,7 @@ namespace gymsy.UserControls
 
         private void BtnNotify_Click(object sender, EventArgs e)
         {
+            /*
             if (!utilities.Verify.IsConnectedToNetwork())
             {
                 MessageBox.Show("Necesitas conexion a internet");
@@ -459,7 +461,7 @@ namespace gymsy.UserControls
             List<Usuario> clientsFound = this.clients.Where(cl => cl.LastExpiration >= DateTime.Now.AddDays(-1) && cl.LastExpiration <= DateTime.Now.AddDays(7) && cl.IdRol==3).ToList();
             utilities.TwilioMSG.SendAlertClients(clientsFound);
             MessageBox.Show($"Se ha enviado a {clientsFound.Count().ToString()} clientes");
-
+            */
         }
     }
 }

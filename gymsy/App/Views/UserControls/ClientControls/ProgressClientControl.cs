@@ -95,19 +95,20 @@ namespace gymsy.UserControls.ClientControls
 
             } else
             {
-                int edad = DateTime.Now.Year - AppState.ClientActive.IdPersonNavigation.Birthday.Year;
-                TimeSpan TimeTraning = AppState.ClientActive.IdPersonNavigation.CreatedAt - DateTime.Now;
+                //int edad = DateTime.Now.Year - AppState.ClientActive.IdPersonNavigation.Birthday.Year;
+                int edad = 18;
+                TimeSpan TimeTraning = AppState.ClientActive.FechaCreacion - DateTime.Now;
 
-                TBDescripcionClient.Text = $"{AppState.ClientActive.IdPersonNavigation.FirstName + " " + AppState.ClientActive.IdPersonNavigation.LastName}, " +
+                TBDescripcionClient.Text = $"{AppState.ClientActive.Nombre + " " + AppState.ClientActive.Apellido}, " +
                 $"{edad} años comenzo a enrenarse hace {TimeTraning.Days * -1} días, " +
-                $"cuenta con {AppState.ClientActive.DataFisics.Count()} registros guardados";
+                $"cuenta con {AppState.ClientActive.EstadoFisico.Count()} registros guardados";
 
 
-                if (AppState.ClientActive.DataFisics.Count() > 0)
+                if (AppState.ClientActive.EstadoFisico.Count() > 0)
                 {
                     PanelMessageCount.Visible = false;
 
-                    foreach (var DataFisic in AppState.ClientActive.DataFisics)
+                    foreach (var DataFisic in AppState.ClientActive.EstadoFisico)
                     {
                         TimeSpan diferencia = DateTime.Now - DataFisic.CreatedAt;
                         String formart = $"Hace {diferencia.Days} dias";
@@ -157,7 +158,7 @@ namespace gymsy.UserControls.ClientControls
 
                 object IdDfSelected = dataGridProgress.Rows[rowIndex].Cells[0].Value;
 
-                var ListDataFisics = AppState.ClientActive.DataFisics.ToList();
+                var ListDataFisics = AppState.ClientActive.EstadoFisico.ToList();
 
                 EstadoFisico DataFisicSelected = ListDataFisics.Find(df => IdDfSelected.Equals(df.IdDataFisic));
 

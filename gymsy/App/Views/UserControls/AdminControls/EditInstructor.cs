@@ -37,7 +37,7 @@ namespace gymsy.UserControls.AdminControls
 
         private void CargarInstructor()
         {
-            if (AppState.InstructorActive != null && AppState.InstructorActive.IdPersonNavigation != null)
+            if (AppState.InstructorActive != null && AppState.InstructorActive != null)
             {
                 string name = AppState.InstructorActive.Nombre.ToString();
                 string lastName = AppState.InstructorActive.Apellido.ToString();
@@ -48,11 +48,11 @@ namespace gymsy.UserControls.AdminControls
                 TBApellido.Text = lastName;
                 TBTelefono.Text = numberPhone;
                 TBUsuario.Text = nickname;
-                TBContraseña.Text = AppState.InstructorActive.IdPersonNavigation.Password.ToString();
+                TBContraseña.Text = AppState.InstructorActive.ToString();
                 //Que hacer con la contraseña?
                 //TBContraseña.Text = AppState.InstructorActive.IdPersonNavigation.;
 
-                if (AppState.InstructorActive.IdPersonNavigation.Gender.ToString() == "M" || AppState.InstructorActive.IdPersonNavigation.Gender.ToString() == "m")
+                if (AppState.InstructorActive.Sexo.ToString() == "M" || AppState.InstructorActive.Sexo.ToString() == "m")
                 {
                     RBMasculino.Checked = true;
                 }
@@ -61,11 +61,11 @@ namespace gymsy.UserControls.AdminControls
                     RBFemenino.Checked = true;
                 }
 
-                DPFechaNacimiento.Value = AppState.InstructorActive.IdPersonNavigation.Birthday;
+         
 
                 try
                 {
-                    string ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageInstructor + "\\" + AppState.InstructorActive.IdPersonNavigation.Avatar;
+                    string ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageInstructor + "\\" + AppState.InstructorActive.AvatarUrl;
                     TBRutaImagen.Text = ruta;
 
                     IPImagenInstructor.Image = System.Drawing.Image.FromFile(ruta);

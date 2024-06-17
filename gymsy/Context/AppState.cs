@@ -26,7 +26,8 @@ namespace gymsy.Context
         public static Usuario ClientActive { get; set; }
 
         public static Usuario InstructorActive { get; set; }
-
+        public static AlumnoSuscripcion AlumnoSuscripcion { get; set; }
+        public static List<AlumnoSuscripcion> AlumnoSuscripciones { get; set; }
         public static bool isModeAdd { get; set; } = false;
 
        

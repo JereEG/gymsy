@@ -21,11 +21,11 @@ namespace gymsy.UserControls
     public partial class DashboardUserControl : UserControl
     {
 
-        private Models.GymsyContext dbContext;
+        //private Models.GymsyContext dbContext;
 
         public DashboardUserControl()
         {
-            this.dbContext = ViejoGymsyContext.GymsyContextDB;
+            //this.dbContext = ViejoGymsyContext.GymsyContextDB;
             InitializeComponent();
             InitializeData();
         }
@@ -73,7 +73,7 @@ namespace gymsy.UserControls
 
             List<int> ListIdPlans = new List<int>();
 
-            foreach (PlanEntrenamiento plan in AppState.Instructor.TrainingPlans)
+            foreach (PlanEntrenamiento plan in AppState.Instructor.PlanEntrenamientos)
             {
                 ListIdPlans.Add(plan.IdPlanEntrenamiento);
             }
@@ -86,7 +86,7 @@ namespace gymsy.UserControls
                 PanelMsg.Visible = false;
                 foreach (Usuario cl in ClientsFound)
                 {
-                    var sus = getAlumnoSuscripcion(cl.IdUsuario);
+                    var sus = DashboardInstructorPresenter.getAlumnoSuscripcion(cl.IdUsuario);
 
                     
                     dataGridView2.Rows.Add(cl.IdUsuario,
@@ -97,11 +97,7 @@ namespace gymsy.UserControls
             }
 
         }
-        public AlumnoSuscripcion getAlumnoSuscripcion(int idusuario)
-        {
-            
-            return Context.ViejoGymsyContext.GymsyContextDB.AlumnoSuscripcions.Where(a => a.IdUsuario == idusuario).FirstOrDefault();
-        }
+        
 
         public void InitializeChartTorta()
         {
@@ -121,7 +117,7 @@ namespace gymsy.UserControls
                 seriesTorta.Font = new System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold);
                 seriesTorta.MarkerStyle = MarkerStyle.Cross;
 
-                foreach (PlanEntrenamiento plan in AppState.Instructor.TrainingPlans)
+                foreach (PlanEntrenamiento plan in AppState.Instructor.PlanEntrenamientos)
                 {
                     //en duda el segundo if
                     if (!plan.PlanEntrenamientoInactivo && plan.IdUsuarioNavigation.AlumnoSuscripcions.Count > 0)

@@ -11,7 +11,7 @@ namespace gymsy.App.Presenters
 {
     internal static class DashboardInstructorPresenter
     {
-        private static GymsyContext gymsydb = ViejoGymsyContext.GymsyContextDB;
+        private static GymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
 
         // Método para obtener pagos agrupados por mes
         public static List<PagoPorMes> ObtenerPagosAgrupadosPorMes()
@@ -98,6 +98,12 @@ namespace gymsy.App.Presenters
                                                            cl.IdRol == 3);
                 return activeClientCount;
             }
+        }
+        public static AlumnoSuscripcion getAlumnoSuscripcion(int idusuario)
+        {
+
+            return gymsydb.AlumnoSuscripcions
+                .Where(a => a.IdUsuario == idusuario).FirstOrDefault();
         }
     }
 

@@ -25,12 +25,12 @@ namespace gymsy.App.Presenters
         {
 
             var admin = AddPayPresenter.TraerAdmin();
-            var walletAdmin = gymsydb.Wallets.FirstOrDefault(wallet => wallet.IdPerson == 1);
+            
             //var resepcionist = this.dbContext.People.FirstOrDefault(person => person.Rol.IdRol == 4);//rol de secretaria
             var client = AddPayPresenter.BuscarCliente(pIdCliente);
 
 
-            if (admin != null && walletAdmin != null && client != null)
+            if (admin != null  && client != null)
             {
 
                 var newPay = new Pago
@@ -38,22 +38,21 @@ namespace gymsy.App.Presenters
                     FechaCreacion = DateTime.Now,
                     Monto = (decimal)pMonto,  // Aquí debes proporcionar el monto deseado
                     InactivoPago = false,
-                    DestinatarioId = admin.IdUsuario,
-                    RemitenteId = client.IdUsuario,
+                    IdUsuario = client.IdUsuario,
                     IdTipoPago = 1
                 };
                 gymsydb.Pagos.Add(newPay);
                 gymsydb.SaveChanges();
 
-                client.LastExpiration = DateTime.Now.AddMonths(1);
+                //agregar alumno suscripcion completo
+                var suscripcion = gymsydb.AlumnoSuscripcions.Where(u => u.IdUsuario == client.IdUsuario);
+                foreach(AlumnoSuscripcion sus in suscripcion)
+                {
+                    sus.FechaExpiracion =DateTime.Now.AddMonths(1);
+                }
+    
                 gymsydb.SaveChanges();
-
-                admin.Recaudacion += pMonto;
-                gymsydb.SaveChanges();
-                //walletAdmin.Total += monto;
-                walletAdmin.Retirable += pMonto;
-                gymsydb.SaveChanges();
-                client.IdPersonNavigation.Inactive = false;
+                client.UsuarioInactivo = false;
                 gymsydb.SaveChanges();
             }
         }

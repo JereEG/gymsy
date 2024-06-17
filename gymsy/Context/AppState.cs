@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 
 namespace gymsy.Context
 {
+ 
     public static class AppState
     {
+        private static Models.GymsyContext gymsydb = new GymsyContext();
         public static Usuario person { get; set; }
-        public static List<AlumnoSuscripcion> planes { get; set; }
+        public static List<PlanEntrenamiento> planes { get; set; }
         public static Array planess { get; set; }
-        public static List<Usuario> clients { get; set; }
+        public static List<Usuario> clients { get ; set; }
         public static List<Usuario> persons { get; set; }
         public static Usuario userActive { get; set; }
         public static List<Usuario> instructors { get; set; }

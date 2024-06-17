@@ -255,11 +255,12 @@ namespace gymsy.UserControls
                     CBPlanes.Items.Clear();
 
                     var trainingPlan = EditClientPresenter.PlanDelCliente();
-
+                    var entrenador = EditClientPresenter.BuscarInstrucorDePlan(trainingPlan.IdPlanEntrenamiento);
                     LidPlan.Text = trainingPlan.IdPlanEntrenamiento.ToString();
+
                     TBPrecio.Text = trainingPlan.IdPlanEntrenamientoNavigation.Precio.ToString();
                     TBDescripcion.Text = trainingPlan.IdPlanEntrenamientoNavigation.Descripcion;
-                    TBNombreInstructor.Text = trainingPlan.IdAlumnoNavigation.Nombre + " " + trainingPlan.IdAlumnoNavigation.Apellido;
+                    TBNombreInstructor.Text = entrenador.Nombre + " " + entrenador.Apellido;
 
                     CBPlanes.Items.Add(trainingPlan.IdPlanEntrenamientoNavigation.Descripcion);
 
@@ -394,11 +395,12 @@ namespace gymsy.UserControls
                 string selectedPlanDescription = parts[1];
 
                 var trainingPlan = EditClientPresenter.BuscarPlan(selectedPlanId);
+                var entrenador = EditClientPresenter.BuscarInstrucorDePlan(trainingPlan.IdPlanEntrenamiento);
 
                 LidPlan.Text = trainingPlan.IdPlanEntrenamiento.ToString();
                 TBPrecio.Text = trainingPlan.Precio.ToString();
                 TBDescripcion.Text = trainingPlan.Descripcion;
-                TBNombreInstructor.Text = trainingPlan.IdEntrenadorNavigation.Nombre + " " + trainingPlan.IdEntrenadorNavigation.Apellido;
+                TBNombreInstructor.Text = entrenador.Nombre + " " + entrenador.Apellido;
 
 
             }

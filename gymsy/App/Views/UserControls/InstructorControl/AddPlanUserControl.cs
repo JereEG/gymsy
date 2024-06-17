@@ -41,7 +41,7 @@ namespace gymsy.UserControls
 
         private void InitializeGridPlanes()
         {
-            var trainingPlans = AddPlanUserPresenter.listarPlanesInstructor();
+            var trainingPlans = AddPlanUserPresenter.listarPlanesInstructor(AppState.Instructor.IdUsuario);
 
             if (trainingPlans != null)
             {

@@ -62,14 +62,14 @@ namespace gymsy.App.Presenters
                 using (var gymsydb=new NuevoGymsyContext())
                 {
                     var filteredUsuarios = gymsydb.AlumnoSuscripcions
-      .Where(alumSub => alumSub.IdAlumnoNavigation != null
-      && alumSub.IdPlanEntrenamientoNavigation != null
-      && alumSub.IdPlanEntrenamientoNavigation.IdEntrenadorNavigation != null
-      && alumSub.IdAlumnoNavigation.IdRol == 3
-      && pIdsPlanesInstructor.Contains(alumSub.IdPlanEntrenamientoNavigation.IdEntrenadorNavigation.IdUsuario))
-      .Select(alumSub => alumSub.IdAlumnoNavigation)
-      .Distinct()
-      .ToList();
+                      .Where(alumSub => alumSub.IdAlumnoNavigation != null
+                      && alumSub.IdPlanEntrenamientoNavigation != null
+                      && alumSub.IdPlanEntrenamientoNavigation.IdEntrenadorNavigation != null
+                      && alumSub.IdAlumnoNavigation.IdRol == 3
+                      && pIdsPlanesInstructor.Contains(alumSub.IdPlanEntrenamientoNavigation.IdEntrenadorNavigation.IdUsuario))
+                      .Select(alumSub => alumSub.IdAlumnoNavigation)
+                      .Distinct()
+                      .ToList();
 
 
                     // Filtrar PlanEntrenamientos para incluir solo planes activos

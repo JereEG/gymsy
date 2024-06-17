@@ -14,12 +14,12 @@ namespace gymsy.App.Presenters
     {
         private static NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
 
-        public static List<PlanEntrenamiento> listarPlanesInstructor()
+        public static List<PlanEntrenamiento> listarPlanesInstructor(int pIdInstructor)
         {
             using (var gymsydb=new NuevoGymsyContext())
             {
                 return gymsydb.PlanEntrenamientos
-                    .Where(p => p.IdEntrenadorNavigation.IdRol == 2).ToList();
+                    .Where(p => p.IdEntrenadorNavigation.IdRol == 2 && p.IdEntrenador == pIdInstructor).ToList();
             }
                 
         }

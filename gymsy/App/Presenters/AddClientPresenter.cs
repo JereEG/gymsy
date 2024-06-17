@@ -8,6 +8,7 @@ using gymsy.Utilities;
 using System.Runtime.CompilerServices;
 using gymsy.Models;
 using gymsy.Modelos;
+using Microsoft.EntityFrameworkCore;
 
 namespace gymsy.App.Presenters
 {
@@ -30,6 +31,19 @@ namespace gymsy.App.Presenters
                 return gymsydb.PlanEntrenamientos
                     .Where(plan => plan.IdPlanEntrenamiento == pIdPlanBuscado)
                     .First();
+            }
+        }
+        public static Usuario BuscarInstrucorDePlan(int pIdPlan)
+        {
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                // Busca el plan de entrenamiento por su Id e incluye la entidad Instructor relacionada
+                var plan = gymsydb.PlanEntrenamientos
+                                  .Include(p => p.IdEntrenador) // Asume que PlanEntrenamiento tiene una propiedad de navegación Instructor
+                                  .FirstOrDefault(plan => plan.IdPlanEntrenamiento == pIdPlan);
+
+                // Retorna el instructor asociado al plan si se encuentra, de lo contrario devuelve null
+                return plan?.IdEntrenadorNavigation;
             }
         }
 

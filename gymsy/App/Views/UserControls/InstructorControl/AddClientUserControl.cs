@@ -207,6 +207,8 @@ namespace gymsy.UserControls
                         TBPrecio.Text = trainingPlan.Precio.ToString();
                         TBDescripcion.Text = trainingPlan.Descripcion;
                         
+                        
+                    
                         TBNombreInstructor.Text =AddClientPresenter.getUsuario(trainingPlan.IdEntrenador).Nombre + " " + AddClientPresenter.getUsuario(trainingPlan.IdEntrenador).Apellido;
 
                         CBPlanes.Items.Add(trainingPlan.Descripcion);
@@ -317,11 +319,12 @@ namespace gymsy.UserControls
                 string selectedPlanDescription = parts[1];
 
                 var trainingPlan = AddClientPresenter.BuscarPlan(selectedPlanId);
+                var entrenador = AddClientPresenter.BuscarInstrucorDePlan(selectedPlanId);
 
                 LidPlan.Text = trainingPlan.IdPlanEntrenamiento.ToString();
                 TBPrecio.Text = trainingPlan.Precio.ToString();
                 TBDescripcion.Text = trainingPlan.Descripcion;
-                TBNombreInstructor.Text = trainingPlan.IdEntrenadorNavigation.Nombre + " " + trainingPlan.IdEntrenadorNavigation.Apellido;
+                TBNombreInstructor.Text = entrenador.Nombre + " " + entrenador.Apellido;
 
 
             }

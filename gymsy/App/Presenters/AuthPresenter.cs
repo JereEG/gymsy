@@ -237,9 +237,11 @@ namespace gymsy.App.Presenters
                             this.gymsydb.TipoDePagos.ToList();
                             this.gymsydb.Pagos.ToList();
                             // this.gymsydb.Wallets.ToList();
-                            AppState.AlumnoSuscripciones = this.gymsydb.AlumnoSuscripcions.ToList();
+                            AppState.AlumnoSuscripciones = this.gymsydb.AlumnoSuscripcions
+                                .Where(alumSub => alumSub.FechaExpiracion <= DateTime.Now).ToList();
 
-                            MessageBox.Show(planes.Count().ToString());
+
+                            //MessageBox.Show(planes.Count().ToString());
                             AppState.planes = planes;
                             AppState.clients = personsss;
                             AppState.persons = personsss;

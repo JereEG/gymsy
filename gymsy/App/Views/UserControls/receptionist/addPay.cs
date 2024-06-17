@@ -105,50 +105,29 @@ namespace gymsy.App.Views.UserControls.receptionist
 
             foreach (AlumnoSuscripcion plan in AppState.AlumnoSuscripciones)
             {
-                var client = AddClientPresenter.getUsuarios(plan.IdAlumno);
-                foreach (Usuario cliente in client.ToArray())
-                {
-
+                var client = AddPayPresenter.getAlumno(plan.IdAlumno);
+               
                 
-                if (!cliente.UsuarioInactivo)
-                {
-                    // Expiration 
-                    TimeSpan diferencia = plan.FechaExpiracion - DateTime.Now;
+                    if (!client.UsuarioInactivo)
+                    {
+                        // Expiration 
+                        TimeSpan diferencia = plan.FechaExpiracion - DateTime.Now;
 
-                    string ColumnExpirationMsg = diferencia.Days > 0 ?
-                        ("En " + diferencia.Days + " días") : ("Hace " + diferencia.Days * -1 + " días");
+                        string ColumnExpirationMsg = diferencia.Days > 0 ?
+                            ("En " + diferencia.Days + " días") : ("Hace " + diferencia.Days * -1 + " días");
 
-                    /*
-                        try
-                        {
-                            string ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageClient + "\\" + client.IdPersonNavigation.Avatar;
-
-                            using (var image = System.Drawing.Image.FromFile(ruta))
-
+                        
                                 DGUsers.Rows.Add(
-                                image,
-                                client.IdPersonNavigation.FirstName + " " + client.IdPersonNavigation.LastName,
-                                client.IdTrainingPlanNavigation.Description,
+                                //Resources.vector_fitness_couple_doing_exercise,
+                                client.Nombre + " " + client.Apellido,
+                                plan.IdPlanEntrenamientoNavigation.Descripcion,
                                 ColumnExpirationMsg,
-                                client.IdClient,
-                                client.IdPersonNavigation.Inactive);
-                        }
-                        catch (Exception e)
-                        {
+                                client.IdUsuario,
+                                client.UsuarioInactivo);
+                            
+                    }
 
-                    */
-
-                    DGUsers.Rows.Add(
-                    //Resources.vector_fitness_couple_doing_exercise,
-                    cliente.Nombre + " " + cliente.Apellido,
-                    plan.IdPlanEntrenamientoNavigation.Descripcion,
-                    ColumnExpirationMsg,
-                    cliente.IdUsuario,
-                    cliente.UsuarioInactivo);
-                    //}
-                }
-
-            }
+            
 
                 
             }
@@ -214,13 +193,15 @@ namespace gymsy.App.Views.UserControls.receptionist
                 {
                     // agregar plan de entrenamiento con id del cliente
                     var sus= AddPayPresenter.suscripcionCliente(idClient);
+                    var planEntrenamieto = AddPayPresenter.buscarPlanEntrenamiento(sus.IdPlanEntrenamiento);
+                    var instructorDelPlanEntrenamiento = AddPayPresenter.buscarInstrutorDePlanEntrenamiento(planEntrenamieto.IdEntrenador);
                     //
                     Lid_client.Text = clientSelected.IdUsuario.ToString();
                     LClientFullName.Text = clientSelected.Nombre + " " + clientSelected.Apellido;
-                    LPlan.Text = sus.IdPlanEntrenamientoNavigation.Descripcion;
-                    LInstructorFullName.Text = sus.IdAlumnoNavigation.Nombre + " " + sus.IdAlumnoNavigation.Apellido;
+                    LPlan.Text = planEntrenamieto.Descripcion;
+                    LInstructorFullName.Text = instructorDelPlanEntrenamiento.Nombre + " " + instructorDelPlanEntrenamiento.Apellido;
 
-                    TbAmount.Text = sus.IdPlanEntrenamientoNavigation.Precio.ToString();
+                    TbAmount.Text = planEntrenamieto.Precio.ToString();
                     try
                     {
                         string ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageClient + "\\" + clientSelected.AvatarUrl;
@@ -275,7 +256,7 @@ namespace gymsy.App.Views.UserControls.receptionist
         {
             try
             {
-                float monto = float.Parse(TbAmount.Text);
+                decimal monto = decimal.Parse(TbAmount.Text);
 
                 AddPayPresenter.AgregarPago(idClient, monto);
 

@@ -36,7 +36,7 @@ namespace gymsy.App.Presenters
                 return gymsydb.AlumnoSuscripcions.FirstOrDefault(u => u.IdAlumno == idCliente);
             }
         }
-        public static void AgregarPago(int pIdCliente, float pMonto)
+        public static void AgregarPago(int pIdCliente, decimal pMonto)
         {
 
             using (var gymsydb = new NuevoGymsyContext())
@@ -56,7 +56,9 @@ namespace gymsy.App.Presenters
                         Monto = (decimal)pMonto,  // Aquí debes proporcionar el monto deseado
                         InactivoPago = false,
                         IdUsuario = client.IdUsuario,
-                        IdTipoPago = 1
+                        IdTipoPago = 1,
+                        CbuDestino = "admin",
+                        CbuOrigen = "unCliente"
                     };
                     gymsydb.Pagos.Add(newPay);
                     gymsydb.SaveChanges();
@@ -72,6 +74,30 @@ namespace gymsy.App.Presenters
                     client.UsuarioInactivo = false;
                     gymsydb.SaveChanges();
                 }
+            }
+        }
+        public static Usuario getAlumno(int pIdAlumno)
+        {
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                return gymsydb.Usuarios
+                    .Where(u => u.IdRol == 3 && u.IdUsuario == pIdAlumno).FirstOrDefault();
+            }
+        }
+        public static PlanEntrenamiento buscarPlanEntrenamiento(int pIdPlanEntrenamiento)
+        {
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                return gymsydb.PlanEntrenamientos
+                    .Where(pe => pe.IdPlanEntrenamiento == pIdPlanEntrenamiento).FirstOrDefault();
+            }
+        }
+        public static Usuario buscarInstrutorDePlanEntrenamiento(int pIdInstructor)
+        {
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                return gymsydb.Usuarios
+                    .Where(ins => ins.IdUsuario == pIdInstructor).FirstOrDefault();
             }
         }
 

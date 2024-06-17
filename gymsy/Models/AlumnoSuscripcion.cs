@@ -7,7 +7,7 @@ public partial class AlumnoSuscripcion
 {
     public int IdAlumnoSuscripcion { get; set; }
 
-    public int IdUsuario { get; set; }
+    public int IdAlumno { get; set; }
 
     public int IdPlanEntrenamiento { get; set; }
 

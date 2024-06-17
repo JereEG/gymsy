@@ -24,7 +24,7 @@ namespace gymsy.App.Presenters
         }
         public static AlumnoSuscripcion suscripcionCliente(int idCliente)
         {
-            return gymsydb.AlumnoSuscripcions.FirstOrDefault(u => u.IdUsuario == idCliente);
+            return gymsydb.AlumnoSuscripcions.FirstOrDefault(u => u.IdAlumno == idCliente);
         }
         public static void AgregarPago(int pIdCliente, float pMonto)
         {
@@ -50,7 +50,7 @@ namespace gymsy.App.Presenters
                 gymsydb.SaveChanges();
 
                 //agregar alumno suscripcion completo
-                var suscripcion = gymsydb.AlumnoSuscripcions.Where(u => u.IdUsuario == client.IdUsuario);
+                var suscripcion = gymsydb.AlumnoSuscripcions.Where(u => u.IdAlumno == client.IdUsuario);
                 foreach(AlumnoSuscripcion sus in suscripcion)
                 {
                     sus.FechaExpiracion =DateTime.Now.AddMonths(1);

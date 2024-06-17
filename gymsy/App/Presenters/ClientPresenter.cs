@@ -18,7 +18,10 @@ namespace gymsy.App.Presenters
         //aboutClientControl
         public static Usuario getClient(int idPerson)
         {
-            return gymsydb.Usuarios.Where(cl => cl.IdUsuario == idPerson && cl.IdRol == 3).First();
+            using (var gymsy = new NuevoGymsyContext())
+            {
+                return gymsydb.Usuarios.Where(cl => cl.IdUsuario == idPerson && cl.IdRol == 3).First();
+            }
         }
 
 

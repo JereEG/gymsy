@@ -71,7 +71,7 @@ namespace gymsy.UserControls.ClientControls
                 //TimeSpan TimeTraning = clienteBuscado.IdPersonNavigation.CreatedAt - DateTime.Now;
 
                 TBDescripcionClient.Text = $"{clienteBuscado.Nombre + " " + clienteBuscado.Apellido}, " +
-                //$"{edad} años comenzo a enrenarse hace {TimeTraning.Days * -1} días, " +
+                $"{edad} años comenzo a enrenarse hace {TimeTraning.Days * -1} días, " +
                 $"cuenta con {clienteBuscado.DataFisics.Count()} registros guardados";
 
 

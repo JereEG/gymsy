@@ -20,22 +20,28 @@ namespace gymsy.App.Presenters
 
         public static Usuario BuscarCliente( int pIdCliente)
         {
-            return gymsydb.Usuarios
-                                .Where(client => client.IdUsuario == pIdCliente && client.IdRol == 3)
-                                .First();
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+
+
+                return gymsydb.Usuarios
+                                    .Where(client => client.IdUsuario == pIdCliente && client.IdRol == 3)
+                                    .First();
+            }
         }
         public static void EliminarOActivarCliente(int pIdPersona, bool pDeleteOrAcitive)
         {
-
-            var persona = gymsydb.Usuarios         
+            using (var gymsy = new NuevoGymsyContext())
+            {
+                var persona = gymsydb.Usuarios
                 .Where(p => p.IdUsuario == pIdPersona && p.IdRol == 3).FirstOrDefault();
 
-            if (persona != null)
-            {
-                persona.UsuarioInactivo = pDeleteOrAcitive;
-                gymsydb.SaveChanges();
+                if (persona != null)
+                {
+                    persona.UsuarioInactivo = pDeleteOrAcitive;
+                    gymsydb.SaveChanges();
+                }
             }
-
         }
         public static List<PlanEntrenamiento> BuscarPlanesInstructor(int pIdInstructor)
         {
@@ -43,7 +49,7 @@ namespace gymsy.App.Presenters
             using (var gymsydb =new NuevoGymsyContext())
             {
                 return gymsydb.PlanEntrenamientos
-                   .Where(plan => plan.IdUsuario == pIdInstructor)
+                   .Where(plan => plan.IdEntrenador == pIdInstructor)
                    .Include(plan => plan.AlumnoSuscripcions)
                    .ToList();
             }

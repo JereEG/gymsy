@@ -36,22 +36,24 @@ namespace gymsy.App.Presenters
             this.authView.Show();
         }
 
-        private void  inactivarClientes()
+        private void inactivarClientes()
         {
-            
-            var persons = this.gymsydb.Usuarios.ToList();
-            
-            foreach(Usuario cliente in persons)
-            {
-                var sus = this.gymsydb.AlumnoSuscripcions.Where(s => s.IdUsuario == cliente.IdUsuario).FirstOrDefault();
-                if(sus != null)
-                {
-                    if (sus.FechaExpiracion < DateTime.Now)
-                    {
-                        cliente.UsuarioInactivo = true;
-                    }
-                }
+            using (var gymsydb = new NuevoGymsyContext()) { 
 
+                var persons = this.gymsydb.Usuarios.ToList();
+
+                foreach (Usuario cliente in persons)
+                {
+                    var sus = this.gymsydb.AlumnoSuscripcions.Where(s => s.IdAlumno == cliente.IdUsuario).FirstOrDefault();
+                     if (sus != null)
+                    {
+                        if (sus.FechaExpiracion < DateTime.Now)
+                        {
+                            cliente.UsuarioInactivo = true;
+                        }
+                    }
+
+                }
             }
         }
 

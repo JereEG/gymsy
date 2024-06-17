@@ -17,18 +17,24 @@ namespace gymsy.App.Presenters
         //Corregir
         public static List<Pago> listarPagosRealizados(int pIdUsuario)
         {
-            return gymsydb.Pagos
+            using (var gymsy = new NuevoGymsyContext())
+            {
+                return gymsydb.Pagos
                    .Where(p => p.IdUsuario == pIdUsuario)
                    .Include(p => p.IdTipoPagoNavigation)
                    .ToList();
+            }
         }
         //Corregir
         public static List<Pago> listarPagosRecibidos(int pIdUsuario)
         {
-            return gymsydb.Pagos
+            using (var gymsy = new NuevoGymsyContext())
+            {
+                return gymsydb.Pagos
             .Where(p => p.IdUsuario == pIdUsuario)
             .Include(p => p.IdTipoPagoNavigation)
             .ToList();
+            }
         }
 
         public static List<Pago> listarTodasTransferencias(int pIdUsuario)

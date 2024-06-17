@@ -52,26 +52,30 @@ namespace gymsy.App.Presenters
                 AvatarUrl = SaveImage(pAvatar),
                 Contrasena = Bcrypt.HashPassoword(pPassword),
                 FechaCreacion = DateTime.Now,
+                FechaNacimiento= pFechaNacimiento,
                 NumeroTelefono = pNumberPhone,
                 Sexo = pSexo,
                 IdRol = 3, // 3 es el rol de cliente
                 UsuarioInactivo = true // ya que aun no ha pagado
             };
-
-            // Se guarda en la base de datos
-            gymsydb.Usuarios.Add(usuario);
-            gymsydb.SaveChanges();
-
-            AlumnoSuscripcion suscripcion = new AlumnoSuscripcion
+            using (var gymsydb = new NuevoGymsyContext())
             {
-                IdUsuario = usuario.IdUsuario,
-                IdPlanEntrenamiento = pIdPlan,
-                FechaExpiracion = pExpiration
-            };
 
-            gymsydb.AlumnoSuscripcions.Add(suscripcion);
-            gymsydb.SaveChanges();
 
+                // Se guarda en la base de datos
+                gymsydb.Usuarios.Add(usuario);
+                gymsydb.SaveChanges();
+
+                AlumnoSuscripcion suscripcion = new AlumnoSuscripcion
+                {
+                    IdAlumno = usuario.IdUsuario,
+                    IdPlanEntrenamiento = pIdPlan,
+                    FechaExpiracion = pExpiration
+                };
+
+                gymsydb.AlumnoSuscripcions.Add(suscripcion);
+                gymsydb.SaveChanges();
+            }
             // Se guarda en AppState
             AppState.clients.Add(usuario);
         }
@@ -125,7 +129,7 @@ namespace gymsy.App.Presenters
         }
         public static bool IsNicknameUnique(string nickname)
         {
-            using (var dbContext = new NuevoGymsyContext())
+            using (var gymsydb = new NuevoGymsyContext())
             { 
                 try
             {

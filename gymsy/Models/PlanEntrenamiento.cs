@@ -7,7 +7,7 @@ public partial class PlanEntrenamiento
 {
     public int IdPlanEntrenamiento { get; set; }
 
-    public int IdUsuario { get; set; }
+    public int IdEntrenador { get; set; }
 
     public decimal Precio { get; set; }
 

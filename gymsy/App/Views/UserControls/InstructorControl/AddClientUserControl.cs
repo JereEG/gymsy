@@ -207,7 +207,7 @@ namespace gymsy.UserControls
                         TBPrecio.Text = trainingPlan.Precio.ToString();
                         TBDescripcion.Text = trainingPlan.Descripcion;
                         
-                        TBNombreInstructor.Text =AddClientPresenter.getUsuario(trainingPlan.IdUsuario).Nombre + " " + AddClientPresenter.getUsuario(trainingPlan.IdUsuario).Apellido;
+                        TBNombreInstructor.Text =AddClientPresenter.getUsuario(trainingPlan.IdEntrenador).Nombre + " " + AddClientPresenter.getUsuario(trainingPlan.IdEntrenador).Apellido;
 
                         CBPlanes.Items.Add(trainingPlan.Descripcion);
                     

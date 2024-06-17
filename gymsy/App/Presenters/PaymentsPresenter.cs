@@ -15,9 +15,12 @@ namespace gymsy.App.Presenters
 
        public static Pago BuscarPago(int pIdPaySelected)
         {
-            return gymsydb.Pagos
-                                .Where(pay => pay.IdPago == pIdPaySelected)
-                                .First();
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                return gymsydb.Pagos
+                                    .Where(pay => pay.IdPago == pIdPaySelected)
+                                    .First();
+            }
         }
     }
 }

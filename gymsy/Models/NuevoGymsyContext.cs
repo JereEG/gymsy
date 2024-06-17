@@ -60,11 +60,11 @@ public partial class NuevoGymsyContext : DbContext
             entity.Property(e => e.FechaExpiracion)
                 .HasColumnType("date")
                 .HasColumnName("fecha_expiracion");
-            entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
+            entity.Property(e => e.IdAlumno).HasColumnName("id_alumno");
             entity.Property(e => e.IdPlanEntrenamiento).HasColumnName("id_plan_entrenamiento");
 
             entity.HasOne(d => d.IdAlumnoNavigation).WithMany(p => p.AlumnoSuscripcions)
-                .HasForeignKey(d => d.IdUsuario)
+                .HasForeignKey(d => d.IdAlumno)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("ALUMNOSUSCRIPCION_FK_AlumnoSuscripcion_Usuario");
 
@@ -259,14 +259,14 @@ public partial class NuevoGymsyContext : DbContext
             entity.Property(e => e.Descripcion)
                 .IsUnicode(false)
                 .HasColumnName("descripcion");
-            entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
+            entity.Property(e => e.IdEntrenador).HasColumnName("id_entrenador");
             entity.Property(e => e.PlanEntrenamientoInactivo).HasColumnName("plan_entrenamiento_inactivo");
             entity.Property(e => e.Precio)
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("precio");
 
             entity.HasOne(d => d.IdEntrenadorNavigation).WithMany(p => p.PlanEntrenamientos)
-                .HasForeignKey(d => d.IdUsuario)
+                .HasForeignKey(d => d.IdEntrenador)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PLANENTRENAMIENTO_INSTRUCTOR");
         });
@@ -403,7 +403,9 @@ public partial class NuevoGymsyContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("fecha_creacion");
-            
+            entity.Property(e => e.FechaNacimiento)
+                .HasColumnType("datetime")
+                .HasColumnName("fecha_nacimiento");
             entity.Property(e => e.IdRol).HasColumnName("id_rol");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(20)

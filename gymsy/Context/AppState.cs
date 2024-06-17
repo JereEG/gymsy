@@ -1,4 +1,5 @@
-﻿using gymsy.Models;
+﻿using gymsy.Modelos;
+using gymsy.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace gymsy.Context
  
     public static class AppState
     {
-        private static Models.GymsyContext gymsydb = new GymsyContext();
+        private static GymsyContext gymsydb = new GymsyContext();
         public static Usuario person { get; set; }
         public static List<PlanEntrenamiento> planes { get; set; }
         public static Array planess { get; set; }

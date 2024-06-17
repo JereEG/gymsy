@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace gymsy.Models;
+namespace gymsy.Modelos;
 
 public partial class Rol
 {

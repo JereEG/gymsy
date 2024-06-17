@@ -11,7 +11,8 @@ using Twilio;
 using Twilio.Rest.Api.V2010.Account;
 using Twilio.TwiML.Voice;
 using Twilio.Types;
-using ClientModel = gymsy.Models.Usuario;
+using gymsy.Modelos;
+//using ClientModel = gymsy.Models.Usuario;
 
 namespace gymsy.utilities
 {
@@ -36,7 +37,7 @@ namespace gymsy.utilities
         }
 
 
-        public static void SendAlertClients(List<ClientModel> clients)
+        public static void SendAlertClients(List<Usuario> clients)
         {
             List<string> numerosDestino = new List<string>();
             clients.ForEach(client =>

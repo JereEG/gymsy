@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using gymsy.Context;
-using gymsy.Models;
+using gymsy.Modelos;
 using System.Collections;
 using gymsy.Utilities;
 using gymsy.App.Presenters;
@@ -259,7 +259,7 @@ namespace gymsy.UserControls
                     LidPlan.Text = trainingPlan.IdPlanEntrenamiento.ToString();
                     TBPrecio.Text = trainingPlan.IdPlanEntrenamientoNavigation.Precio.ToString();
                     TBDescripcion.Text = trainingPlan.IdPlanEntrenamientoNavigation.Descripcion;
-                    TBNombreInstructor.Text = trainingPlan.IdUsuarioNavigation.Nombre + " " + trainingPlan.IdUsuarioNavigation.Apellido;
+                    TBNombreInstructor.Text = trainingPlan.IdAlumnoNavigation.Nombre + " " + trainingPlan.IdAlumnoNavigation.Apellido;
 
                     CBPlanes.Items.Add(trainingPlan.IdPlanEntrenamientoNavigation.Descripcion);
 
@@ -398,7 +398,7 @@ namespace gymsy.UserControls
                 LidPlan.Text = trainingPlan.IdPlanEntrenamiento.ToString();
                 TBPrecio.Text = trainingPlan.Precio.ToString();
                 TBDescripcion.Text = trainingPlan.Descripcion;
-                TBNombreInstructor.Text = trainingPlan.IdUsuarioNavigation.Nombre + " " + trainingPlan.IdUsuarioNavigation.Apellido;
+                TBNombreInstructor.Text = trainingPlan.IdEntrenadorNavigation.Nombre + " " + trainingPlan.IdEntrenadorNavigation.Apellido;
 
 
             }

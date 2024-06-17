@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using gymsy.Utilities;
 using gymsy.Models;
+using gymsy.Modelos;
 
 namespace gymsy.App.Presenters
 {
@@ -16,13 +17,13 @@ namespace gymsy.App.Presenters
         public static AlumnoSuscripcion PlanDelCliente()
         {
            return gymsydb.AlumnoSuscripcions
-                        .Where(trainingPlan => trainingPlan.IdUsuario == AppState.ClientActive.IdUsuario)
+                        .Where(trainingPlan => trainingPlan.IdAlumno == AppState.ClientActive.IdUsuario)
                         .First();
         }
         public static AlumnoSuscripcion BuscarPlanUnCliente( int idClienteBuscado)
         {
             return gymsydb.AlumnoSuscripcions
-                         .Where(trainingPlan => trainingPlan.IdUsuario == idClienteBuscado)
+                         .Where(trainingPlan => trainingPlan.IdAlumno == idClienteBuscado)
                          .First();
         }
         public static List<PlanEntrenamiento> PlanesQueNoSonDelCliente()
@@ -30,7 +31,7 @@ namespace gymsy.App.Presenters
 
             // Obtener la lista de ID de planes de entrenamiento asociados al cliente
             var planesCliente = gymsydb.AlumnoSuscripcions
-                                    .Where(subAlum => subAlum.IdUsuario == AppState.ClientActive.IdUsuario)
+                                    .Where(subAlum => subAlum.IdAlumno == AppState.ClientActive.IdUsuario)
                                     .Select(subAlum => subAlum.IdPlanEntrenamiento)
                                     .ToList();
 
@@ -72,7 +73,7 @@ namespace gymsy.App.Presenters
 
                 // Actualiza las propiedades de la tabla client
                 var subcripcionAlumno = gymsydb.AlumnoSuscripcions
-                               .Where(subAlum => subAlum.IdUsuario == personUpdated.IdUsuario)
+                               .Where(subAlum => subAlum.IdAlumno == personUpdated.IdUsuario)
                                .First();
                 subcripcionAlumno.FechaExpiracion = pLastExpiration;
                 subcripcionAlumno.IdPlanEntrenamiento = pIdPlan;

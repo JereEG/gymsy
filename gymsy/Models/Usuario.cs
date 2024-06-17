@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace gymsy.Models;
+namespace gymsy.Modelos;
 
 public partial class Usuario
 {
@@ -21,6 +21,8 @@ public partial class Usuario
 
     public DateTime FechaCreacion { get; set; }
 
+    public DateTime FechaNacimiento { get; set; }
+
     public string NumeroTelefono { get; set; } = null!;
 
     public string Sexo { get; set; } = null!;
@@ -34,9 +36,4 @@ public partial class Usuario
     public virtual ICollection<Pago> Pagos { get; set; } = new List<Pago>();
 
     public virtual ICollection<PlanEntrenamiento> PlanEntrenamientos { get; set; } = new List<PlanEntrenamiento>();
-
-    public Usuario(int rol)
-    {
-        IdRol = rol;
-    }
 }

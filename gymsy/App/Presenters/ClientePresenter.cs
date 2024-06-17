@@ -1,4 +1,5 @@
 ﻿using gymsy.Context;
+using gymsy.Modelos;
 using gymsy.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -39,7 +40,7 @@ namespace gymsy.App.Presenters
         {
             // Obtener todos los planes de entrenamiento del instructor actual
             return gymsydb.PlanEntrenamientos
-                .Where(plan => plan.IdUsuario == pIdInstructor)
+                .Where(plan => plan.IdEntrenador == pIdInstructor)
                 .Include(plan => plan.AlumnoSuscripcions)
                 .ToList();
         }

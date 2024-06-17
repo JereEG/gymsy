@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace gymsy.Models;
+namespace gymsy.Modelos;
 
 public partial class AlumnoSuscripcion
 {
     public int IdAlumnoSuscripcion { get; set; }
 
-    public int IdUsuario { get; set; }
+    public int IdAlumno { get; set; }
 
     public int IdPlanEntrenamiento { get; set; }
 
@@ -15,7 +15,7 @@ public partial class AlumnoSuscripcion
 
     public virtual ICollection<EstadoFisico> EstadoFisicos { get; set; } = new List<EstadoFisico>();
 
-    public virtual PlanEntrenamiento IdPlanEntrenamientoNavigation { get; set; } = null!;
+    public virtual Usuario IdAlumnoNavigation { get; set; } = null!;
 
-    public virtual Usuario IdUsuarioNavigation { get; set; } = null!;
+    public virtual PlanEntrenamiento IdPlanEntrenamientoNavigation { get; set; } = null!;
 }

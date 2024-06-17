@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using gymsy.Utilities;
 using System.Runtime.CompilerServices;
 using gymsy.Models;
+using gymsy.Modelos;
 
 namespace gymsy.App.Presenters
 {
@@ -34,7 +35,7 @@ namespace gymsy.App.Presenters
         public static void GuardarCliente(string pUsuario, string pNombre, string pApellido, string pAvatar, string pPassword, string pNumberPhone,
             string pSexo, DateTime pFechaNacimiento, DateTime pExpiration, int pIdPlan)
         {
-            Usuario usuario = new Usuario(3)
+            Usuario usuario = new Usuario()
             {
                 Apodo = pUsuario,
                 Nombre = pNombre,
@@ -44,7 +45,7 @@ namespace gymsy.App.Presenters
                 FechaCreacion = DateTime.Now,
                 NumeroTelefono = pNumberPhone,
                 Sexo = pSexo,
-                //IdRol = 3, // 3 es el rol de cliente
+                IdRol = 3, // 3 es el rol de cliente
                 UsuarioInactivo = true // ya que aun no ha pagado
             };
 
@@ -54,7 +55,7 @@ namespace gymsy.App.Presenters
 
             AlumnoSuscripcion suscripcion = new AlumnoSuscripcion
             {
-                IdUsuario = usuario.IdUsuario,
+                IdAlumno = usuario.IdUsuario,
                 IdPlanEntrenamiento = pIdPlan,
                 FechaExpiracion = pExpiration
             };

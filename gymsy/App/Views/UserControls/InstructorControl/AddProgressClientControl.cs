@@ -1,5 +1,5 @@
 ﻿using CustomControls.RJControls;
-using gymsy.Models;
+using gymsy.Modelos;
 using gymsy.Context;
 using gymsy.utilities;
 using Microsoft.Win32;

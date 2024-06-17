@@ -1,4 +1,5 @@
 ﻿using gymsy.Context;
+using gymsy.Modelos;
 using gymsy.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,7 +17,7 @@ namespace gymsy.App.Presenters
         public static List<PlanEntrenamiento> listarPlanesInstructor()
         {
             return gymsydb.PlanEntrenamientos
-                .Where(p => p.IdUsuarioNavigation.IdRol == 2).ToList();
+                .Where(p => p.IdEntrenadorNavigation.IdRol == 2).ToList();
         }
 
         public static void modificarPlan(int pidPlan, string pDescripcion, decimal pPrecio)
@@ -37,7 +38,7 @@ namespace gymsy.App.Presenters
             plan.Descripcion = pDescripcion;
             plan.Precio = pPrecio;
             plan.PlanEntrenamientoInactivo = false;
-            plan.IdUsuario = AppState.Instructor.IdUsuario;
+            plan.IdEntrenador = AppState.Instructor.IdUsuario;
 
             gymsydb.PlanEntrenamientos.Add(plan);
             gymsydb.SaveChanges();

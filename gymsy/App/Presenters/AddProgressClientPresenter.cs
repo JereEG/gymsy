@@ -1,5 +1,5 @@
 ﻿using CustomControls.RJControls;
-using gymsy.Models;
+using gymsy.Modelos;
 using gymsy.Context;
 using System;
 using System.Collections.Generic;
@@ -48,11 +48,11 @@ namespace gymsy.App.Presenters
             DataFisicModel.FechaCreacion = DateTime.Now;
             if (AppState.ClientActive == null)
             {
-                DataFisicModel.IdAlumnoSuscripcionNavigation.IdUsuario = AppState.auxIdClient;
+                DataFisicModel.IdAlumnoSuscripcionNavigation.IdAlumno = AppState.auxIdClient;
             }
             else
             {
-                DataFisicModel.IdAlumnoSuscripcionNavigation.IdUsuario = AppState.ClientActive.IdUsuario;
+                DataFisicModel.IdAlumnoSuscripcionNavigation.IdAlumno = AppState.ClientActive.IdUsuario;
             }
 
             DataFisicModel.EstadoFisicoInactivo = false;    

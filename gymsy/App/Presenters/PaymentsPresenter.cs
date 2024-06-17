@@ -1,4 +1,4 @@
-﻿using gymsy.Models;
+﻿using gymsy.Modelos;
 using gymsy.Context;
 using System;
 using System.Collections.Generic;

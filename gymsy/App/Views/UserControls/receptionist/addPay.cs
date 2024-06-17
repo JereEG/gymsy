@@ -1,4 +1,4 @@
-﻿using gymsy.Models;
+﻿using gymsy.Modelos;
 using gymsy.Context;
 using gymsy.Properties;
 using gymsy.App.Presenters;
@@ -105,7 +105,7 @@ namespace gymsy.App.Views.UserControls.receptionist
 
             foreach (AlumnoSuscripcion plan in AppState.AlumnoSuscripciones)
             {
-                var client = AddClientPresenter.getUsuarios(plan.IdUsuario);
+                var client = AddClientPresenter.getUsuarios(plan.IdAlumno);
                 foreach (Usuario cliente in client.ToArray())
                 {
 
@@ -218,7 +218,7 @@ namespace gymsy.App.Views.UserControls.receptionist
                     Lid_client.Text = clientSelected.IdUsuario.ToString();
                     LClientFullName.Text = clientSelected.Nombre + " " + clientSelected.Apellido;
                     LPlan.Text = sus.IdPlanEntrenamientoNavigation.Descripcion;
-                    LInstructorFullName.Text = sus.IdUsuarioNavigation.Nombre + " " + sus.IdUsuarioNavigation.Apellido;
+                    LInstructorFullName.Text = sus.IdAlumnoNavigation.Nombre + " " + sus.IdAlumnoNavigation.Apellido;
 
                     TbAmount.Text = sus.IdPlanEntrenamientoNavigation.Precio.ToString();
                     try

@@ -4,6 +4,7 @@ using gymsy.App.Views.Interfaces;
 using gymsy.Context;
 using gymsy.Properties;
 using Microsoft.EntityFrameworkCore;
+using gymsy.Modelos;
 
 namespace gymsy
 {
@@ -14,9 +15,9 @@ namespace gymsy
         {
             //Config & Conect to database
             string stringConnection = Resources.stringConnection;
-            DbContextOptionsBuilder<Models.GymsyContext> optionsBuilder = new();
+            DbContextOptionsBuilder<GymsyContext> optionsBuilder = new();
 
-            Models.GymsyContext GymsyContextDb = new(
+            GymsyContext GymsyContextDb = new(
                optionsBuilder.UseSqlServer(stringConnection).Options
             );
 

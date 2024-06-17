@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace gymsy.Models;
+namespace gymsy.Modelos;
 
 public partial class EstadoFisico
 {
@@ -15,13 +15,13 @@ public partial class EstadoFisico
 
     public DateTime FechaCreacion { get; set; }
 
-    public string? Notas { get; set; }
+    public string Notas { get; set; } = null!;
 
     public bool EstadoFisicoInactivo { get; set; }
 
     public int IdAlumnoSuscripcion { get; set; }
 
-    public string? ImagenUrl { get; set; }
+    public string ImagenUrl { get; set; } = null!;
 
     public virtual AlumnoSuscripcion IdAlumnoSuscripcionNavigation { get; set; } = null!;
 }

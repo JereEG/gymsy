@@ -1,5 +1,5 @@
 ﻿using gymsy.App.Views.UserControls.AdminControls;
-using gymsy.Models;
+using gymsy.Modelos;
 using gymsy.Context;
 using gymsy.Properties;
 using gymsy.UserControls.AdminControls;
@@ -16,6 +16,7 @@ using System.Windows.Controls;
 using System.Windows.Forms.DataVisualization.Charting;
 using Twilio.Rest.Trunking.V1;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using gymsy.Models;
 
 namespace gymsy.App.Presenters
 {
@@ -209,10 +210,10 @@ namespace gymsy.App.Presenters
         public static System.Windows.Forms.DataVisualization.Charting.Series InstructorCant(System.Windows.Forms.DataVisualization.Charting.Series series)
         {
             var resultado = gymsydb.PlanEntrenamientos
-                    .Where(plan => plan.IdUsuarioNavigation.IdRol == 2)
+                    .Where(plan => plan.IdEntrenadorNavigation.IdRol == 2)
                     .Select(plan => new
                     {
-                        Instructor = plan.IdUsuarioNavigation,
+                        Instructor = plan.IdEntrenadorNavigation,
                         CantidadClientes = plan.AlumnoSuscripcions.Count()
                     })
                     .ToList();
@@ -315,10 +316,10 @@ namespace gymsy.App.Presenters
             int cantidadClientes = gymsydb.AlumnoSuscripcions
                 .Where(suscripcion =>
                     gymsydb.PlanEntrenamientos
-                        .Where(plan => plan.IdUsuario == instructor.IdUsuario)
+                        .Where(plan => plan.IdEntrenador == instructor.IdUsuario)
                         .Select(plan => plan.IdPlanEntrenamiento)
                         .Contains(suscripcion.IdPlanEntrenamiento))
-                .Select(suscripcion => suscripcion.IdUsuario)
+                .Select(suscripcion => suscripcion.IdAlumno)
                 .Distinct()
                 .Count();
 
@@ -329,7 +330,7 @@ namespace gymsy.App.Presenters
         {
             // Consulta para calcular el ingreso total
             decimal ingresoTotal = gymsydb.PlanEntrenamientos
-                .Where(plan => plan.IdUsuario == instructor.IdUsuario) // Filtrar planes por instructor
+                .Where(plan => plan.IdEntrenador == instructor.IdUsuario) // Filtrar planes por instructor
                 .Join(gymsydb.AlumnoSuscripcions,
                       plan => plan.IdPlanEntrenamiento,
                       suscripcion => suscripcion.IdPlanEntrenamiento,

@@ -10,8 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Twilio.TwiML.Voice;
-using gymsy.Models;
-using Pay = gymsy.Models.Pago;
+using gymsy.Modelos;
+//using Pay = gymsy.Models.Pago;
 using gymsy.App.Views.Interfaces;
 using PdfSharp.Pdf;
 using PdfSharp;
@@ -30,8 +30,8 @@ namespace gymsy.UserControls
     {
 
         private GymsyContext gymsydb = ViejoGymsyContext.GymsyContextDB;
-        private IEnumerable<Pay> PaysList;
-        private Pay PayActive;
+        private IEnumerable<Pago> PaysList;
+        private Pago PayActive;
         private GymsyContext dbContext;
 
         public WalletUserControl()
@@ -102,8 +102,9 @@ namespace gymsy.UserControls
             */
         }
 
-        private void AddTransaction(Pay pay)
+        private void AddTransaction(Pago pay)
         {
+            /*
             TimeSpan diferencia = (DateTime.Now - pay.FechaCreacion);
             String formart = $"Hace {diferencia.Days} dias";
             //int destinoId = pay.RemitenteId == AppState.person.IdPerson ? pay.DestinatarioId : pay.RemitenteId;
@@ -117,6 +118,7 @@ namespace gymsy.UserControls
             );
 
             dataGridTransactions.Refresh();
+            */
         }
 
         private void TextBoxAmount_KeyPress(object sender, KeyPressEventArgs e)
@@ -280,6 +282,7 @@ namespace gymsy.UserControls
 
         private void BtnSendWhatsapp_Click(object sender, EventArgs e)
         {
+            /*
 
             if (!utilities.Verify.IsConnectedToNetwork())
             {
@@ -361,6 +364,7 @@ namespace gymsy.UserControls
             {
                 PanelInvoiceWallet.Visible = false;
             }
+            */
         }
 
 

@@ -12,7 +12,7 @@ using System.Windows.Forms;
 using System.Linq;
 using gymsy.App.Presenters;
 using gymsy;
-using gymsy.Models;
+using gymsy.Modelos;
 
 namespace gymsy.UserControls
 {

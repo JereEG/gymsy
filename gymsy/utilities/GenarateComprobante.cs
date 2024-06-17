@@ -1,4 +1,5 @@
-﻿using gymsy.Models;
+﻿using gymsy.Modelos;
+using gymsy.Models;
 using System;
 using System.Diagnostics;
 using System.IO;

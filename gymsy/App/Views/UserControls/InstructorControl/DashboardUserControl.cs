@@ -1,4 +1,4 @@
-﻿using gymsy.Models;
+﻿using gymsy.Modelos;
 using gymsy.App.Presenters;
 using gymsy.Context;
 using System;
@@ -120,10 +120,10 @@ namespace gymsy.UserControls
                 foreach (PlanEntrenamiento plan in AppState.Instructor.PlanEntrenamientos)
                 {
                     //en duda el segundo if
-                    if (!plan.PlanEntrenamientoInactivo && plan.IdUsuarioNavigation.AlumnoSuscripcions.Count > 0)
+                    if (!plan.PlanEntrenamientoInactivo && plan.IdEntrenadorNavigation.AlumnoSuscripcions.Count > 0)
                     {
-                        seriesTorta.Points.AddXY("", plan.IdUsuarioNavigation.AlumnoSuscripcions.Count());
-                        seriesTorta.LegendText = $"{plan.Descripcion} - {plan.IdUsuarioNavigation.AlumnoSuscripcions.Count()} Clientes.";
+                        seriesTorta.Points.AddXY("", plan.IdEntrenadorNavigation.AlumnoSuscripcions.Count());
+                        seriesTorta.LegendText = $"{plan.Descripcion} - {plan.IdEntrenadorNavigation.AlumnoSuscripcions.Count()} Clientes.";
                     }
                 }
 

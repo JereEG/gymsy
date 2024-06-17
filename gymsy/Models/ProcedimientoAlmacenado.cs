@@ -1,4 +1,5 @@
 ﻿using gymsy;
+using gymsy.Modelos;
 using gymsy.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;

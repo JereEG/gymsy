@@ -1,5 +1,4 @@
-﻿using gymsy.Models;
-using gymsy.App.Views.Interfaces;
+﻿using gymsy.App.Views.Interfaces;
 using gymsy.Context;
 using gymsy.Properties;
 using gymsy.utilities;
@@ -9,7 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GymsyContext = gymsy.Models.GymsyContext;
+using gymsy.Modelos;
+//using GymsyContext = gymsy.Models.GymsyContext;
 
 
 
@@ -43,7 +43,7 @@ namespace gymsy.App.Presenters
             
             foreach(Usuario cliente in clients)
             {
-                var sus = this.gymsydb.AlumnoSuscripcions.Where(s => s.IdUsuario == cliente.IdUsuario).FirstOrDefault();
+                var sus = this.gymsydb.AlumnoSuscripcions.Where(s => s.IdAlumno == cliente.IdUsuario).FirstOrDefault();
                 if (sus.FechaExpiracion < DateTime.Now)
                 {
                     cliente.UsuarioInactivo = true;
@@ -145,7 +145,7 @@ namespace gymsy.App.Presenters
 
                         AppState.instructors = instructorsFound;
                         AppState.persons = personss;
-                        AppState.Instructor = new Usuario(2);
+                        AppState.Instructor = new Usuario() { IdRol = 2};
                         //nota mental: hacer un constructor en usuario que
                         //permita discriminar el rol desde el mismo
 
@@ -228,7 +228,7 @@ namespace gymsy.App.Presenters
                         AppState.planes = planes;
                         AppState.clients = personsss;
                         AppState.persons = personsss;
-                        AppState.Instructor = new Usuario(2);//nota: hacer un constructor por cada rol en la clase usuarios
+                        AppState.Instructor = new Usuario() { IdRol = 2 };//nota: hacer un constructor por cada rol en la clase usuarios
                         break;
                 }
             }

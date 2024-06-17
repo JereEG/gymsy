@@ -1,4 +1,4 @@
-﻿using gymsy.Models;
+﻿using gymsy.Modelos;
 using gymsy.Context;
 using gymsy.Utilities;
 using gymsy.UserControls.AdminControls;

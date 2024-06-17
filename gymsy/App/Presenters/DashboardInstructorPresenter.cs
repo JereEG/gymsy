@@ -1,4 +1,4 @@
-﻿using gymsy.Models;
+﻿using gymsy.Modelos;
 using gymsy.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using gymsy.Models;
 
 namespace gymsy.App.Presenters
 {
@@ -55,7 +56,7 @@ namespace gymsy.App.Presenters
 
             // Step 4: Combine results to get active clients of the instructor
             var activeClients = (from usuario in filteredUsuarios
-                                 join sus in activeSubscriptions on usuario.IdUsuario equals sus.IdUsuario
+                                 join sus in activeSubscriptions on usuario.IdUsuario equals sus.IdAlumno
                                  join plan in activePlans on sus.IdPlanEntrenamiento equals plan.IdPlanEntrenamiento
                                  select usuario).Distinct().ToList();
 
@@ -76,7 +77,7 @@ namespace gymsy.App.Presenters
                 var inactiveSubscriptions = gymsydb.AlumnoSuscripcions
                                                  .Where(sus => sus.FechaExpiracion <= DateTime.Today &&
                                                                activePlans.Contains(sus.IdPlanEntrenamiento))
-                                                 .Select(sus => sus.IdUsuario)
+                                                 .Select(sus => sus.IdAlumno)
                                                  .ToList();
 
                 // Step 3: Count the number of Usuarios who are clients and have active subscriptions
@@ -91,7 +92,7 @@ namespace gymsy.App.Presenters
                 var activeSubscriptions = gymsydb.AlumnoSuscripcions
                                                  .Where(sus => sus.FechaExpiracion > DateTime.Today &&
                                                                activePlans.Contains(sus.IdPlanEntrenamiento))
-                                                 .Select(sus => sus.IdUsuario)
+                                                 .Select(sus => sus.IdAlumno)
                                                  .ToList();
                 var activeClientCount = gymsydb.Usuarios
                                               .Count(cl => activeSubscriptions.Contains(cl.IdUsuario) &&
@@ -103,7 +104,7 @@ namespace gymsy.App.Presenters
         {
 
             return gymsydb.AlumnoSuscripcions
-                .Where(a => a.IdUsuario == idusuario).FirstOrDefault();
+                .Where(a => a.IdAlumno == idusuario).FirstOrDefault();
         }
     }
 

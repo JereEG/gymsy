@@ -31,84 +31,99 @@ namespace gymsy.App.Presenters
         // Método para agregar un nuevo usuario (Instructor)
         public static void GuardarInstructor(string nombre, string apellido, string telefono, string usuario, string contraseña, string nameImage, string sexo, DateTime pfecha_cumpleanos)
         {
-            ProcedimientoAlmacenado.CrearInstructor(usuario, nombre, apellido, nameImage, contraseña, telefono, sexo);
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                ProcedimientoAlmacenado.CrearInstructor(usuario, nombre, apellido, nameImage, contraseña, telefono, sexo);
+            }
         }
 
         // Método para obtener un usuario por su ID
         public static Usuario GetUsuario(int idUsuario)
         {
-            return gymsydb.Usuarios.FirstOrDefault(u => u.IdUsuario == idUsuario);
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                return gymsydb.Usuarios.FirstOrDefault(u => u.IdUsuario == idUsuario);
+            }
         }
 
         // Método para verificar si el nickname es único
         public static bool NicknameUnique(string nickname)
         {
-            try
+            using (var gymsydb = new NuevoGymsyContext())
             {
-                var existingUsuario = gymsydb.Usuarios.FirstOrDefault(u => u.Apodo == nickname);
-                if (existingUsuario == null)
+                try
                 {
-                    return true;
+                    var existingUsuario = gymsydb.Usuarios.FirstOrDefault(u => u.Apodo == nickname);
+                    if (existingUsuario == null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("El nombre de usuario ya existe");
+                        return false;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("El nombre de usuario ya existe");
+                    MessageBox.Show("Error al verificar el nombre de usuario: " + ex.Message);
                     return false;
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al verificar el nombre de usuario: " + ex.Message);
-                return false;
             }
         }
 
         // Método para crear un backup de la base de datos
         public static string Backup()
         {
-            string rutaDeCopiaDeSeguridad = "C:\\backup";
-            if (!Directory.Exists(rutaDeCopiaDeSeguridad))
+            using (var gymsydb = new NuevoGymsyContext())
             {
-                Directory.CreateDirectory(rutaDeCopiaDeSeguridad);
-            }
-
-            rutaDeCopiaDeSeguridad += "\\" + $"Backup_{DateTime.Now:yyyyMMddHHmmss}.bak";
-
-            using (var connection = new SqlConnection(Resources.stringConnection))
-            {
-                connection.Open();
-                using (var command = new SqlCommand($"BACKUP DATABASE [gymsy] TO DISK = '{rutaDeCopiaDeSeguridad}'", connection))
+                string rutaDeCopiaDeSeguridad = "C:\\backup";
+                if (!Directory.Exists(rutaDeCopiaDeSeguridad))
                 {
-                    command.ExecuteNonQuery();
+                    Directory.CreateDirectory(rutaDeCopiaDeSeguridad);
                 }
-            }
 
-            return rutaDeCopiaDeSeguridad;
+                rutaDeCopiaDeSeguridad += "\\" + $"Backup_{DateTime.Now:yyyyMMddHHmmss}.bak";
+
+                using (var connection = new SqlConnection(Resources.stringConnection))
+                {
+                    connection.Open();
+                    using (var command = new SqlCommand($"BACKUP DATABASE [gymsy] TO DISK = '{rutaDeCopiaDeSeguridad}'", connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
+
+                return rutaDeCopiaDeSeguridad;
+            }
         }
 
         // Método para restaurar la base de datos desde un backup
         public static void Restore(string backupPath)
         {
-            string databaseName = "gymsy";
-            string connectionString = Resources.stringConnection;
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (var gymsydb = new NuevoGymsyContext())
             {
-                connection.Open();
-                string sqlSingleUser = $"ALTER DATABASE {databaseName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;";
-                using (SqlCommand singleUserCommand = new SqlCommand(sqlSingleUser, connection))
+                string databaseName = "gymsy";
+                string connectionString = Resources.stringConnection;
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    singleUserCommand.ExecuteNonQuery();
-                }
-                string sqlUseMaster = "USE master;";
-                using (SqlCommand useMasterCommand = new SqlCommand(sqlUseMaster, connection))
-                {
-                    useMasterCommand.ExecuteNonQuery();
-                }
-                string sqlRestore = $"RESTORE DATABASE {databaseName} FROM DISK = '{backupPath}';";
-                using (SqlCommand restoreCommand = new SqlCommand(sqlRestore, connection))
-                {
-                    restoreCommand.ExecuteNonQuery();
+                    connection.Open();
+                    string sqlSingleUser = $"ALTER DATABASE {databaseName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;";
+                    using (SqlCommand singleUserCommand = new SqlCommand(sqlSingleUser, connection))
+                    {
+                        singleUserCommand.ExecuteNonQuery();
+                    }
+                    string sqlUseMaster = "USE master;";
+                    using (SqlCommand useMasterCommand = new SqlCommand(sqlUseMaster, connection))
+                    {
+                        useMasterCommand.ExecuteNonQuery();
+                    }
+                    string sqlRestore = $"RESTORE DATABASE {databaseName} FROM DISK = '{backupPath}';";
+                    using (SqlCommand restoreCommand = new SqlCommand(sqlRestore, connection))
+                    {
+                        restoreCommand.ExecuteNonQuery();
+                    }
                 }
             }
         }
@@ -143,25 +158,30 @@ namespace gymsy.App.Presenters
         // Métodos relacionados con pagos y suscripciones
         public static IEnumerable<object> Pays()
         {
-            return gymsydb.Pagos
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                return gymsydb.Pagos
                  .GroupBy(p => new { Mes = p.FechaCreacion.Month, Anio = p.FechaCreacion.Year })
                  .Select(g => new
                  {
                      Mes = g.Key.Mes,
                      Anio = g.Key.Anio,
-                    // SumaPagos = g.Sum(p => p.monto)
+                     // SumaPagos = g.Sum(p => p.monto)
                  })
                  .Select(item => new
                  {
                      Mes = item.Mes,
-                    // Amount = item.SumaPagos
+                     // Amount = item.SumaPagos
                  })
                  .ToArray();
+            }
         }
 
         public static System.Windows.Forms.DataVisualization.Charting.Series Mes(List<string> listMonth, System.Windows.Forms.DataVisualization.Charting.Series series)
         {
-            var resultado = gymsydb.Pagos
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                var resultado = gymsydb.Pagos
                 .GroupBy(p => new { Mes = p.FechaCreacion.Month, Anio = p.FechaCreacion.Year })
                 .Select(g => new
                 {
@@ -176,40 +196,46 @@ namespace gymsy.App.Presenters
                 })
                 .ToArray();
 
-            var listaMes = Enumerable.Range(1, 12)
-                   .Select(mes => resultado.FirstOrDefault(r => r.Mes == mes))
-                   .ToArray();
-            foreach (var data in listaMes)
-            {
-                series.Points.AddXY(listMonth[data.Mes - 1], 010101);
-                series.LegendToolTip = $"Ganancia obtenida por mes";
+                var listaMes = Enumerable.Range(1, 12)
+                       .Select(mes => resultado.FirstOrDefault(r => r.Mes == mes))
+                       .ToArray();
+                foreach (var data in listaMes)
+                {
+                    series.Points.AddXY(listMonth[data.Mes - 1], 010101);
+                    series.LegendToolTip = $"Ganancia obtenida por mes";
+                }
+                return series;
             }
-            return series;
         }
 
         public static DataGridView DatagridPay(DataGridView dataGridPays)
         {
-            var ultimosPagos = gymsydb.Pagos
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                var ultimosPagos = gymsydb.Pagos
             .OrderByDescending(p => p.FechaCreacion)
             .Take(5)
             .Include(p => p.IdUsuario)
             .ToList();
 
-            foreach (var pay in ultimosPagos)
-            {
-                dataGridPays.Rows.Add(
-                    pay.IdPago,
-                    pay.FechaCreacion,
-                    $"$ {0101010}",
-                    $"{pay.IdUsuarioNavigation.Apellido}, {pay.IdUsuarioNavigation.Nombre}"
-                );
+                foreach (var pay in ultimosPagos)
+                {
+                    dataGridPays.Rows.Add(
+                        pay.IdPago,
+                        pay.FechaCreacion,
+                        $"$ {0101010}",
+                        $"{pay.IdUsuarioNavigation.Apellido}, {pay.IdUsuarioNavigation.Nombre}"
+                    );
+                }
+                return dataGridPays;
             }
-            return dataGridPays;
         }
 
         public static System.Windows.Forms.DataVisualization.Charting.Series InstructorCant(System.Windows.Forms.DataVisualization.Charting.Series series)
         {
-            var resultado = gymsydb.PlanEntrenamientos
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                var resultado = gymsydb.PlanEntrenamientos
                     .Where(plan => plan.IdEntrenadorNavigation.IdRol == 2)
                     .Select(plan => new
                     {
@@ -218,118 +244,136 @@ namespace gymsy.App.Presenters
                     })
                     .ToList();
 
-            foreach (var data in resultado)
-            {
-                if (data.CantidadClientes > 0)
+                foreach (var data in resultado)
                 {
-                    series.Points.AddXY($"{data.Instructor.Nombre} - {data.CantidadClientes} Clientes.", data.CantidadClientes);
-                    series.LegendToolTip = $"{data.Instructor.Apellido}, {data.Instructor.Nombre} - {data.CantidadClientes} Clientes.";
+                    if (data.CantidadClientes > 0)
+                    {
+                        series.Points.AddXY($"{data.Instructor.Nombre} - {data.CantidadClientes} Clientes.", data.CantidadClientes);
+                        series.LegendToolTip = $"{data.Instructor.Apellido}, {data.Instructor.Nombre} - {data.CantidadClientes} Clientes.";
+                    }
                 }
+                return series;
             }
-            return series;
         }
 
         // Método para actualizar un usuario (Instructor)
         public static void PersonUpdated(string nombre, string apellido, string telefono, string usuario, string contraseña, string rutaImagen, bool masculino, DateTime fechaNacimiento)
         {
-            try
+            using (var gymsydb = new NuevoGymsyContext())
             {
-                var usuarioActualizado = gymsydb.Usuarios
-                           .Where(u => u.IdUsuario == AppState.InstructorActive.IdUsuario)
-                           .FirstOrDefault();
-
-                string sexo = masculino ? "M" : "F";
-
-                if (usuarioActualizado != null)
+                try
                 {
-                    usuarioActualizado.Apodo = usuario;
-                    usuarioActualizado.Nombre = nombre;
-                    if (usuarioActualizado.AvatarUrl != rutaImagen)
+                    var usuarioActualizado = gymsydb.Usuarios
+                               .Where(u => u.IdUsuario == AppState.InstructorActive.IdUsuario)
+                               .FirstOrDefault();
+
+                    string sexo = masculino ? "M" : "F";
+
+                    if (usuarioActualizado != null)
                     {
-                        usuarioActualizado.AvatarUrl = SaveImage(rutaImagen);
+                        usuarioActualizado.Apodo = usuario;
+                        usuarioActualizado.Nombre = nombre;
+                        if (usuarioActualizado.AvatarUrl != rutaImagen)
+                        {
+                            usuarioActualizado.AvatarUrl = SaveImage(rutaImagen);
+                        }
+
+                        if (usuarioActualizado.Contrasena != contraseña)
+                        {
+                            usuarioActualizado.Contrasena = Bcrypt.HashPassoword(contraseña);
+                        }
+                        usuarioActualizado.Apellido = apellido;
+                        usuarioActualizado.NumeroTelefono = telefono;
+                        usuarioActualizado.Sexo = sexo;
+
+                        gymsydb.SaveChanges();
+
+                        MessageBox.Show("Se editaron correctamente los datos");
                     }
-
-                    if (usuarioActualizado.Contrasena != contraseña)
-                    {
-                        usuarioActualizado.Contrasena = Bcrypt.HashPassoword(contraseña);
-                    }
-                    usuarioActualizado.Apellido = apellido;
-                    usuarioActualizado.NumeroTelefono = telefono;
-                    usuarioActualizado.Sexo = sexo;
-
-                    gymsydb.SaveChanges();
-
-                    MessageBox.Show("Se editaron correctamente los datos");
+                    AppState.isModeEdit = false;
                 }
-                AppState.isModeEdit = false;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 
         public static string SaveImage(string imagePath)
         {
-            try
+            using (var gymsydb = new NuevoGymsyContext())
             {
-                string pathDestinationFolder = AppState.pathDestinationFolder + AppState.nameCarpetImageInstructor;
-
-                if (!Directory.Exists(pathDestinationFolder))
+                try
                 {
-                    Directory.CreateDirectory(pathDestinationFolder);
-                }
+                    string pathDestinationFolder = AppState.pathDestinationFolder + AppState.nameCarpetImageInstructor;
 
-                var fileName = Path.GetFileName(imagePath);
-                var destinationFilePath = Path.Combine(pathDestinationFolder, fileName);
+                    if (!Directory.Exists(pathDestinationFolder))
+                    {
+                        Directory.CreateDirectory(pathDestinationFolder);
+                    }
 
-                if (File.Exists(destinationFilePath))
-                {
+                    var fileName = Path.GetFileName(imagePath);
+                    var destinationFilePath = Path.Combine(pathDestinationFolder, fileName);
+
+                    if (File.Exists(destinationFilePath))
+                    {
+                        return destinationFilePath;
+                    }
+
+                    File.Copy(imagePath, destinationFilePath, true);
                     return destinationFilePath;
                 }
-
-                File.Copy(imagePath, destinationFilePath, true);
-                return destinationFilePath;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al guardar la imagen: " + ex.Message);
+                catch (Exception ex)
+                {
+                    throw new Exception("Error al guardar la imagen: " + ex.Message);
+                }
             }
         }
         // InstructorAdmin
 
         public static IEnumerable<Usuario> GetInstructors()
         {
-            return gymsydb.Usuarios
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                return gymsydb.Usuarios
                                  .Where(instructor => instructor.IdRol == 2)
                                  .ToList();
+            }
         }
         public static Usuario getInstructor(int pId_intructor)
         {
-            return gymsydb.Usuarios
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                return gymsydb.Usuarios
                                  .Where(instructor => instructor.IdRol == 2 && instructor.IdUsuario == pId_intructor)
                                  .First();
+            }
         }
         public static int InstructorCantClientes(Usuario instructor)
         {
-            // Obtener la cantidad de clientes suscritos a los planes del instructor
-            int cantidadClientes = gymsydb.AlumnoSuscripcions
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                // Obtener la cantidad de clientes suscritos a los planes del instructor
+                int cantidadClientes = gymsydb.AlumnoSuscripcions
                 .Where(suscripcion =>
                     gymsydb.PlanEntrenamientos
-                        .Where(plan => plan.IdEntrenador== instructor.IdUsuario)
+                        .Where(plan => plan.IdEntrenador == instructor.IdUsuario)
                         .Select(plan => plan.IdPlanEntrenamiento)
                         .Contains(suscripcion.IdPlanEntrenamiento))
                 .Select(suscripcion => suscripcion.IdAlumno)
                 .Distinct()
                 .Count();
 
-            return cantidadClientes;
+                return cantidadClientes;
+            }
 
         }
         public static decimal ingresoPorClientes(Usuario instructor)
         {
-            // Consulta para calcular el ingreso total
-            decimal ingresoTotal = gymsydb.PlanEntrenamientos
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                // Consulta para calcular el ingreso total
+                decimal ingresoTotal = gymsydb.PlanEntrenamientos
                 .Where(plan => plan.IdEntrenador == instructor.IdUsuario) // Filtrar planes por instructor
                 .Join(gymsydb.AlumnoSuscripcions,
                       plan => plan.IdPlanEntrenamiento,
@@ -337,7 +381,8 @@ namespace gymsy.App.Presenters
                       (plan, suscripcion) => new { plan.Precio }) // Unir con suscripciones y seleccionar el precio del plan
                 .Sum(x => x.Precio); // Calcular la suma del precio multiplicado por la cantidad de suscripciones
 
-            return ingresoTotal;
+                return ingresoTotal;
+            }
 
         }
 

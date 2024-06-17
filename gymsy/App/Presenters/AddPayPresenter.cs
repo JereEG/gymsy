@@ -14,51 +14,64 @@ namespace gymsy.App.Presenters
         private static NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
         public static Usuario BuscarCliente(int pIdCliente)
         {
-            return gymsydb.Usuarios
-                                .Where(client => client.IdUsuario == pIdCliente)
-                                .First();
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                return gymsydb.Usuarios
+                               .Where(client => client.IdUsuario == pIdCliente)
+                               .First();
+            }
+               
         }
         public static Usuario TraerAdmin()
         {
-            return gymsydb.Usuarios.Where(u=>u.IdRol==1).FirstOrDefault();
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                return gymsydb.Usuarios.Where(u => u.IdRol == 1).FirstOrDefault();
+            }
         }
         public static AlumnoSuscripcion suscripcionCliente(int idCliente)
         {
-            return gymsydb.AlumnoSuscripcions.FirstOrDefault(u => u.IdAlumno == idCliente);
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                return gymsydb.AlumnoSuscripcions.FirstOrDefault(u => u.IdAlumno == idCliente);
+            }
         }
         public static void AgregarPago(int pIdCliente, float pMonto)
         {
 
-            var admin = AddPayPresenter.TraerAdmin();
-            
-            //var resepcionist = this.dbContext.People.FirstOrDefault(person => person.Rol.IdRol == 4);//rol de secretaria
-            var client = AddPayPresenter.BuscarCliente(pIdCliente);
-
-
-            if (admin != null  && client != null)
+            using (var gymsydb = new NuevoGymsyContext())
             {
+                var admin = AddPayPresenter.TraerAdmin();
 
-                var newPay = new Pago
-                {
-                    FechaCreacion = DateTime.Now,
-                    Monto = (decimal)pMonto,  // Aquí debes proporcionar el monto deseado
-                    InactivoPago = false,
-                    IdUsuario = client.IdUsuario,
-                    IdTipoPago = 1
-                };
-                gymsydb.Pagos.Add(newPay);
-                gymsydb.SaveChanges();
+                //var resepcionist = this.dbContext.People.FirstOrDefault(person => person.Rol.IdRol == 4);//rol de secretaria
+                var client = AddPayPresenter.BuscarCliente(pIdCliente);
 
-                //agregar alumno suscripcion completo
-                var suscripcion = gymsydb.AlumnoSuscripcions.Where(u => u.IdAlumno == client.IdUsuario);
-                foreach(AlumnoSuscripcion sus in suscripcion)
+
+                if (admin != null && client != null)
                 {
-                    sus.FechaExpiracion =DateTime.Now.AddMonths(1);
+
+                    var newPay = new Pago
+                    {
+                        FechaCreacion = DateTime.Now,
+                        Monto = (decimal)pMonto,  // Aquí debes proporcionar el monto deseado
+                        InactivoPago = false,
+                        IdUsuario = client.IdUsuario,
+                        IdTipoPago = 1
+                    };
+                    gymsydb.Pagos.Add(newPay);
+                    gymsydb.SaveChanges();
+
+                    //agregar alumno suscripcion completo
+                    var suscripcion = gymsydb.AlumnoSuscripcions.Where(u => u.IdAlumno == client.IdUsuario);
+                    foreach (AlumnoSuscripcion sus in suscripcion)
+                    {
+                        sus.FechaExpiracion = DateTime.Now.AddMonths(1);
+                    }
+
+                    gymsydb.SaveChanges();
+                    client.UsuarioInactivo = false;
+                    gymsydb.SaveChanges();
                 }
-    
-                gymsydb.SaveChanges();
-                client.UsuarioInactivo = false;
-                gymsydb.SaveChanges();
             }
         }
 

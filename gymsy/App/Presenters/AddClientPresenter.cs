@@ -132,26 +132,26 @@ namespace gymsy.App.Presenters
             using (var gymsydb = new NuevoGymsyContext())
             { 
                 try
-            {
-                // Consulta la base de datos para verificar si ya existe un registro con el mismo 'nickname'
-                var existingPerson = gymsydb.Usuarios.FirstOrDefault(u => u.Apodo == nickname);
+                {
+                    // Consulta la base de datos para verificar si ya existe un registro con el mismo 'nickname'
+                    var existingPerson = gymsydb.Usuarios.FirstOrDefault(u => u.Apodo == nickname);
 
-                // Si 'existingPerson' no es nulo, significa que ya existe un registro con el mismo 'nickname'
-                if (existingPerson == null)
-                {
-                    return true;
+                    // Si 'existingPerson' no es nulo, significa que ya existe un registro con el mismo 'nickname'
+                    if (existingPerson == null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("El nombre de usuario ya existe");
+                        return false;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("El nombre de usuario ya existe");
+                    MessageBox.Show("Error al verificar el nombre de usuario: " + ex.Message);
                     return false;
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al verificar el nombre de usuario: " + ex.Message);
-                return false;
-            }
         }
         }
     }

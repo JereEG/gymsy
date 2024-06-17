@@ -32,7 +32,7 @@ namespace gymsy.UserControls.ClientControls
 
             //this.dbContext.TrainingPlans.ToList();
             /*
-            var client = presenter.getClient(this.person.IdPerson);
+            var client = ClientPresenter.getClient(this.person.IdPerson);
             LbName.Text = $"{this.person.LastName}, {this.person.FirstName}";
 
 

@@ -303,11 +303,11 @@ namespace gymsy.App.Presenters
                                  .Where(instructor => instructor.IdRol == 2)
                                  .ToList();
         }
-        public static IEnumerable<Usuario> getInstructor(int pId_intructor)
+        public static Usuario getInstructor(int pId_intructor)
         {
             return gymsydb.Usuarios
                                  .Where(instructor => instructor.IdRol == 2 && instructor.IdUsuario == pId_intructor)
-                                 .ToList();
+                                 .First();
         }
         public static int InstructorCantClientes(Usuario instructor)
         {

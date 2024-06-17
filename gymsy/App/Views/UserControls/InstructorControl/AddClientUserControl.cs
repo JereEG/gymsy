@@ -277,7 +277,7 @@ namespace gymsy.UserControls
                    
          
         
-                    AddClientPresenter.guardarCliente(usuario, TBNombre.Text, TBApellido.Text, TBRutaImagen.Text, Bcrypt.HashPassoword(TBContraseña.Text),
+                    AddClientPresenter.GuardarCliente(usuario, TBNombre.Text, TBApellido.Text, TBRutaImagen.Text, Bcrypt.HashPassoword(TBContraseña.Text),
                     TBTelefono.Text, DPFechaNacimiento.Value, sexo, DPVencimiento.Value, idPlan);
 
                     AppState.needRefreshClientsUserControl = true;

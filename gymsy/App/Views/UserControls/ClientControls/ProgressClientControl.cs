@@ -62,16 +62,16 @@ namespace gymsy.UserControls.ClientControls
         }
 
         public void UpdateComponent()
-        {
+        {/*
             if(AppState.auxIdClient > 0)
             {
-                Client clienteBuscado = ClientePresenter.BuscarCliente(AppState.auxIdClient);
+                Usuario clienteBuscado = ClientePresenter.BuscarCliente(AppState.auxIdClient);
 
-                int edad = DateTime.Now.Year - clienteBuscado.IdPersonNavigation.Birthday.Year;
-                TimeSpan TimeTraning = clienteBuscado.IdPersonNavigation.CreatedAt - DateTime.Now;
+                int edad = DateTime.Now.Year - clienteBuscado.FechaCreacion.Year;
+                //TimeSpan TimeTraning = clienteBuscado.IdPersonNavigation.CreatedAt - DateTime.Now;
 
-                TBDescripcionClient.Text = $"{clienteBuscado.IdPersonNavigation.FirstName + " " + clienteBuscado.IdPersonNavigation.LastName}, " +
-                $"{edad} años comenzo a enrenarse hace {TimeTraning.Days * -1} días, " +
+                TBDescripcionClient.Text = $"{clienteBuscado.Nombre + " " + clienteBuscado.Apellido}, " +
+                //$"{edad} años comenzo a enrenarse hace {TimeTraning.Days * -1} días, " +
                 $"cuenta con {clienteBuscado.DataFisics.Count()} registros guardados";
 
 
@@ -123,7 +123,7 @@ namespace gymsy.UserControls.ClientControls
                 }
             }
             
-
+            */
         }
 
         public override void Refresh()
@@ -150,6 +150,7 @@ namespace gymsy.UserControls.ClientControls
 
         private void dataGridProgress_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
+            /*
             if (e.RowIndex >= 0 && e.ColumnIndex == 2)
             {
                 // Se ha hecho clic en una celda válida
@@ -167,6 +168,7 @@ namespace gymsy.UserControls.ClientControls
                     updateProgressActive(DataFisicSelected);
                 }
             }
+            */
         }
 
         private void BtnInactiveReg_Click(object sender, EventArgs e)

@@ -30,7 +30,7 @@ namespace gymsy.App.Presenters
         {
             return gymsydb.PlanEntrenamientos.ToList();
         }
-        /*
+        
         public static void GuardarCliente(string pUsuario, string pNombre, string pApellido, string pAvatar, string pPassword, string pNumberPhone,
             string pSexo, DateTime pExpiration, int pIdPlan)
         {
@@ -65,7 +65,7 @@ namespace gymsy.App.Presenters
             // Se guarda en AppState
             AppState.clients.Add(usuario);
         }
-        */
+        
         private static string SaveImage(string imagePath)
         {
             try

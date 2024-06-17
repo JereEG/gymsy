@@ -44,7 +44,7 @@ namespace gymsy.UserControls
 
         private void InitializeData()
         {
-            if (AppState.person.Wallets.Count > 0)
+         /*   if (AppState.person.Wallets.Count > 0)
             {
                 TbAmount.Text = $"$ {AppState.person.Wallets.First().Retirable}";
                 TbTotalAmount.Text = $"$ {AppState.person.Wallets.First().Total}";
@@ -66,11 +66,11 @@ namespace gymsy.UserControls
 
             comboBoxInstructors.DataSource = new BindingSource(diccionario, null);
             comboBoxInstructors.DisplayMember = "Value";
-            comboBoxInstructors.ValueMember = "Key";
+            comboBoxInstructors.ValueMember = "Key";*/
         }
 
         private void InitializeGridTransactions()
-        {
+        {/*
             // Concatenar pagos realizados y entrantes
             if (PaysList.Count() > 0)
             {
@@ -99,21 +99,21 @@ namespace gymsy.UserControls
             {
                 PanelMsg.Visible = true;
             }
-
+            */
         }
 
         private void AddTransaction(Pay pay)
         {
             TimeSpan diferencia = (DateTime.Now - pay.FechaCreacion);
             String formart = $"Hace {diferencia.Days} dias";
-            int destinoId = pay.RemitenteId == AppState.person.IdPerson ? pay.DestinatarioId : pay.RemitenteId;
+            //int destinoId = pay.RemitenteId == AppState.person.IdPerson ? pay.DestinatarioId : pay.RemitenteId;
 
             dataGridTransactions.Rows.Add(
                 pay.IdPago,
                 formart,
                 pay.IdTipoPagoNavigation.Nombre,
                 $"$ {pay.Monto}",
-                $"Destino: {destinoId}"
+                $"Origen: {pay.IdUsuario}"
             );
 
             dataGridTransactions.Refresh();
@@ -125,10 +125,10 @@ namespace gymsy.UserControls
         }
 
         private void BtnNewTransaction_Click(object sender, EventArgs e)
-        {
+        {/*
             try
             {
-               
+              
                 // Ocultar errores anteriores
                 labelTransactionError.Visible = false;
 
@@ -192,11 +192,11 @@ namespace gymsy.UserControls
                 MessageBox.Show(ex.Message);
                 labelTransactionError.Text = "Error Inesperado";
                 labelTransactionError.Visible = true;
-            }
+            }*/
         }
 
         private void BtnNewWithdraw_Click(object sender, EventArgs e)
-        {
+        {/*
             // Ocultar errores anteriores
             labelErrorWithdraw.Visible = false;
 
@@ -232,7 +232,7 @@ namespace gymsy.UserControls
             }
 
             PanelInvoiceWallet.Visible = true;
-        }
+        */}
 
         private bool CheckAvailableMoney(float money = 0)
         {

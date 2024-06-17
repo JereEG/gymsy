@@ -55,7 +55,7 @@ namespace gymsy.App.Presenters
 
             try
             {
-                // Filtrar Usuarios con el rol de Cliente (IdRol == 3) y IDs en pIdsPlanesInstructor
+                /*
                 var filteredUsuarios = gymsydb.AlumnoSuscripcions
                     .Where(alumSub => alumSub.IdAlumnoNavigation != null
                                       && alumSub.IdPlanEntrenamientoNavigation != null
@@ -81,6 +81,8 @@ namespace gymsy.App.Presenters
                                  join sus in activeSubscriptions on usuario.IdUsuario equals sus.IdAlumno
                                  join plan in activePlans on sus.IdPlanEntrenamiento equals plan.IdPlanEntrenamiento
                                  select usuario).Distinct().ToList();
+                */
+                activeClients = ProcedimientoAlmacenado.ObtenerAlumnosActivosPorEntrenador(9);
             }
             catch (NullReferenceException ex)
             {

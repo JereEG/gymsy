@@ -17,19 +17,31 @@ namespace gymsy.App.Presenters
 
         public static PlanEntrenamiento TraerPrimerPlan()
         {
-            return gymsydb.PlanEntrenamientos.FirstOrDefault();
+            using (var dbContext = new NuevoGymsyContext())
+            {
+                return dbContext.PlanEntrenamientos.FirstOrDefault();
+            }
+                
         }
 
         public static PlanEntrenamiento BuscarPlan(int pIdPlanBuscado)
         {
-            return gymsydb.PlanEntrenamientos
+            using (var dbContext = new NuevoGymsyContext())
+            {
+                return dbContext.PlanEntrenamientos
                     .Where(plan => plan.IdPlanEntrenamiento == pIdPlanBuscado)
                     .First();
+            }
         }
 
         public static List<PlanEntrenamiento> TraerPlanes()
         {
-            return gymsydb.PlanEntrenamientos.ToList();
+            using (var dbContext = new NuevoGymsyContext())
+            {
+                return dbContext.PlanEntrenamientos.ToList();
+
+            }
+                
         }
         
         public static void GuardarCliente(string pUsuario, string pNombre, string pApellido, string pAvatar, string pPassword, string pNumberPhone,
@@ -106,7 +118,9 @@ namespace gymsy.App.Presenters
         }
         public static bool IsNicknameUnique(string nickname)
         {
-            try
+            using (var dbContext = new NuevoGymsyContext())
+            { 
+                try
             {
                 // Consulta la base de datos para verificar si ya existe un registro con el mismo 'nickname'
                 var existingPerson = gymsydb.Usuarios.FirstOrDefault(u => u.Apodo == nickname);
@@ -127,6 +141,7 @@ namespace gymsy.App.Presenters
                 MessageBox.Show("Error al verificar el nombre de usuario: " + ex.Message);
                 return false;
             }
+        }
         }
     }
 }

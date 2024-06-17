@@ -12,7 +12,7 @@ namespace gymsy.App.Presenters
 {
     internal static class ClientePresenter
     {
-        private static gymsy.Models.NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
+        private static NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
 
 
 
@@ -36,14 +36,61 @@ namespace gymsy.App.Presenters
             }
 
         }
-       public static List<PlanEntrenamiento> buscarPlanesInstructor(int pIdInstructor)
+        public static List<PlanEntrenamiento> BuscarPlanesInstructor(int pIdInstructor)
         {
-            // Obtener todos los planes de entrenamiento del instructor actual
-            return gymsydb.PlanEntrenamientos
-                .Where(plan => plan.IdEntrenador == pIdInstructor)
-                .Include(plan => plan.AlumnoSuscripcions)
-                .ToList();
+            try
+            {
+                // Inicializa un nuevo contexto de base de datos
+                using (var dbContext = new NuevoGymsyContext())
+                {
+                    // Obtener todos los planes de entrenamiento del instructor actual
+                    var planes = dbContext.PlanEntrenamientos
+                                          .Where(plan => plan.IdEntrenador == pIdInstructor)
+                                          .ToList();
+
+                    if (planes == null || planes.Count == 0)
+                    {
+                        Console.WriteLine("No se encontraron planes para el instructor con ID: " + pIdInstructor);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Se encontraron " + planes.Count + " planes para el instructor con ID: " + pIdInstructor);
+                    }
+
+                    return planes;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al buscar planes de entrenamiento: " + ex.Message);
+
+                // Registrar la excepción en el archivo de log
+                LogException(ex, pIdInstructor);
+
+                return new List<PlanEntrenamiento>();
+            }
         }
-       
+
+        private static void LogException(Exception ex, int pIdInstructor)
+        {
+            // Define la ruta completa del archivo de log
+            string logFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs", "error_log.txt");
+
+            // Crea el directorio si no existe
+            Directory.CreateDirectory(Path.GetDirectoryName(logFilePath));
+
+            // Escribe en el archivo de log
+            using (StreamWriter writer = new StreamWriter(logFilePath, true))
+            {
+                writer.WriteLine("--------------------------------------------------");
+                writer.WriteLine($"Fecha: {DateTime.Now}");
+                writer.WriteLine($"Instructor ID: {pIdInstructor}");
+                writer.WriteLine($"Mensaje de error: {ex.Message}");
+                writer.WriteLine($"Detalles de la excepción: {ex.ToString()}");
+            }
+        }
+
+
+
     }
 }

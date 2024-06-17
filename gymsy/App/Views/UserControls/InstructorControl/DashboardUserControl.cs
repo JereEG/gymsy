@@ -41,7 +41,7 @@ namespace gymsy.UserControls
         {
             // Busca la serie existente por su nombre
             Series series = chartInstructor.Series.FindByName("Ganancia");
-
+            /*
             if (series != null)
             {
                 // Limpia la serie (elimina todos los puntos de datos actuales)
@@ -68,12 +68,14 @@ namespace gymsy.UserControls
                     }
                 }
             }
+            */
         }
 
         public void InitializeGrid()
         {
             try
             {
+                /*
                 List<int> ListIdPlans = new List<int>();
 
                 foreach (PlanEntrenamiento plan in AppState.Instructor.PlanEntrenamientos)
@@ -82,6 +84,7 @@ namespace gymsy.UserControls
                 }
 
                 var ClientsFound = DashboardInstructorPresenter.BuscarClientesActivosDelInstructor(ListIdPlans);
+
                 if (ClientsFound != null)
                 {
 
@@ -100,6 +103,7 @@ namespace gymsy.UserControls
                         }
                     }
                 }
+                */
             }
             catch (Exception ex)
             {

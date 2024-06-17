@@ -103,7 +103,7 @@ namespace gymsy.UserControls
 
 
             // Obtener todos los planes de entrenamiento del instructor actual
-            var planesEntrenamiento = ClientePresenter.buscarPlanesInstructor(AppState.Instructor.IdUsuario);
+            var planesEntrenamiento = ClientePresenter.BuscarPlanesInstructor(AppState.Instructor.IdUsuario);
 
                 foreach (var plan in planesEntrenamiento)
                 {

@@ -45,6 +45,45 @@ namespace gymsy.Models
                 dbContext.Database.CloseConnection();
             }
         }
+        public static List<Usuario> ObtenerAlumnosActivosPorEntrenador(int idEntrenador)
+        {
+            var alumnos = new List<Usuario>();
+            var command = dbContext.Database.GetDbConnection().CreateCommand();
+            command.CommandText = "ObtenerAlumnosActivosPorEntrenador";
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.Add(new SqlParameter("@id_entrenador", idEntrenador));
+
+            dbContext.Database.OpenConnection();
+            try
+            {
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var alumno = new Usuario
+                        {
+                            IdUsuario = reader.GetInt32(reader.GetOrdinal("id_alumno")),
+                            Apodo = reader.GetString(reader.GetOrdinal("apodo")),
+                            Nombre = reader.GetString(reader.GetOrdinal("nombre")),
+                            Apellido = reader.GetString(reader.GetOrdinal("apellido")),
+                            AvatarUrl = reader.GetString(reader.GetOrdinal("avatar_url")),
+                            FechaNacimiento = reader.GetDateTime(reader.GetOrdinal("fecha_nacimiento")),
+                            NumeroTelefono = reader.GetString(reader.GetOrdinal("numero_telefono")),
+                            Sexo = reader.GetString(reader.GetOrdinal("sexo")),
+                            UsuarioInactivo = reader.GetBoolean(reader.GetOrdinal("usuario_inactivo"))
+                        };
+                        alumnos.Add(alumno);
+                    }
+                }
+            }
+            finally
+            {
+                dbContext.Database.CloseConnection();
+            }
+
+            return alumnos;
+        }
         public static void CrearPlanEntrenamiento(int idUsuarioInstructor, decimal precio, string descripcion)
         {
             var command = dbContext.Database.GetDbConnection().CreateCommand();

@@ -34,7 +34,7 @@ namespace gymsy.App.Presenters
         public static void GuardarCliente(string pUsuario, string pNombre, string pApellido, string pAvatar, string pPassword, string pNumberPhone,
             string pSexo, DateTime pFechaNacimiento, DateTime pExpiration, int pIdPlan)
         {
-            Usuario usuario = new Usuario
+            Usuario usuario = new Usuario(3)
             {
                 Apodo = pUsuario,
                 Nombre = pNombre,
@@ -44,7 +44,7 @@ namespace gymsy.App.Presenters
                 FechaCreacion = DateTime.Now,
                 NumeroTelefono = pNumberPhone,
                 Sexo = pSexo,
-                IdRol = 3, // 3 es el rol de cliente
+                //IdRol = 3, // 3 es el rol de cliente
                 UsuarioInactivo = true // ya que aun no ha pagado
             };
 

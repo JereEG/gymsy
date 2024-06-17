@@ -29,8 +29,8 @@ namespace gymsy.UserControls
         {
             if (AppState.person != null)
             {
-                this.PaysList = AppState.person.PayDestinatarios.ToArray()
-                   .Concat(AppState.person.PayRemitentes.ToArray());
+
+                this.PaysList = ControlPagosAlumnoPresenter.listarTodasTransferencias(AppState.person.IdUsuario);
             }
 
             if (this.PaysList.Count() > 0)
@@ -38,9 +38,13 @@ namespace gymsy.UserControls
                 PanelMsg.Visible = false;
                 foreach (Pago pay in this.PaysList)
                 {
-                    TimeSpan diferencia = (DateTime.Now - pay.FechaCreacion);
-                    String formart = $"Hace {diferencia.Days} dias";
-                    String descripcion = pay.DestinatarioId == AppState.person.IdUsuario ? $"Recibiste" : $"Pagaste";
+                    TimeSpan diferencia = DateTime.Now - pay.FechaCreacion;
+                    string formart = $"Hace {diferencia.Days} días";
+
+                    // Determinar si el pago fue recibido o realizado
+                    //string descripcion = pay.CbuDestino == AppState.person.Cbu ? "Recibiste" : "Pagaste";
+                    string descripcion = "Pendiente!";
+                    // Añadir la fila al DataGridView
                     dataGridPayments.Rows.Add(pay.IdPago, formart, pay.IdTipoPagoNavigation.Nombre, pay.Monto, descripcion);
                 }
             }

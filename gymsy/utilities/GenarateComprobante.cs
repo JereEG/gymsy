@@ -143,8 +143,8 @@ namespace gymsy.utilities
                 ";
 
             contenidoHTML = contenidoHTML.Replace("[Fecha]", Pay.FechaCreacion.ToString("dd/MM/yyyy"))
-                                        .Replace("[Remitente]", $"{Pay.Remitente.LastName + ", " + Pay.Remitente.FirstName}")
-                                         .Replace("[Destinatario]", $"{Pay.Destinatario.LastName + ", " + Pay.Destinatario.FirstName}")
+                                        .Replace("[Remitente]", $"{Pay.IdUsuarioNavigation.Nombre + ", " + Pay.IdUsuarioNavigation.Nombre}")
+                                         .Replace("[Destinatario]", $"{Pay.IdUsuarioNavigation.Apellido + ", " + Pay.IdUsuarioNavigation.Apellido}")
                                         .Replace("[Type]", Pay.IdTipoPagoNavigation.Nombre)
                                         .Replace("[Amount]", Pay.Monto.ToString());
 

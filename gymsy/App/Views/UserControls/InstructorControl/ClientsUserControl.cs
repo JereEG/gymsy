@@ -29,7 +29,7 @@ namespace gymsy.UserControls
          */
         private bool isModeVerNoDelete = true;
 
-        private List<Client> clients = new List<Client>();
+        private List<Usuario> clients = new List<Usuario>();
 
 
         public ClientsUserControl()
@@ -58,7 +58,7 @@ namespace gymsy.UserControls
 
                 int IdClientSelected = int.Parse(DGUsers.Rows[rowIndex].Cells["IdClient"].Value.ToString());
 
-                var clientSelected = ClientePresenter.BuscarCliente(IdClientSelected);
+                var clientSelected = ControlAlumnosPresenter.BuscarCliente(IdClientSelected);
 
 
 
@@ -335,7 +335,7 @@ namespace gymsy.UserControls
                     */
                     int idClient = int.Parse(DGUsers.Rows[this.indexRowSelect].Cells["IdClient"].Value.ToString());
 
-                    ClientePresenter.EliminarOActivarCliente(idClient, deleteOrActive);
+                    ControlAlumnosPresenter.EliminarOActivarCliente(idClient, deleteOrActive);
 
                     //Se actualiza el datagrid con el 
                     this.mostrar(!this.isModeVerNoDelete);

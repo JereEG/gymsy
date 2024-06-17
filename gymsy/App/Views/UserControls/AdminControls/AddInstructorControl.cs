@@ -23,12 +23,11 @@ namespace gymsy.UserControls.AdminControls
     {
         private bool isEditMode = false; // Variable para saber si se esta editando o agregando 
 
-        private AdminPresenter presenter;
         public AddInstructorControl()
         {
 
             InitializeComponent();
-            presenter = new AdminPresenter();
+          
         }
 
         private void BGuardarCliente_Click(object sender, EventArgs e)
@@ -40,22 +39,22 @@ namespace gymsy.UserControls.AdminControls
             string usuario = TBUsuario.Text;
             string contraseña = Bcrypt.HashPassoword(TBContraseña.Text);
             string nameImagen = SaveImage(TBRutaImagen.Text);
-            DateTime birthday = DPFechaNacimiento.Value;
+            DateTime fecha_cumpleanos = DPFechaNacimiento.Value;
             string sexo = RBMasculino.Checked?"M":"F";
 
 
-            this.guardarInstructor(nombre, apellido, telefono, usuario, contraseña, nameImagen, sexo, birthday);
+            this.guardarInstructor(nombre, apellido, telefono, usuario, contraseña, nameImagen, sexo, fecha_cumpleanos);
             
         }
 
-        private void guardarInstructor(string nombre,string apellido,string telefono,string usuario,string contraseña, string nameImagen,string sexo,DateTime birthday)
+        private void guardarInstructor(string nombre,string apellido,string telefono,string usuario,string contraseña, string nameImagen,string sexo,DateTime fecha_cumpleanos)
         {
             try
             { //Se verifica que se hayan ingresado todos los datos
                 bool isValidTextBoxes = isValidTextsBoxesMostrarError();
                 if (isValidTextBoxes)
                 {
-                    presenter.GuardarInstructor(nombre, apellido, telefono, usuario, contraseña, nameImagen, sexo, birthday);
+                    AdminPresenter.GuardarInstructor(nombre, apellido, telefono, usuario, contraseña, nameImagen, sexo, fecha_cumpleanos);
 
                     AppState.needRefreshClientsUserControl = true;
                     MessageBox.Show("Se Guardaron correcctamente los datos");
@@ -241,7 +240,7 @@ namespace gymsy.UserControls.AdminControls
         }
         private bool IsNicknameUnique(string nickname)
         {
-           return  presenter.NicknameUnique(nickname);
+           return AdminPresenter.NicknameUnique(nickname);
 
         }
         public override void Refresh()

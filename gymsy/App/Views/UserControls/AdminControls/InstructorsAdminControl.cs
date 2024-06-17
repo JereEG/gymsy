@@ -19,13 +19,13 @@ namespace gymsy.UserControls.AdminControls
         private GymsyContext dbContext;
         private int indexRowSelect = 0;
         private bool isModeVerNoDelete = true;
-        private AdminPresenter presenter;
+       
         public InstructorsAdminControl()
         {
             //Se trae el contexto de la base de datos
 
             InitializeComponent();
-            presenter=new AdminPresenter();
+          
             this.cargarPersonas();
             //se muestran los activos
             this.mostrar(false);
@@ -43,42 +43,42 @@ namespace gymsy.UserControls.AdminControls
             DGInstructors.Sort(DGInstructors.Columns[0], ListSortDirection.Ascending);
 
 
-            var instructors = presenter.GetInstructors();
+            var instructors = AdminPresenter.GetInstructors();
             int cantidad_clientes = 0;
-            double ingreso = 0.0;
+            decimal ingreso = 0.0m;
 
             foreach (var instructor in instructors)
             {
 
                 //Deben ser los activos, y en un cierto periodo
                
-                cantidad_clientes = presenter.InstructorCantClientes(instructor);
-                ingreso = presenter.ingresoClientes(instructor);
+                cantidad_clientes = AdminPresenter.InstructorCantClientes(instructor);
+                ingreso = AdminPresenter.ingresoPorClientes(instructor);
                 
                 try
                 {
-                    string ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageInstructor + "\\" + instructor.IdPersonNavigation.Avatar;
+                    string ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageInstructor + "\\" + instructor.AvatarUrl;
 
 
                     DGInstructors.Rows.Add(
                     System.Drawing.Image.FromFile(ruta),
-                    instructor.IdPersonNavigation.FirstName + " " + instructor.IdPersonNavigation.LastName,
-                    instructor.IdPersonNavigation.NumberPhone,
+                    instructor.Nombre + " " + instructor.Apellido,
+                    instructor.NumeroTelefono,
                     cantidad_clientes,
                     ingreso,
-                    instructor.IdInstructor,
-                    instructor.IdPersonNavigation.Inactive);
+                    instructor.IdUsuario,
+                    instructor.UsuarioInactivo);
                 }
                 catch (Exception e)
                 {
                     DGInstructors.Rows.Add(
                     Resources.instructor,
-                    instructor.IdPersonNavigation.FirstName + " " + instructor.IdPersonNavigation.LastName,
-                    instructor.IdPersonNavigation.NumberPhone,
+                    instructor.Nombre + " " + instructor.Apellido,
+                    instructor.NumeroTelefono,
                     cantidad_clientes,
                     ingreso,
-                    instructor.IdInstructor,
-                    instructor.IdPersonNavigation.Inactive);
+                    instructor.IdUsuario,
+                    instructor.UsuarioInactivo);
                 }
             }
 
@@ -182,7 +182,7 @@ namespace gymsy.UserControls.AdminControls
 
                 int idInstructorSelected = int.Parse(DGInstructors.Rows[this.indexRowSelect].Cells["id_instructor"].Value.ToString());
 
-                var instructorSelected = presenter.getInstructor(idInstructorSelected);
+                var instructorSelected = AdminPresenter.getInstructor(idInstructorSelected);
 
                 AppState.InstructorActive = instructorSelected;
                 AppState.isModeEdit = true;

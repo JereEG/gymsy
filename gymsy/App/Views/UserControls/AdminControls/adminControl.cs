@@ -19,18 +19,19 @@ namespace gymsy.App.Views.UserControls.AdminControls
     public partial class adminControl : UserControl
     {
 
-        private AdminPresenter presenter;
+       
         public adminControl()
         {
-            presenter = new AdminPresenter();
+          
             InitializeComponent();
         }
 
         private void BAgregarCliente_Click(object sender, EventArgs e)
         {
+            
             try
             {
-                string ruta=presenter.backup();
+                string ruta = AdminPresenter.Backup();
                 
                 MessageBox.Show($"Copia de seguridad creada exitosamente.\nLo puede encontrar en {ruta}", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -38,17 +39,17 @@ namespace gymsy.App.Views.UserControls.AdminControls
             {
                 MessageBox.Show("Error al crear la copia de seguridad: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
+            
         }
 
 
         public void RealizarRestauracion(string backupPath)
         {
             
-
+            
             try
             {
-                presenter.restore(backupPath);
+                AdminPresenter.Restore(backupPath);
                 
 
                 MessageBox.Show("Restauración completada con éxito.");
@@ -57,11 +58,12 @@ namespace gymsy.App.Views.UserControls.AdminControls
             {
                 MessageBox.Show("Error al restaurar la base de datos: " + ex.Message);
             }
+            
         }
 
         private void BBuscarArchivo_Click_1(object sender, EventArgs e)
         {
-            TBRutaArchivo.Text= presenter.buscar();
+           TBRutaArchivo.Text= AdminPresenter.Buscar();
         }
 
         private void rjButton1_Click(object sender, EventArgs e)

@@ -52,7 +52,7 @@ namespace gymsy.App.Presenters
             }
             else
             {
-                DataFisicModel.IdAlumnoSuscripcionNavigation.IdUsuario = AppState.ClientActive.IdClient;
+                DataFisicModel.IdAlumnoSuscripcionNavigation.IdUsuario = AppState.ClientActive.IdUsuario;
             }
 
             DataFisicModel.EstadoFisicoInactivo = false;    

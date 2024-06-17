@@ -19,35 +19,32 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace gymsy.App.Presenters
 {
-    internal class AdminPresenter
+    internal static class AdminPresenter
     {
-        private bool isEditMode = false; // Variable para saber si se está editando o agregando 
+        private static bool isEditMode = false; // Variable para saber si se está editando o agregando 
 
-        private GymsyContext dbContext;
+        private static GymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
 
-        public AdminPresenter()
-        {
-            this.dbContext = StacticGymsyContext.GymsyContextDB;
-        }
+       
 
         // Método para agregar un nuevo usuario (Instructor)
-        public void GuardarInstructor(string nombre, string apellido, string telefono, string usuario, string contraseña, string nameImage, string sexo)
+        public static void GuardarInstructor(string nombre, string apellido, string telefono, string usuario, string contraseña, string nameImage, string sexo, DateTime pfecha_cumpleanos)
         {
             ProcedimientoAlmacenado.CrearInstructor(usuario, nombre, apellido, nameImage, contraseña, telefono, sexo);
         }
 
         // Método para obtener un usuario por su ID
-        public Usuario GetUsuario(int idUsuario)
+        public static Usuario GetUsuario(int idUsuario)
         {
-            return dbContext.Usuarios.FirstOrDefault(u => u.IdUsuario == idUsuario);
+            return gymsydb.Usuarios.FirstOrDefault(u => u.IdUsuario == idUsuario);
         }
 
         // Método para verificar si el nickname es único
-        public bool NicknameUnique(string nickname)
+        public static bool NicknameUnique(string nickname)
         {
             try
             {
-                var existingUsuario = dbContext.Usuarios.FirstOrDefault(u => u.Apodo == nickname);
+                var existingUsuario = gymsydb.Usuarios.FirstOrDefault(u => u.Apodo == nickname);
                 if (existingUsuario == null)
                 {
                     return true;
@@ -66,7 +63,7 @@ namespace gymsy.App.Presenters
         }
 
         // Método para crear un backup de la base de datos
-        public string Backup()
+        public static string Backup()
         {
             string rutaDeCopiaDeSeguridad = "C:\\backup";
             if (!Directory.Exists(rutaDeCopiaDeSeguridad))
@@ -89,7 +86,7 @@ namespace gymsy.App.Presenters
         }
 
         // Método para restaurar la base de datos desde un backup
-        public void Restore(string backupPath)
+        public static void Restore(string backupPath)
         {
             string databaseName = "gymsy";
             string connectionString = Resources.stringConnection;
@@ -116,7 +113,7 @@ namespace gymsy.App.Presenters
         }
 
         // Método para seleccionar un archivo de backup
-        public string Buscar()
+        public static string Buscar()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
@@ -143,9 +140,9 @@ namespace gymsy.App.Presenters
         }
 
         // Métodos relacionados con pagos y suscripciones
-        public IEnumerable<object> Pays()
+        public static IEnumerable<object> Pays()
         {
-            return dbContext.Pagos
+            return gymsydb.Pagos
                  .GroupBy(p => new { Mes = p.FechaCreacion.Month, Anio = p.FechaCreacion.Year })
                  .Select(g => new
                  {
@@ -161,9 +158,9 @@ namespace gymsy.App.Presenters
                  .ToArray();
         }
 
-        public System.Windows.Forms.DataVisualization.Charting.Series Mes(List<string> listMonth, System.Windows.Forms.DataVisualization.Charting.Series series)
+        public static System.Windows.Forms.DataVisualization.Charting.Series Mes(List<string> listMonth, System.Windows.Forms.DataVisualization.Charting.Series series)
         {
-            var resultado = dbContext.Pagos
+            var resultado = gymsydb.Pagos
                 .GroupBy(p => new { Mes = p.FechaCreacion.Month, Anio = p.FechaCreacion.Year })
                 .Select(g => new
                 {
@@ -189,9 +186,9 @@ namespace gymsy.App.Presenters
             return series;
         }
 
-        public DataGridView DatagridPay(DataGridView dataGridPays)
+        public static DataGridView DatagridPay(DataGridView dataGridPays)
         {
-            var ultimosPagos = dbContext.Pagos
+            var ultimosPagos = gymsydb.Pagos
             .OrderByDescending(p => p.FechaCreacion)
             .Take(5)
             .Include(p => p.IdUsuario)
@@ -209,9 +206,9 @@ namespace gymsy.App.Presenters
             return dataGridPays;
         }
 
-        public System.Windows.Forms.DataVisualization.Charting.Series InstructorCant(System.Windows.Forms.DataVisualization.Charting.Series series)
+        public static System.Windows.Forms.DataVisualization.Charting.Series InstructorCant(System.Windows.Forms.DataVisualization.Charting.Series series)
         {
-            var resultado = dbContext.PlanEntrenamientos
+            var resultado = gymsydb.PlanEntrenamientos
                     .Where(plan => plan.IdUsuarioNavigation.IdRol == 2)
                     .Select(plan => new
                     {
@@ -232,12 +229,12 @@ namespace gymsy.App.Presenters
         }
 
         // Método para actualizar un usuario (Instructor)
-        public void PersonUpdated(string nombre, string apellido, string telefono, string usuario, string contraseña, string rutaImagen, bool masculino, DateTime fechaNacimiento)
+        public static void PersonUpdated(string nombre, string apellido, string telefono, string usuario, string contraseña, string rutaImagen, bool masculino, DateTime fechaNacimiento)
         {
             try
             {
-                var usuarioActualizado = dbContext.Usuarios
-                           .Where(u => u.IdUsuario == AppState.InstructorActive.IdInstructor)
+                var usuarioActualizado = gymsydb.Usuarios
+                           .Where(u => u.IdUsuario == AppState.InstructorActive.IdUsuario)
                            .FirstOrDefault();
 
                 string sexo = masculino ? "M" : "F";
@@ -259,7 +256,7 @@ namespace gymsy.App.Presenters
                     usuarioActualizado.NumeroTelefono = telefono;
                     usuarioActualizado.Sexo = sexo;
 
-                    dbContext.SaveChanges();
+                    gymsydb.SaveChanges();
 
                     MessageBox.Show("Se editaron correctamente los datos");
                 }
@@ -298,5 +295,51 @@ namespace gymsy.App.Presenters
                 throw new Exception("Error al guardar la imagen: " + ex.Message);
             }
         }
+        // InstructorAdmin
+
+        public static IEnumerable<Usuario> GetInstructors()
+        {
+            return gymsydb.Usuarios
+                                 .Where(instructor => instructor.IdRol == 2)
+                                 .ToList();
+        }
+        public static IEnumerable<Usuario> getInstructor(int pId_intructor)
+        {
+            return gymsydb.Usuarios
+                                 .Where(instructor => instructor.IdRol == 2 && instructor.IdUsuario == pId_intructor)
+                                 .ToList();
+        }
+        public static int InstructorCantClientes(Usuario instructor)
+        {
+            // Obtener la cantidad de clientes suscritos a los planes del instructor
+            int cantidadClientes = gymsydb.AlumnoSuscripcions
+                .Where(suscripcion =>
+                    gymsydb.PlanEntrenamientos
+                        .Where(plan => plan.IdUsuario == instructor.IdUsuario)
+                        .Select(plan => plan.IdPlanEntrenamiento)
+                        .Contains(suscripcion.IdPlanEntrenamiento))
+                .Select(suscripcion => suscripcion.IdUsuario)
+                .Distinct()
+                .Count();
+
+            return cantidadClientes;
+
+        }
+        public static decimal ingresoPorClientes(Usuario instructor)
+        {
+            // Consulta para calcular el ingreso total
+            decimal ingresoTotal = gymsydb.PlanEntrenamientos
+                .Where(plan => plan.IdUsuario == instructor.IdUsuario) // Filtrar planes por instructor
+                .Join(gymsydb.AlumnoSuscripcions,
+                      plan => plan.IdPlanEntrenamiento,
+                      suscripcion => suscripcion.IdPlanEntrenamiento,
+                      (plan, suscripcion) => new { plan.Precio }) // Unir con suscripciones y seleccionar el precio del plan
+                .Sum(x => x.Precio); // Calcular la suma del precio multiplicado por la cantidad de suscripciones
+
+            return ingresoTotal;
+
+        }
+
+
     }
 }

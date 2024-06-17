@@ -20,11 +20,10 @@ namespace gymsy.UserControls.AdminControls
     {
         private bool isEditMode = false; // Variable para saber si se esta editando o agregando 
 
-        private AdminPresenter presenter;
         public EditInstructor()
         {
             InitializeComponent();
-            presenter = new AdminPresenter();
+
         }
         public override void Refresh()
         {
@@ -104,8 +103,8 @@ namespace gymsy.UserControls.AdminControls
         }
         private void actualizarInstructor()
         {
-            
-                presenter.personUpdated(TBNombre.Text, TBApellido.Text, TBTelefono.Text, TBUsuario.Text, TBContraseña.Text,TBRutaImagen.Text,RBMasculino.Checked, DPFechaNacimiento.Value);
+
+            AdminPresenter.PersonUpdated(TBNombre.Text, TBApellido.Text, TBTelefono.Text, TBUsuario.Text, TBContraseña.Text,TBRutaImagen.Text,RBMasculino.Checked, DPFechaNacimiento.Value);
     
 
         }
@@ -274,7 +273,7 @@ namespace gymsy.UserControls.AdminControls
                     // Consulta la base de datos para verificar si ya existe un registro con el mismo 'nickname'
 
                     
-                    var existingPerson = presenter.NicknameUnique(nickname);
+                    var existingPerson = AdminPresenter.NicknameUnique(nickname);
                     // Si 'existingPerson' no es nulo, significa que ya existe un registro con el mismo 'nickname'
                     if (existingPerson == null)
                     {

@@ -39,16 +39,19 @@ namespace gymsy.App.Presenters
         private void  inactivarClientes()
         {
             
-            var clients = this.gymsydb.Usuarios.Where(u=>u.IdRol==3).ToList();
             var persons = this.gymsydb.Usuarios.ToList();
             
-            foreach(Usuario cliente in clients)
+            foreach(Usuario cliente in persons)
             {
-                var sus = this.gymsydb.AlumnoSuscripcions.Where(s => s.IdAlumno == cliente.IdUsuario).FirstOrDefault();
-                if (sus.FechaExpiracion < DateTime.Now)
+                var sus = this.gymsydb.AlumnoSuscripcions.Where(s => s.IdUsuario == cliente.IdUsuario).FirstOrDefault();
+                if(sus != null)
                 {
-                    cliente.UsuarioInactivo = true;
+                    if (sus.FechaExpiracion < DateTime.Now)
+                    {
+                        cliente.UsuarioInactivo = true;
+                    }
                 }
+
             }
         }
 

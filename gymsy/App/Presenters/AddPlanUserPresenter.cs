@@ -16,12 +16,12 @@ namespace gymsy.App.Presenters
 
         public static List<PlanEntrenamiento> listarPlanesInstructor()
         {
-            using (var dbContext = new NuevoGymsyContext())
+            using (var gymsydb=new NuevoGymsyContext())
             {
-                return dbContext.PlanEntrenamientos
-               .Where(p => p.IdEntrenadorNavigation.IdRol == 2).ToList();
+                return gymsydb.PlanEntrenamientos
+                    .Where(p => p.IdEntrenadorNavigation.IdRol == 2).ToList();
             }
-               
+                
         }
 
         public static void modificarPlan(int pidPlan, string pDescripcion, decimal pPrecio)
@@ -42,7 +42,7 @@ namespace gymsy.App.Presenters
             plan.Descripcion = pDescripcion;
             plan.Precio = pPrecio;
             plan.PlanEntrenamientoInactivo = false;
-            plan.IdEntrenador = AppState.Instructor.IdUsuario;
+            plan.IdUsuario = AppState.Instructor.IdUsuario;
 
             gymsydb.PlanEntrenamientos.Add(plan);
             gymsydb.SaveChanges();
@@ -79,19 +79,13 @@ namespace gymsy.App.Presenters
         }
         public static PlanEntrenamiento buscarPlan(int pidPlan)
         {
-            return gymsydb.PlanEntrenamientos.Where(p => p.IdPlanEntrenamiento == pidPlan).FirstOrDefault();
-        }
-        /*
-        public static Usuario buscarInstructorDelPlan(int pIdInstructor)
-        {
-            using (var dbContext = new NuevoGymsyContext())
+            using (var gymsydb=new NuevoGymsyContext())
             {
-                return dbContext.Usuarios
-                    .Where(p => p.IdRol == 3 &&  pidInstructor).FirstOrDefault();
+                return gymsydb.PlanEntrenamientos.Where(p => p.IdPlanEntrenamiento == pidPlan).FirstOrDefault();
             }
-
+               
         }
-        */
+
 
     }
 }

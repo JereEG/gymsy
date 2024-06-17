@@ -17,18 +17,17 @@ namespace gymsy.App.Presenters
 
         public static PlanEntrenamiento TraerPrimerPlan()
         {
-            using (var dbContext = new NuevoGymsyContext())
+            using (var gymsydb = new NuevoGymsyContext())
             {
-                return dbContext.PlanEntrenamientos.FirstOrDefault();
+                return gymsydb.PlanEntrenamientos.FirstOrDefault();
             }
-                
         }
 
         public static PlanEntrenamiento BuscarPlan(int pIdPlanBuscado)
         {
-            using (var dbContext = new NuevoGymsyContext())
+            using (var gymsydb = new NuevoGymsyContext())
             {
-                return dbContext.PlanEntrenamientos
+                return gymsydb.PlanEntrenamientos
                     .Where(plan => plan.IdPlanEntrenamiento == pIdPlanBuscado)
                     .First();
             }
@@ -36,12 +35,10 @@ namespace gymsy.App.Presenters
 
         public static List<PlanEntrenamiento> TraerPlanes()
         {
-            using (var dbContext = new NuevoGymsyContext())
+            using (var gymsydb = new NuevoGymsyContext())
             {
-                return dbContext.PlanEntrenamientos.ToList();
-
+                return gymsydb.PlanEntrenamientos.ToList();
             }
-                
         }
         
         public static void GuardarCliente(string pUsuario, string pNombre, string pApellido, string pAvatar, string pPassword, string pNumberPhone,
@@ -67,7 +64,7 @@ namespace gymsy.App.Presenters
 
             AlumnoSuscripcion suscripcion = new AlumnoSuscripcion
             {
-                IdAlumno = usuario.IdUsuario,
+                IdUsuario = usuario.IdUsuario,
                 IdPlanEntrenamiento = pIdPlan,
                 FechaExpiracion = pExpiration
             };
@@ -114,7 +111,17 @@ namespace gymsy.App.Presenters
         }
         public static List<Usuario> getUsuarios(int idUsuario)
         {
-            return (List<Usuario>)gymsydb.Usuarios.Where(u => u.IdUsuario == idUsuario);
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                return (List<Usuario>)gymsydb.Usuarios.Where(u => u.IdUsuario == idUsuario);
+            }
+        }
+        public static Usuario getUsuario(int idUsuario)
+        {
+            using (var gymsydb=new NuevoGymsyContext())
+            {
+                return gymsydb.Usuarios.FirstOrDefault(u => u.IdUsuario == idUsuario);
+            }
         }
         public static bool IsNicknameUnique(string nickname)
         {

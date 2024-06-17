@@ -112,7 +112,7 @@ namespace gymsy.UserControls
 
                     foreach (var suscripcion in alumnosSuscripciones)
                     {
-                    var alumno = ClientePresenter.BuscarCliente(suscripcion.IdAlumno);
+                    var alumno = ClientePresenter.BuscarCliente(suscripcion.IdUsuario);
                        
                         if (alumno != null)
                         {

@@ -153,10 +153,10 @@ namespace gymsy.UserControls
                 Pay ModelPay = new Pay();
                 ModelPay.FechaCreacion = DateTime.Now;
                 ModelPay.Monto =(decimal) double.Parse(TbAmountTran.Text);
-                ModelPay.RemitenteId = AppState.person.IdUsuario;
+                ModelPay.IdUsuario = AppState.person.IdUsuario;
                 ModelPay.IdTipoPago = 1;
                 ModelPay.InactivoPago = false;
-                ModelPay.DestinatarioId = int.Parse(comboBoxInstructors.SelectedValue.ToString());
+               
 
 
                 // Resta monto de billetera

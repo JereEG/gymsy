@@ -99,7 +99,10 @@ namespace gymsy.App.Presenters
                 return "";
             }
         }
-
+        public static List<Usuario> getUsuarios(int idUsuario)
+        {
+            return (List<Usuario>)gymsydb.Usuarios.Where(u => u.IdUsuario == idUsuario);
+        }
         public static bool IsNicknameUnique(string nickname)
         {
             try

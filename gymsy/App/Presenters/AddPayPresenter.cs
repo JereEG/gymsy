@@ -21,6 +21,10 @@ namespace gymsy.App.Presenters
         {
             return gymsydb.Usuarios.Where(u=>u.IdRol==1).FirstOrDefault();
         }
+        public static AlumnoSuscripcion suscripcionCliente(int idCliente)
+        {
+            return gymsydb.AlumnoSuscripcions.FirstOrDefault(u => u.IdUsuario == idCliente);
+        }
         public static void AgregarPago(int pIdCliente, float pMonto)
         {
 

@@ -179,29 +179,36 @@ namespace gymsy.App.Presenters
 
         public static System.Windows.Forms.DataVisualization.Charting.Series Mes(List<string> listMonth, System.Windows.Forms.DataVisualization.Charting.Series series)
         {
+
             using (var gymsydb = new NuevoGymsyContext())
             {
                 var resultado = gymsydb.Pagos
-                .GroupBy(p => new { Mes = p.FechaCreacion.Month, Anio = p.FechaCreacion.Year })
-                .Select(g => new
-                {
-                    Mes = g.Key.Mes,
-                    Anio = g.Key.Anio,
-                    //SumaPagos = g.Sum(p => p.monto)
-                })
-                .Select(item => new
-                {
-                    Mes = item.Mes,
-                    //Amount = item.SumaPagos
-                })
-                .ToArray();
+               .GroupBy(p => new { Mes = p.FechaCreacion.Month, Anio = p.FechaCreacion.Year })
+               .Select(g => new
+               {
+                   Mes = g.Key.Mes,
+                   Anio = g.Key.Anio,
+                   //SumaPagos = g.Sum(p => p.monto)
+               })
+               .Select(item => new
+               {
+                   Mes = item.Mes,
+                   //Amount = item.SumaPagos
+               })
+               .ToArray();
 
                 var listaMes = Enumerable.Range(1, 12)
                        .Select(mes => resultado.FirstOrDefault(r => r.Mes == mes))
                        .ToArray();
+
                 foreach (var data in listaMes)
                 {
-                    series.Points.AddXY(listMonth[data.Mes - 1], 010101);
+                    if (data != null)
+                    {
+                        series.Points.AddXY(listMonth[data.Mes - 1], 010101); // Corrected property name
+                    }
+                    
+                   
                     series.LegendToolTip = $"Ganancia obtenida por mes";
                 }
                 return series;

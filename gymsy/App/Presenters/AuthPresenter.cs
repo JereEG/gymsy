@@ -69,7 +69,7 @@ namespace gymsy.App.Presenters
                     var peopleFound = this.gymsydb.Usuarios
                                                   .Where(p => p.Apodo == this.authView.Nickname)
                                                   .First();
-
+                    
                     // validar existencia del usuario
                     if (peopleFound != null)
                     {
@@ -84,24 +84,26 @@ namespace gymsy.App.Presenters
                         }
                         else
                         {
+                           
                             if (!peopleFound.UsuarioInactivo)
                             {
                                 this.authView.IsSuccessful = true;
                                 this.authView.Message = "Hola, " + peopleFound.Nombre + "    ;)";
-
+                                
                                 // Delay
                                 this.authView.HandleResponseDBMessage();
                                 //Thread.Sleep(3000);
 
                                 // Update global state
                                 AppState.person = peopleFound;
-
+                              
                                 this.asignMethods(peopleFound);
 
                                 this.authView.Hide();
-
+                              
                                 // Open form
                                 IMainView view = new MainView();
+                                
                                 new MainPresenter(view, gymsydb);
 
                                 return;

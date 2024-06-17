@@ -254,15 +254,16 @@ namespace gymsy.UserControls
 
                     CBPlanes.Items.Clear();
 
-                    var trainingPlan = EditClientPresenter.PlanDelCliente();
-                    var entrenador = EditClientPresenter.BuscarInstrucorDePlan(trainingPlan.IdPlanEntrenamiento);
-                    LidPlan.Text = trainingPlan.IdPlanEntrenamiento.ToString();
+                    var alumnoSub = EditClientPresenter.AlumSubDelCliente();
+                    var entrenador = EditClientPresenter.BuscarInstrucorDePlan(alumnoSub.IdPlanEntrenamiento);
+                    var planEntrenamiento = EditClientPresenter.BuscarPlan(alumnoSub.IdPlanEntrenamiento);
+                    LidPlan.Text = alumnoSub.IdPlanEntrenamiento.ToString();
 
-                    TBPrecio.Text = trainingPlan.IdPlanEntrenamientoNavigation.Precio.ToString();
-                    TBDescripcion.Text = trainingPlan.IdPlanEntrenamientoNavigation.Descripcion;
+                    TBPrecio.Text = planEntrenamiento.Precio.ToString();
+                    TBDescripcion.Text = planEntrenamiento.Descripcion;
                     TBNombreInstructor.Text = entrenador.Nombre + " " + entrenador.Apellido;
 
-                    CBPlanes.Items.Add(trainingPlan.IdPlanEntrenamientoNavigation.Descripcion);
+                    CBPlanes.Items.Add(planEntrenamiento.Descripcion);
 
                     //Ahora se cargan los demas elementos
 
@@ -270,7 +271,7 @@ namespace gymsy.UserControls
 
                     foreach (PlanEntrenamiento plan in trainingPlans)
                     {
-                        if (!plan.PlanEntrenamientoInactivo)
+                        if (!plan.PlanEntrenamientoInactivo && plan.IdEntrenador == AppState.Instructor.IdUsuario)
                         {
                             CBPlanes.Items.Add(plan.IdPlanEntrenamiento + "-" + plan.Descripcion);
                         }
@@ -280,7 +281,7 @@ namespace gymsy.UserControls
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                MessageBox.Show("Este error se produjo en el metodo CargarElementosComboBox: " + e.Message);
             }
         }
 

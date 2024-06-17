@@ -15,7 +15,7 @@ namespace gymsy.App.Presenters
     {
         private static NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
 
-        public static AlumnoSuscripcion PlanDelCliente()
+        public static AlumnoSuscripcion AlumSubDelCliente()
         {
             using (var gymsydb = new NuevoGymsyContext())
             {
@@ -39,7 +39,7 @@ namespace gymsy.App.Presenters
             {
                 // Busca el plan de entrenamiento por su Id e incluye la entidad Instructor relacionada
                 var plan = gymsydb.PlanEntrenamientos
-                                  .Include(p => p.IdEntrenador) // Asume que PlanEntrenamiento tiene una propiedad de navegación Instructor
+                                  .Include(p => p.IdEntrenadorNavigation) // Incluye la propiedad de navegación correcta
                                   .FirstOrDefault(plan => plan.IdPlanEntrenamiento == pIdPlan);
 
                 // Retorna el instructor asociado al plan si se encuentra, de lo contrario devuelve null
@@ -50,13 +50,13 @@ namespace gymsy.App.Presenters
         {
             using (var gymsy = new NuevoGymsyContext()) {
                 // Obtener la lista de ID de planes de entrenamiento asociados al cliente
-                var planesCliente = gymsydb.AlumnoSuscripcions
+                var planesCliente = gymsy.AlumnoSuscripcions
                                         .Where(subAlum => subAlum.IdAlumno == AppState.ClientActive.IdUsuario)
                                         .Select(subAlum => subAlum.IdPlanEntrenamiento)
                                         .ToList();
 
                 // Obtener los planes de entrenamiento que no están asociados al cliente
-                var planesNoCliente = gymsydb.PlanEntrenamientos
+                var planesNoCliente = gymsy.PlanEntrenamientos
                                         .Where(planEntrenamiento => !planesCliente.Contains(planEntrenamiento.IdPlanEntrenamiento))
                                         .ToList();
 
@@ -68,7 +68,7 @@ namespace gymsy.App.Presenters
         {
             using (var gymsy = new NuevoGymsyContext())
             {
-                var personUpdated = gymsydb.Usuarios
+                var personUpdated = gymsy.Usuarios
                                .Where(people => people.IdUsuario == AppState.ClientActive.IdUsuario)
                                .First();
 
@@ -94,13 +94,13 @@ namespace gymsy.App.Presenters
                     personUpdated.FechaCreacion = pBirthDay;
 
                     // Actualiza las propiedades de la tabla client
-                    var subcripcionAlumno = gymsydb.AlumnoSuscripcions
+                    var subcripcionAlumno = gymsy.AlumnoSuscripcions
                                    .Where(subAlum => subAlum.IdAlumno == personUpdated.IdUsuario)
                                    .First();
                     subcripcionAlumno.FechaExpiracion = pLastExpiration;
                     subcripcionAlumno.IdPlanEntrenamiento = pIdPlan;
 
-                    gymsydb.SaveChanges();
+                    gymsy.SaveChanges();
                 } 
             }
         }
@@ -109,7 +109,7 @@ namespace gymsy.App.Presenters
         {
             using (var gymsy = new NuevoGymsyContext())
             {
-                return gymsydb.PlanEntrenamientos
+                return gymsy.PlanEntrenamientos
                     .Where(trainingPlan => trainingPlan.IdPlanEntrenamiento == pIdPlan)
                     .First();
             }

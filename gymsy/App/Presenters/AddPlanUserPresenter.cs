@@ -28,9 +28,10 @@ namespace gymsy.App.Presenters
         {
             using (var gymsydb = new NuevoGymsyContext())
             {
-                var plan = gymsydb.AlumnoSuscripcions.Where(p => p.IdPlanEntrenamiento == pidPlan).FirstOrDefault();
-                plan.IdPlanEntrenamientoNavigation.Descripcion = pDescripcion;
-                plan.IdPlanEntrenamientoNavigation.Precio = pPrecio;
+                var plan = gymsydb.PlanEntrenamientos
+                    .Where(p => p.IdPlanEntrenamiento == pidPlan).FirstOrDefault();
+                plan.Descripcion = pDescripcion;
+                plan.Precio = pPrecio;
 
                 gymsydb.SaveChanges();
 

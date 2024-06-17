@@ -1,5 +1,4 @@
 ﻿using gymsy.Context;
-using gymsy.Modelos;
 using gymsy.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -36,7 +35,7 @@ namespace gymsy.App.Presenters
             }
 
         }
-       public static IEnumerable<PlanEntrenamiento> buscarPlanesInstructor(int pIdInstructor)
+       public static List<PlanEntrenamiento> buscarPlanesInstructor(int pIdInstructor)
         {
             // Obtener todos los planes de entrenamiento del instructor actual
             return gymsydb.PlanEntrenamientos

@@ -60,41 +60,53 @@ namespace gymsy.UserControls
 
                 // Llamar al método del Presenter para obtener los datos
                 var pagosAgrupadosPorMes = DashboardInstructorPresenter.ObtenerPagosAgrupadosPorMes();
-
-                foreach (var data in pagosAgrupadosPorMes)
+                if (pagosAgrupadosPorMes != null)
                 {
-                    series.Points.AddXY(listMonths[data.Mes - 1], data.Cantidad);
+                    foreach (var data in pagosAgrupadosPorMes)
+                    {
+                        series.Points.AddXY(listMonths[data.Mes - 1], data.Cantidad);
+                    }
                 }
             }
         }
 
         public void InitializeGrid()
         {
-
-            List<int> ListIdPlans = new List<int>();
-
-            foreach (PlanEntrenamiento plan in AppState.Instructor.PlanEntrenamientos)
+            try
             {
-                ListIdPlans.Add(plan.IdPlanEntrenamiento);
-            }
+                List<int> ListIdPlans = new List<int>();
 
-            var ClientsFound = DashboardInstructorPresenter.BuscarClientesActivosDelInstructor(ListIdPlans);
-
-
-            if (ClientsFound.Count > 0)
-            {
-                PanelMsg.Visible = false;
-                foreach (Usuario cl in ClientsFound)
+                foreach (PlanEntrenamiento plan in AppState.Instructor.PlanEntrenamientos)
                 {
-                    var sus = DashboardInstructorPresenter.getAlumnoSuscripcion(cl.IdUsuario);
+                    ListIdPlans.Add(plan.IdPlanEntrenamiento);
+                }
 
-                    
-                    dataGridView2.Rows.Add(cl.IdUsuario,
-                                            $"{cl.Apellido}, {cl.Nombre}",
-                                            string.Format("{0:yyyy-MM-dd}", sus.FechaExpiracion),
-                                            null);
+                var ClientsFound = DashboardInstructorPresenter.BuscarClientesActivosDelInstructor(ListIdPlans);
+                if (ClientsFound != null)
+                {
+
+                    if (ClientsFound.Count > 0)
+                    {
+                        PanelMsg.Visible = false;
+                        foreach (Usuario cl in ClientsFound)
+                        {
+                            var sus = DashboardInstructorPresenter.getAlumnoSuscripcion(cl.IdUsuario);
+
+
+                            dataGridView2.Rows.Add(cl.IdUsuario,
+                                                    $"{cl.Apellido}, {cl.Nombre}",
+                                                    string.Format("{0:yyyy-MM-dd}", sus.FechaExpiracion),
+                                                    null);
+                        }
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+           
 
         }
         

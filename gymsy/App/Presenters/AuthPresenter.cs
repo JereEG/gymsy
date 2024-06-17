@@ -166,7 +166,9 @@ namespace gymsy.App.Presenters
                         this.gymsydb.Pagos.ToList();
                         this.gymsydb.TipoDePagos.ToList();
                         //this.gymsydb.Wallets.ToList();
-
+                        this.gymsydb.AlumnoSuscripcions.ToList();
+                        
+                        AppState.planes = this.gymsydb.PlanEntrenamientos.ToList();
                         var usuario= this.gymsydb.Usuarios.ToList();
 
                         AppState.clients = usuario;
@@ -223,6 +225,7 @@ namespace gymsy.App.Presenters
                         this.gymsydb.TipoDePagos.ToList();
                         this.gymsydb.Pagos.ToList();
                        // this.gymsydb.Wallets.ToList();
+                       AppState.AlumnoSuscripciones = this.gymsydb.AlumnoSuscripcions.ToList();
 
                         MessageBox.Show(planes.Count().ToString());
                         AppState.planes = planes;

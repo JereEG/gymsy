@@ -18,7 +18,7 @@ namespace gymsy.Models
         private static NuevoGymsyContext dbContext = StacticGymsyContext.GymsyContextDB;
 
 
-        public static void CrearInstructor(string apodo, string nombre, string apellido, string avatarUrl, string contrasena, string numeroTelefono, string sexo)
+        public static void CrearInstructor(string apodo, string nombre, string apellido, string avatarUrl, string contrasena, string numeroTelefono, string sexo,DateTime fechaNacimiento)
         {
             using (var dbContext = new NuevoGymsyContext())
             {
@@ -30,6 +30,7 @@ namespace gymsy.Models
                 command.Parameters.Add(new SqlParameter("@nombre", nombre));
                 command.Parameters.Add(new SqlParameter("@apellido", apellido));
                 command.Parameters.Add(new SqlParameter("@avatar_url", avatarUrl));
+                command.Parameters.Add(new SqlParameter("@fecha_nacimiento", fechaNacimiento));
                 command.Parameters.Add(new SqlParameter("@contrasena", contrasena));
                 command.Parameters.Add(new SqlParameter("@numero_telefono", numeroTelefono));
                 command.Parameters.Add(new SqlParameter("@sexo", sexo));

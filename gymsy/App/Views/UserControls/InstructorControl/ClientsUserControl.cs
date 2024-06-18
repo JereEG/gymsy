@@ -22,6 +22,7 @@ namespace gymsy.UserControls
     {
         //private GymsyDbContext dbContext;
         private int indexRowSelect = 0;
+        private Usuario user;
         /*
          * Por defecto se muestran los usuarios que no han sido eliminados, Por lo que el modo es delete
          * lo que para los usuarios es inactivo. Es por ello que usara true y para inactivar un usuario
@@ -67,7 +68,14 @@ namespace gymsy.UserControls
                 if (clientSelected != null)
                 {
                     AppState.ClientActive = clientSelected;
+                    
+                    user=clientSelected;
+                    AppState.auxIdClient = IdClientSelected;
                     MainView.navigationControl.Display(7, true);
+                }
+                else
+                {
+                    AppState.auxIdClient = 0;
                 }
 
             }

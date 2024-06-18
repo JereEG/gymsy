@@ -28,19 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgressClientControl));
-            DataGridViewCellStyle dataGridViewCellStyle17 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle18 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle22 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle23 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle24 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle19 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle20 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle21 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
             panel6 = new Panel();
             panelWalletWrapper = new Panel();
             panel2 = new Panel();
             panel5 = new Panel();
+            BtnInactiveReg = new ClassCustom.RJButton();
             TBRegDescription = new TextBox();
             TBRegFecha = new Label();
             panelGallery = new Panel();
@@ -62,7 +64,17 @@
             ShowData = new DataGridViewButtonColumn();
             Peso = new DataGridViewTextBoxColumn();
             gridTitle = new DataGridViewTextBoxColumn();
-            BtnInactiveReg = new ClassCustom.RJButton();
+            estadoFisicoBindingSource = new BindingSource(components);
+            idEstadoFisicoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            tituloDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            pesoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            alturaDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            fechaCreacionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            notasDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            estadoFisicoInactivoDataGridViewCheckBoxColumn = new DataGridViewCheckBoxColumn();
+            idAlumnoSuscripcionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            imagenUrlDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            idAlumnoSuscripcionNavigationDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             panel6.SuspendLayout();
             panelWalletWrapper.SuspendLayout();
             panel2.SuspendLayout();
@@ -75,6 +87,7 @@
             PanelMessageCount.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridProgress).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)estadoFisicoBindingSource).BeginInit();
             SuspendLayout();
             // 
             // panel6
@@ -118,6 +131,32 @@
             panel5.Name = "panel5";
             panel5.Size = new Size(348, 189);
             panel5.TabIndex = 38;
+            // 
+            // BtnInactiveReg
+            // 
+            BtnInactiveReg.BackColor = Color.Crimson;
+            BtnInactiveReg.BackgroundColor = Color.Crimson;
+            BtnInactiveReg.BorderColor = Color.PaleVioletRed;
+            BtnInactiveReg.BorderRadius = 12;
+            BtnInactiveReg.BorderSize = 0;
+            BtnInactiveReg.Cursor = Cursors.Hand;
+            BtnInactiveReg.FlatAppearance.BorderSize = 0;
+            BtnInactiveReg.FlatStyle = FlatStyle.Flat;
+            BtnInactiveReg.Font = new Font("Segoe UI Semibold", 13F, FontStyle.Bold, GraphicsUnit.Point);
+            BtnInactiveReg.ForeColor = Color.White;
+            BtnInactiveReg.IconChar = FontAwesome.Sharp.IconChar.TrashRestoreAlt;
+            BtnInactiveReg.IconColor = Color.White;
+            BtnInactiveReg.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            BtnInactiveReg.IconSize = 25;
+            BtnInactiveReg.Location = new Point(304, 156);
+            BtnInactiveReg.Margin = new Padding(0);
+            BtnInactiveReg.Name = "BtnInactiveReg";
+            BtnInactiveReg.Padding = new Padding(4, 0, 0, 0);
+            BtnInactiveReg.Size = new Size(39, 30);
+            BtnInactiveReg.TabIndex = 46;
+            BtnInactiveReg.TextColor = Color.White;
+            BtnInactiveReg.UseVisualStyleBackColor = false;
+            BtnInactiveReg.Click += BtnInactiveReg_Click;
             // 
             // TBRegDescription
             // 
@@ -345,57 +384,59 @@
             dataGridProgress.AllowUserToDeleteRows = false;
             dataGridProgress.AllowUserToResizeColumns = false;
             dataGridProgress.AllowUserToResizeRows = false;
-            dataGridViewCellStyle17.BackColor = Color.Transparent;
-            dataGridViewCellStyle17.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle17.SelectionBackColor = Color.Transparent;
-            dataGridViewCellStyle17.SelectionForeColor = Color.White;
-            dataGridProgress.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle1.BackColor = Color.Transparent;
+            dataGridViewCellStyle1.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.SelectionBackColor = Color.Transparent;
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
+            dataGridProgress.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dataGridProgress.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridProgress.AutoGenerateColumns = false;
             dataGridProgress.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridProgress.BackgroundColor = Color.FromArgb(16, 8, 30);
             dataGridProgress.CausesValidation = false;
             dataGridProgress.CellBorderStyle = DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle18.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle18.BackColor = Color.Transparent;
-            dataGridViewCellStyle18.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle18.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle18.SelectionBackColor = Color.White;
-            dataGridViewCellStyle18.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle18.WrapMode = DataGridViewTriState.True;
-            dataGridProgress.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.Transparent;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = Color.White;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dataGridProgress.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dataGridProgress.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridProgress.Columns.AddRange(new DataGridViewColumn[] { ID, gridDate, ShowData, Peso, gridTitle });
-            dataGridViewCellStyle22.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle22.BackColor = SystemColors.ActiveCaption;
-            dataGridViewCellStyle22.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle22.ForeColor = Color.White;
-            dataGridViewCellStyle22.SelectionBackColor = Color.Transparent;
-            dataGridViewCellStyle22.SelectionForeColor = Color.White;
-            dataGridViewCellStyle22.WrapMode = DataGridViewTriState.False;
-            dataGridProgress.DefaultCellStyle = dataGridViewCellStyle22;
+            dataGridProgress.Columns.AddRange(new DataGridViewColumn[] { ID, gridDate, ShowData, Peso, gridTitle, idEstadoFisicoDataGridViewTextBoxColumn, tituloDataGridViewTextBoxColumn, pesoDataGridViewTextBoxColumn, alturaDataGridViewTextBoxColumn, fechaCreacionDataGridViewTextBoxColumn, notasDataGridViewTextBoxColumn, estadoFisicoInactivoDataGridViewCheckBoxColumn, idAlumnoSuscripcionDataGridViewTextBoxColumn, imagenUrlDataGridViewTextBoxColumn, idAlumnoSuscripcionNavigationDataGridViewTextBoxColumn });
+            dataGridProgress.DataSource = estadoFisicoBindingSource;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = SystemColors.ActiveCaption;
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle6.ForeColor = Color.White;
+            dataGridViewCellStyle6.SelectionBackColor = Color.Transparent;
+            dataGridViewCellStyle6.SelectionForeColor = Color.White;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
+            dataGridProgress.DefaultCellStyle = dataGridViewCellStyle6;
             dataGridProgress.GridColor = Color.Black;
             dataGridProgress.Location = new Point(-2, 66);
             dataGridProgress.Margin = new Padding(0);
             dataGridProgress.MultiSelect = false;
             dataGridProgress.Name = "dataGridProgress";
             dataGridProgress.ReadOnly = true;
-            dataGridViewCellStyle23.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle23.BackColor = Color.IndianRed;
-            dataGridViewCellStyle23.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle23.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle23.SelectionBackColor = SystemColors.GrayText;
-            dataGridViewCellStyle23.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle23.WrapMode = DataGridViewTriState.True;
-            dataGridProgress.RowHeadersDefaultCellStyle = dataGridViewCellStyle23;
+            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = Color.IndianRed;
+            dataGridViewCellStyle7.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle7.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = SystemColors.GrayText;
+            dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
+            dataGridProgress.RowHeadersDefaultCellStyle = dataGridViewCellStyle7;
             dataGridProgress.RowHeadersVisible = false;
             dataGridProgress.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridViewCellStyle24.BackColor = Color.White;
-            dataGridViewCellStyle24.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle24.ForeColor = Color.White;
-            dataGridViewCellStyle24.Padding = new Padding(0, 10, 0, 10);
-            dataGridViewCellStyle24.SelectionBackColor = Color.White;
-            dataGridViewCellStyle24.SelectionForeColor = Color.White;
-            dataGridProgress.RowsDefaultCellStyle = dataGridViewCellStyle24;
+            dataGridViewCellStyle8.BackColor = Color.White;
+            dataGridViewCellStyle8.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle8.ForeColor = Color.White;
+            dataGridViewCellStyle8.Padding = new Padding(0, 10, 0, 10);
+            dataGridViewCellStyle8.SelectionBackColor = Color.White;
+            dataGridViewCellStyle8.SelectionForeColor = Color.White;
+            dataGridProgress.RowsDefaultCellStyle = dataGridViewCellStyle8;
             dataGridProgress.RowTemplate.DefaultCellStyle.BackColor = Color.FromArgb(16, 8, 30);
             dataGridProgress.RowTemplate.DefaultCellStyle.ForeColor = Color.White;
             dataGridProgress.RowTemplate.DefaultCellStyle.SelectionBackColor = Color.DarkSlateBlue;
@@ -418,12 +459,12 @@
             // gridDate
             // 
             gridDate.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle19.BackColor = Color.Transparent;
-            dataGridViewCellStyle19.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle19.ForeColor = Color.White;
-            dataGridViewCellStyle19.SelectionBackColor = Color.Transparent;
-            dataGridViewCellStyle19.SelectionForeColor = Color.Transparent;
-            gridDate.DefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle3.BackColor = Color.Transparent;
+            dataGridViewCellStyle3.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle3.ForeColor = Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = Color.Transparent;
+            dataGridViewCellStyle3.SelectionForeColor = Color.Transparent;
+            gridDate.DefaultCellStyle = dataGridViewCellStyle3;
             gridDate.HeaderText = "Fecha";
             gridDate.Name = "gridDate";
             gridDate.ReadOnly = true;
@@ -432,12 +473,12 @@
             // ShowData
             // 
             ShowData.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            dataGridViewCellStyle20.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle20.BackColor = Color.Cyan;
-            dataGridViewCellStyle20.ForeColor = Color.White;
-            dataGridViewCellStyle20.SelectionBackColor = Color.Cyan;
-            dataGridViewCellStyle20.SelectionForeColor = Color.Cyan;
-            ShowData.DefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle4.BackColor = Color.Cyan;
+            dataGridViewCellStyle4.ForeColor = Color.White;
+            dataGridViewCellStyle4.SelectionBackColor = Color.Cyan;
+            dataGridViewCellStyle4.SelectionForeColor = Color.Cyan;
+            ShowData.DefaultCellStyle = dataGridViewCellStyle4;
             ShowData.HeaderText = "Ver";
             ShowData.Name = "ShowData";
             ShowData.ReadOnly = true;
@@ -456,41 +497,89 @@
             // gridTitle
             // 
             gridTitle.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewCellStyle21.BackColor = Color.Transparent;
-            dataGridViewCellStyle21.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle21.ForeColor = Color.White;
-            dataGridViewCellStyle21.SelectionBackColor = SystemColors.ActiveCaption;
-            dataGridViewCellStyle21.SelectionForeColor = Color.Transparent;
-            gridTitle.DefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle5.BackColor = Color.Transparent;
+            dataGridViewCellStyle5.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle5.ForeColor = Color.White;
+            dataGridViewCellStyle5.SelectionBackColor = SystemColors.ActiveCaption;
+            dataGridViewCellStyle5.SelectionForeColor = Color.Transparent;
+            gridTitle.DefaultCellStyle = dataGridViewCellStyle5;
             gridTitle.HeaderText = "Titulo";
             gridTitle.Name = "gridTitle";
             gridTitle.ReadOnly = true;
             // 
-            // BtnInactiveReg
+            // estadoFisicoBindingSource
             // 
-            BtnInactiveReg.BackColor = Color.Crimson;
-            BtnInactiveReg.BackgroundColor = Color.Crimson;
-            BtnInactiveReg.BorderColor = Color.PaleVioletRed;
-            BtnInactiveReg.BorderRadius = 12;
-            BtnInactiveReg.BorderSize = 0;
-            BtnInactiveReg.Cursor = Cursors.Hand;
-            BtnInactiveReg.FlatAppearance.BorderSize = 0;
-            BtnInactiveReg.FlatStyle = FlatStyle.Flat;
-            BtnInactiveReg.Font = new Font("Segoe UI Semibold", 13F, FontStyle.Bold, GraphicsUnit.Point);
-            BtnInactiveReg.ForeColor = Color.White;
-            BtnInactiveReg.IconChar = FontAwesome.Sharp.IconChar.TrashRestoreAlt;
-            BtnInactiveReg.IconColor = Color.White;
-            BtnInactiveReg.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            BtnInactiveReg.IconSize = 25;
-            BtnInactiveReg.Location = new Point(304, 156);
-            BtnInactiveReg.Margin = new Padding(0);
-            BtnInactiveReg.Name = "BtnInactiveReg";
-            BtnInactiveReg.Padding = new Padding(4, 0, 0, 0);
-            BtnInactiveReg.Size = new Size(39, 30);
-            BtnInactiveReg.TabIndex = 46;
-            BtnInactiveReg.TextColor = Color.White;
-            BtnInactiveReg.UseVisualStyleBackColor = false;
-            BtnInactiveReg.Click += BtnInactiveReg_Click;
+            estadoFisicoBindingSource.DataSource = typeof(Modelos.EstadoFisico);
+            // 
+            // idEstadoFisicoDataGridViewTextBoxColumn
+            // 
+            idEstadoFisicoDataGridViewTextBoxColumn.DataPropertyName = "IdEstadoFisico";
+            idEstadoFisicoDataGridViewTextBoxColumn.HeaderText = "IdEstadoFisico";
+            idEstadoFisicoDataGridViewTextBoxColumn.Name = "idEstadoFisicoDataGridViewTextBoxColumn";
+            idEstadoFisicoDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // tituloDataGridViewTextBoxColumn
+            // 
+            tituloDataGridViewTextBoxColumn.DataPropertyName = "Titulo";
+            tituloDataGridViewTextBoxColumn.HeaderText = "Titulo";
+            tituloDataGridViewTextBoxColumn.Name = "tituloDataGridViewTextBoxColumn";
+            tituloDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // pesoDataGridViewTextBoxColumn
+            // 
+            pesoDataGridViewTextBoxColumn.DataPropertyName = "Peso";
+            pesoDataGridViewTextBoxColumn.HeaderText = "Peso";
+            pesoDataGridViewTextBoxColumn.Name = "pesoDataGridViewTextBoxColumn";
+            pesoDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // alturaDataGridViewTextBoxColumn
+            // 
+            alturaDataGridViewTextBoxColumn.DataPropertyName = "Altura";
+            alturaDataGridViewTextBoxColumn.HeaderText = "Altura";
+            alturaDataGridViewTextBoxColumn.Name = "alturaDataGridViewTextBoxColumn";
+            alturaDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // fechaCreacionDataGridViewTextBoxColumn
+            // 
+            fechaCreacionDataGridViewTextBoxColumn.DataPropertyName = "FechaCreacion";
+            fechaCreacionDataGridViewTextBoxColumn.HeaderText = "FechaCreacion";
+            fechaCreacionDataGridViewTextBoxColumn.Name = "fechaCreacionDataGridViewTextBoxColumn";
+            fechaCreacionDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // notasDataGridViewTextBoxColumn
+            // 
+            notasDataGridViewTextBoxColumn.DataPropertyName = "Notas";
+            notasDataGridViewTextBoxColumn.HeaderText = "Notas";
+            notasDataGridViewTextBoxColumn.Name = "notasDataGridViewTextBoxColumn";
+            notasDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // estadoFisicoInactivoDataGridViewCheckBoxColumn
+            // 
+            estadoFisicoInactivoDataGridViewCheckBoxColumn.DataPropertyName = "EstadoFisicoInactivo";
+            estadoFisicoInactivoDataGridViewCheckBoxColumn.HeaderText = "EstadoFisicoInactivo";
+            estadoFisicoInactivoDataGridViewCheckBoxColumn.Name = "estadoFisicoInactivoDataGridViewCheckBoxColumn";
+            estadoFisicoInactivoDataGridViewCheckBoxColumn.ReadOnly = true;
+            // 
+            // idAlumnoSuscripcionDataGridViewTextBoxColumn
+            // 
+            idAlumnoSuscripcionDataGridViewTextBoxColumn.DataPropertyName = "IdAlumnoSuscripcion";
+            idAlumnoSuscripcionDataGridViewTextBoxColumn.HeaderText = "IdAlumnoSuscripcion";
+            idAlumnoSuscripcionDataGridViewTextBoxColumn.Name = "idAlumnoSuscripcionDataGridViewTextBoxColumn";
+            idAlumnoSuscripcionDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // imagenUrlDataGridViewTextBoxColumn
+            // 
+            imagenUrlDataGridViewTextBoxColumn.DataPropertyName = "ImagenUrl";
+            imagenUrlDataGridViewTextBoxColumn.HeaderText = "ImagenUrl";
+            imagenUrlDataGridViewTextBoxColumn.Name = "imagenUrlDataGridViewTextBoxColumn";
+            imagenUrlDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // idAlumnoSuscripcionNavigationDataGridViewTextBoxColumn
+            // 
+            idAlumnoSuscripcionNavigationDataGridViewTextBoxColumn.DataPropertyName = "IdAlumnoSuscripcionNavigation";
+            idAlumnoSuscripcionNavigationDataGridViewTextBoxColumn.HeaderText = "IdAlumnoSuscripcionNavigation";
+            idAlumnoSuscripcionNavigationDataGridViewTextBoxColumn.Name = "idAlumnoSuscripcionNavigationDataGridViewTextBoxColumn";
+            idAlumnoSuscripcionNavigationDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // ProgressClientControl
             // 
@@ -515,6 +604,7 @@
             PanelMessageCount.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridProgress).EndInit();
+            ((System.ComponentModel.ISupportInitialize)estadoFisicoBindingSource).EndInit();
             ResumeLayout(false);
         }
 
@@ -546,5 +636,16 @@
         private DataGridViewTextBoxColumn Peso;
         private DataGridViewTextBoxColumn gridTitle;
         private ClassCustom.RJButton BtnInactiveReg;
+        private DataGridViewTextBoxColumn idEstadoFisicoDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn tituloDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn pesoDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn alturaDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn fechaCreacionDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn notasDataGridViewTextBoxColumn;
+        private DataGridViewCheckBoxColumn estadoFisicoInactivoDataGridViewCheckBoxColumn;
+        private DataGridViewTextBoxColumn idAlumnoSuscripcionDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn imagenUrlDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn idAlumnoSuscripcionNavigationDataGridViewTextBoxColumn;
+        private BindingSource estadoFisicoBindingSource;
     }
 }

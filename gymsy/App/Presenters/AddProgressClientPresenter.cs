@@ -30,7 +30,20 @@ namespace gymsy.App.Presenters
                 return tituloUnico;
             }
         }
-        
+        public static List<EstadoFisico> getProgress(int idAlumno)
+        {
+            using (var gymsydb=new NuevoGymsyContext())
+            {
+                return (List<EstadoFisico>)gymsydb.EstadoFisicos.Where(a => a.IdAlumnoSuscripcion==getSuscripcion(idAlumno).IdAlumnoSuscripcion).ToList();
+            }
+        }
+        public static AlumnoSuscripcion getSuscripcion(int idAlumno)
+        {
+            using (var gymsydb=new NuevoGymsyContext())
+            {
+                return gymsydb.AlumnoSuscripcions.FirstOrDefault(a => a.IdAlumno == idAlumno);
+            }
+        }
         public static bool SaveProgress(string ptitle_dataFisic, string pnotes_dataFisic, float pweight_dataFisic, float pheight_dataFisic, string pruta_imagen, string pextension)
         {
             using (var gymsydb = new NuevoGymsyContext())
@@ -52,13 +65,14 @@ namespace gymsy.App.Presenters
 
                 EstadoFisico DataFisicModel = new EstadoFisico();
                 DataFisicModel.FechaCreacion = DateTime.Now;
+               
                 if (AppState.ClientActive == null)
                 {
-                    DataFisicModel.IdAlumnoSuscripcionNavigation.IdAlumno = AppState.auxIdClient;
+                    DataFisicModel.IdAlumnoSuscripcion = getSuscripcion(AppState.auxIdClient).IdAlumnoSuscripcion ;
                 }
                 else
                 {
-                    DataFisicModel.IdAlumnoSuscripcionNavigation.IdAlumno = AppState.ClientActive.IdUsuario;
+                    DataFisicModel.IdAlumnoSuscripcion =getSuscripcion(AppState.ClientActive.IdUsuario).IdAlumnoSuscripcion;
                 }
 
                 DataFisicModel.EstadoFisicoInactivo = false;

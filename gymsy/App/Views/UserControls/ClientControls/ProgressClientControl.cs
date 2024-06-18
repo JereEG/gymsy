@@ -62,31 +62,31 @@ namespace gymsy.UserControls.ClientControls
         }
 
         public void UpdateComponent()
-        {/*
+        {
             if(AppState.auxIdClient > 0)
             {
                 Usuario clienteBuscado = ClientePresenter.BuscarCliente(AppState.auxIdClient);
-
+                List<EstadoFisico> Estado = AddProgressClientPresenter.getProgress(AppState.auxIdClient);
                 int edad = DateTime.Now.Year - clienteBuscado.FechaCreacion.Year;
                 //TimeSpan TimeTraning = clienteBuscado.IdPersonNavigation.CreatedAt - DateTime.Now;
 
                 TBDescripcionClient.Text = $"{clienteBuscado.Nombre + " " + clienteBuscado.Apellido}, " +
-                $"{edad} años comenzo a enrenarse hace {TimeTraning.Days * -1} días, " +
-                $"cuenta con {clienteBuscado.DataFisics.Count()} registros guardados";
+                $"{edad} años comenzo a enrenarse, " +
+                $"cuenta con {clienteBuscado.PlanEntrenamientos.Count()} registros guardados";
 
 
-                if (clienteBuscado.DataFisics.Count() > 0)
+                if (clienteBuscado.PlanEntrenamientos.Count() > 0)
                 {
                     PanelMessageCount.Visible = false;
 
-                    foreach (var DataFisic in clienteBuscado.DataFisics)
+                    foreach (var DataFisic in Estado)
                     {
-                        TimeSpan diferencia = DateTime.Now - DataFisic.CreatedAt;
+                        TimeSpan diferencia = DateTime.Now - DataFisic.FechaCreacion;
                         String formart = $"Hace {diferencia.Days} dias";
-                        dataGridProgress.Rows.Add(DataFisic.IdDataFisic, formart, null, $"{DataFisic.Weight} KG", DataFisic.Title);
+                        dataGridProgress.Rows.Add(DataFisic.IdEstadoFisico, formart, null, $"{DataFisic.Peso} KG", DataFisic.Titulo);
                     }
 
-                    updateProgressActive(clienteBuscado.DataFisics.First());
+                    updateProgressActive(Estado.First());
                 }
                 else
                 {
@@ -95,27 +95,27 @@ namespace gymsy.UserControls.ClientControls
 
             } else
             {
-                //int edad = DateTime.Now.Year - AppState.ClientActive.IdPersonNavigation.Birthday.Year;
-                int edad = 18;
+                int edad = DateTime.Now.Year - AppState.ClientActive.FechaNacimiento.Year;
+               // int edad = 18;
                 TimeSpan TimeTraning = AppState.ClientActive.FechaCreacion - DateTime.Now;
-
+                List<EstadoFisico> Estado = AddProgressClientPresenter.getProgress
+                 (AppState.ClientActive.IdUsuario);
                 TBDescripcionClient.Text = $"{AppState.ClientActive.Nombre + " " + AppState.ClientActive.Apellido}, " +
-                $"{edad} años comenzo a enrenarse hace {TimeTraning.Days * -1} días, " +
-                $"cuenta con {AppState.ClientActive.EstadoFisico.Count()} registros guardados";
+                $"{edad} años comenzo a enrenarse hace {TimeTraning.Days * -1} días, "
+                + $"cuenta con {Estado.Count()} registros guardados";
 
-
-                if (AppState.ClientActive.EstadoFisico.Count() > 0)
+                if (Estado.Count() > 0)
                 {
                     PanelMessageCount.Visible = false;
 
-                    foreach (var DataFisic in AppState.ClientActive.EstadoFisico)
+                    foreach (var DataFisic in Estado)
                     {
-                        TimeSpan diferencia = DateTime.Now - DataFisic.CreatedAt;
+                        TimeSpan diferencia = DateTime.Now - DataFisic.FechaCreacion;
                         String formart = $"Hace {diferencia.Days} dias";
-                        dataGridProgress.Rows.Add(DataFisic.IdDataFisic, formart, null, $"{DataFisic.Weight} KG", DataFisic.Title);
+                        dataGridProgress.Rows.Add(DataFisic.IdEstadoFisico, formart, null, $"{DataFisic.Peso} KG", DataFisic.Titulo);
                     }
 
-                    updateProgressActive(AppState.ClientActive.DataFisics.First());
+                    updateProgressActive(Estado.First());
                 }
                 else
                 {
@@ -123,7 +123,7 @@ namespace gymsy.UserControls.ClientControls
                 }
             }
             
-            */
+            
         }
 
         public override void Refresh()
@@ -150,7 +150,7 @@ namespace gymsy.UserControls.ClientControls
 
         private void dataGridProgress_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
-            /*
+            
             if (e.RowIndex >= 0 && e.ColumnIndex == 2)
             {
                 // Se ha hecho clic en una celda válida
@@ -159,16 +159,16 @@ namespace gymsy.UserControls.ClientControls
 
                 object IdDfSelected = dataGridProgress.Rows[rowIndex].Cells[0].Value;
 
-                var ListDataFisics = AppState.ClientActive.EstadoFisico.ToList();
+                var ListDataFisics =AddProgressClientPresenter.getProgress(AppState.ClientActive.IdUsuario);
 
-                EstadoFisico DataFisicSelected = ListDataFisics.Find(df => IdDfSelected.Equals(df.IdDataFisic));
+                EstadoFisico DataFisicSelected = ListDataFisics.Find(df => IdDfSelected.Equals(df.IdEstadoFisico));
 
                 if (DataFisicSelected != null)
                 {
                     updateProgressActive(DataFisicSelected);
                 }
             }
-            */
+           
         }
 
         private void BtnInactiveReg_Click(object sender, EventArgs e)

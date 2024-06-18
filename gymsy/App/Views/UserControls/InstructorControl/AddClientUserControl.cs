@@ -258,37 +258,45 @@ namespace gymsy.UserControls
         {
             try
             { //Se verifica que se hayan ingresado todos los datos
-                bool isValidTextBoxes = isValidTextsBoxesMostrarError();
-                if (isValidTextBoxes)
+                if (DPFechaNacimiento.Value < DateTime.Now)
                 {
+                    
 
-
-                    string usuario = TBUsuario.Text;
-
-                    int idPlan = int.Parse(LidPlan.Text);
-                    string sexo = "";
-
-                    if (RBMasculino.Checked)
+                    bool isValidTextBoxes = isValidTextsBoxesMostrarError();
+                    if (isValidTextBoxes)
                     {
-                        sexo = "M";
+
+
+                        string usuario = TBUsuario.Text;
+
+                        int idPlan = int.Parse(LidPlan.Text);
+                        string sexo = "";
+
+                        if (RBMasculino.Checked)
+                        {
+                            sexo = "M";
+                        }
+                        else
+                        {
+                            sexo = "F";
+                        }
+
+
+
+                        AddClientPresenter.GuardarCliente(usuario, TBNombre.Text, TBApellido.Text, TBRutaImagen.Text, Bcrypt.HashPassoword(TBContraseña.Text),
+                        TBTelefono.Text, sexo, DPFechaNacimiento.Value, DPVencimiento.Value, idPlan);
+
+                        AppState.needRefreshClientsUserControl = true;
+                        MessageBox.Show("Se Guardaron correcctamente los datos");
+                        this.restablecerTextBoxes();
+
+
                     }
-                    else
-                    {
-                        sexo = "F";
-                    }
-                   
-         
-        
-                    AddClientPresenter.GuardarCliente(usuario, TBNombre.Text, TBApellido.Text, TBRutaImagen.Text, Bcrypt.HashPassoword(TBContraseña.Text),
-                    TBTelefono.Text, sexo, DPFechaNacimiento.Value, DPVencimiento.Value, idPlan);
-
-                    AppState.needRefreshClientsUserControl = true;
-                    MessageBox.Show("Se Guardaron correcctamente los datos");
-                    this.restablecerTextBoxes();
-
-
                 }
-
+                else
+                {
+                    MessageBox.Show("Error en la fecha de nacimiento");
+                }
             }
             catch (Exception ex)
             {

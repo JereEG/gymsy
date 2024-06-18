@@ -220,17 +220,17 @@ namespace gymsy.App.Presenters
             using (var gymsydb = new NuevoGymsyContext())
             {
                 var ultimosPagos = gymsydb.Pagos
-            .OrderByDescending(p => p.FechaCreacion)
-            .Take(5)
-            .Include(p => p.IdUsuario)
-            .ToList();
+                    .Include(p => p.IdUsuarioNavigation) // Asegúrate de que la propiedad de navegación está correctamente especificada
+                    .OrderByDescending(p => p.FechaCreacion)
+                    .Take(5)
+                    .ToList();
 
                 foreach (var pay in ultimosPagos)
                 {
                     dataGridPays.Rows.Add(
                         pay.IdPago,
                         pay.FechaCreacion,
-                        $"$ {0101010}",
+                        $"$ {pay.Monto}", // Asegúrate de que `Monto` es la propiedad correcta que representa el monto del pago
                         $"{pay.IdUsuarioNavigation.Apellido}, {pay.IdUsuarioNavigation.Nombre}"
                     );
                 }

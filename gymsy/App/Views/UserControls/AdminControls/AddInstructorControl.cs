@@ -107,9 +107,9 @@ namespace gymsy.UserControls.AdminControls
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Exepcion Inesperado");
+                MessageBox.Show("Esta exepcion se produjo en el metodo BTAgregarImagen_Click: " + ex.Message);
             }
         
         }
@@ -223,7 +223,7 @@ namespace gymsy.UserControls.AdminControls
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                MessageBox.Show("Esta exepcion se produjo en el metodo SaveImage: " + e.Message);
                 return "";
             }
         }

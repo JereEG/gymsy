@@ -69,7 +69,7 @@ namespace gymsy.App.Presenters
                     var peopleFound = this.gymsydb.Usuarios
                                                   .Where(p => p.Apodo == this.authView.Nickname)
                                                   .First();
-                    
+
                     // validar existencia del usuario
                     if (peopleFound != null)
                     {
@@ -84,26 +84,26 @@ namespace gymsy.App.Presenters
                         }
                         else
                         {
-                           
+
                             if (!peopleFound.UsuarioInactivo)
                             {
                                 this.authView.IsSuccessful = true;
                                 this.authView.Message = "Hola, " + peopleFound.Nombre + "    ;)";
-                                
+
                                 // Delay
                                 this.authView.HandleResponseDBMessage();
                                 //Thread.Sleep(3000);
 
                                 // Update global state
                                 AppState.person = peopleFound;
-                              
+
                                 this.asignMethods(peopleFound);
 
                                 this.authView.Hide();
-                              
+
                                 // Open form
                                 IMainView view = new MainView();
-                                
+
                                 new MainPresenter(view, gymsydb);
 
                                 return;
@@ -118,7 +118,11 @@ namespace gymsy.App.Presenters
 
                         }
                     }
-                    else return;
+                    else {
+                        MessageBox.Show("No existe un usuario con ese apodo!");
+                        return;
+                    }
+                    
                 }
                 catch (Exception ex)
                 {
@@ -126,7 +130,7 @@ namespace gymsy.App.Presenters
                     this.authView.Message = "Error inesperdado";
                     this.authView.HandleResponseDBMessage();
                     // Muestra un MessageBox con el mensaje de error
-                    MessageBox.Show("Ocurrió un error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Ocurrió un error en el metodo Signin: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 finally
                 {

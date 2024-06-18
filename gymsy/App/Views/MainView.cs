@@ -118,11 +118,13 @@ namespace gymsy
 
             if (rol == "admin")
             {
+
                 userControlsList = new List<UserControl>()
                 { new DashboardAdminControl(), new InstructorsAdminControl(), new PaymentsUserControl(), new SettingsUserControl(),
                 new AddInstructorControl(), new DashboardAdminControl(), new WalletUserControl(), new EditInstructor(),
                     new adminControl()
                 };
+                
             }
             else if (rol == "client")
             {

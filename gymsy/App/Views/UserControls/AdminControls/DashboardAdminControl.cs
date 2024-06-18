@@ -19,7 +19,7 @@ namespace gymsy.UserControls.AdminControls
     public partial class DashboardAdminControl : UserControl
     {
 
-        private NuevoGymsyContext dbContext;
+        //private NuevoGymsyContext dbContext;
 
         public DashboardAdminControl()
         {
@@ -190,7 +190,7 @@ namespace gymsy.UserControls.AdminControls
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Esta exepcion se produjo en el metodo BtnDownload_Click: " + ex.Message);
             }
         }
 

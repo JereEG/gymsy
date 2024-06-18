@@ -30,17 +30,17 @@ namespace gymsy.UserControls
     public partial class WalletUserControl : UserControl, IWalletView
     {
 
-        private NuevoGymsyContext gymsydb = ViejoGymsyContext.GymsyContextDB;
+       // private NuevoGymsyContext gymsydb = ViejoGymsyContext.GymsyContextDB;
         private IEnumerable<Pago> PaysList;
         private Pago PayActive;
-        private NuevoGymsyContext dbContext;
+        //private NuevoGymsyContext dbContext;
 
         public WalletUserControl()
         {
             InitializeComponent();
             InitializeData();
             InitializeGridTransactions();
-            this.dbContext = ViejoGymsyContext.GymsyContextDB;
+            //this.dbContext = ViejoGymsyContext.GymsyContextDB;
         }
 
         private void InitializeData()
@@ -249,6 +249,7 @@ namespace gymsy.UserControls
 
         private void dataGridTransactions_CellContentClick(object sender, DataGridViewCellEventArgs e)
         { 
+            /*
             if (e.RowIndex >= 0 && e.ColumnIndex == 1)
             {
 
@@ -269,13 +270,16 @@ namespace gymsy.UserControls
                     PanelInvoiceWallet.Visible = true;
                 }
             } 
+            */
         }
 
         private void BtnDownloadPDF_Click(object sender, EventArgs e)
         {
+            /*
             string rutaArchivo  = utilities.GenarateComprobante.GeneratePdfComprobante(this.PayActive);
             MessageBox.Show("Archivo HTML generado exitosamente en: " + rutaArchivo);
             PanelInvoiceWallet.Visible = false;
+            */
         }
 
 

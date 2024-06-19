@@ -237,7 +237,7 @@ namespace gymsy.App.Views.UserControls.receptionist
             }
             else
             {
-                MessageBox.Show("Por favor, seleccione un cliente.");
+                MessageBox.Show("Por favor, seleccione un alumno.");
             }
 
         }

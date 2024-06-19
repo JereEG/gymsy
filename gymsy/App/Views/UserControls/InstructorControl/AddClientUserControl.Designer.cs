@@ -157,9 +157,9 @@ namespace gymsy.UserControls
             newClientOrEditClient.ForeColor = Color.FromArgb(230, 237, 243);
             newClientOrEditClient.Location = new Point(402, 18);
             newClientOrEditClient.Name = "newClientOrEditClient";
-            newClientOrEditClient.Size = new Size(263, 52);
+            newClientOrEditClient.Size = new Size(281, 52);
             newClientOrEditClient.TabIndex = 33;
-            newClientOrEditClient.Text = "Nuevo Cliente";
+            newClientOrEditClient.Text = "Nuevo Alumno";
             // 
             // panel2
             // 
@@ -404,7 +404,7 @@ namespace gymsy.UserControls
             BGuardarCliente.Padding = new Padding(10, 0, 0, 0);
             BGuardarCliente.Size = new Size(202, 63);
             BGuardarCliente.TabIndex = 76;
-            BGuardarCliente.Text = "Guardar Cliente";
+            BGuardarCliente.Text = "Guardar Alumno";
             BGuardarCliente.TextAlign = ContentAlignment.MiddleLeft;
             BGuardarCliente.TextColor = Color.White;
             BGuardarCliente.UseVisualStyleBackColor = false;

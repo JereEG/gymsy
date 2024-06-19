@@ -31,20 +31,13 @@ namespace gymsy.App.Presenters
         // Método para agregar un nuevo usuario (Instructor)
         public static void GuardarInstructor(string nombre, string apellido, string telefono, string usuario, string contraseña, string nameImage, string sexo, DateTime pfecha_cumpleanos)
         {
-            if (pfecha_cumpleanos < DateTime.Now)
-            {
-
-
+            
                 using (var gymsydb = new NuevoGymsyContext())
                 {
 
                     ProcedimientoAlmacenado.CrearInstructor(usuario, nombre, apellido, nameImage, contraseña, telefono, sexo, pfecha_cumpleanos);
                 }
-            }
-            else
-            {
-                MessageBox.Show("Fecha de nacimiento no valida");
-            }
+         
         }
 
         // Método para obtener un usuario por su ID

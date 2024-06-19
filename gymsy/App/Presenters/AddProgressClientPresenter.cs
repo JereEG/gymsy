@@ -44,7 +44,7 @@ namespace gymsy.App.Presenters
                 return gymsydb.AlumnoSuscripcions.FirstOrDefault(a => a.IdAlumno == idAlumno);
             }
         }
-        public static bool SaveProgress(string ptitle_dataFisic, string pnotes_dataFisic, float pweight_dataFisic, float pheight_dataFisic, string pruta_imagen, string pextension)
+        public static bool guardarProgreso(string ptitle_dataFisic, string pnotes_dataFisic, float pweight_dataFisic, float pheight_dataFisic, string pruta_imagen, string pextension)
         {
             using (var gymsydb = new NuevoGymsyContext())
             {

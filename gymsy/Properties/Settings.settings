@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="stringConnection" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Server=DESKTOP-4PHTAOL\lezan;Database=gymsy;Integrated Security=True;TrustServerCertificate=True;</Value>
+      <Value Profile="(Default)">Server=(local);Database=gymsy;Integrated Security=True;TrustServerCertificate=True;</Value>
     </Setting>
   </Settings>
 </SettingsFile>

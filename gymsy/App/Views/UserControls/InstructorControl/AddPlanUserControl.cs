@@ -81,17 +81,22 @@ namespace gymsy.UserControls
             this.AgregarPlan(TBPrecio.Text, TBDescripcion.Text);
             
         }
+        private bool validarCampos(float precio,string descripcion)
+        {
+            return   precio >= 0 && !string.IsNullOrWhiteSpace(descripcion);
+        }
 
         private void AgregarPlan(string precio, string descripcion)
         {
             try
             {
                 //en numeroIngresado se guarda el valor ingresado en el textbox de ser un numero valido
-                if (float.TryParse(precio, out float numeroIngresado) && numeroIngresado >= 0)
+                //Se verifica que se ha ingresado una descripcion
+                if (float.TryParse(precio, out float numeroIngresado) &&  validarCampos(numeroIngresado,descripcion))
                 {
-                    //Se verifica que se ha ingresado una descripcion
-                    if (!string.IsNullOrWhiteSpace(descripcion))
-                    {
+                   
+                    
+                    
                         // Aquí puedes realizar la acción que necesites con el número ingresado
                         LPrecioRequerido.Visible = false;
                         LDescripcionRequerido.Visible = false;
@@ -173,16 +178,14 @@ namespace gymsy.UserControls
 
 
 
-                    }
-                    else
-                    {
-                        LDescripcionRequerido.Visible = true;
-                    }
+                    
+                   
 
                 }
                 else
                 {
                     LPrecioRequerido.Visible = true;
+                    LDescripcionRequerido.Visible = true;
                     MessageBox.Show("Por favor, verifique que haya ingresado correctamente todos los campos.");
                 }
             }

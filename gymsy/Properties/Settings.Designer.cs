@@ -25,8 +25,8 @@ namespace gymsy.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Server=DESKTOP-4PHTAOL\\lezan;Database=gymsy;Integrated Security=True;TrustServerC" +
-            "ertificate=True;")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Server=(local);Database=gymsy;Integrated Security=True;TrustServerCertificate=Tru" +
+            "e;")]
         public string stringConnection {
             get {
                 return ((string)(this["stringConnection"]));

@@ -54,12 +54,18 @@ namespace gymsy.UserControls.AdminControls
                 bool isValidTextBoxes = isValidTextsBoxesMostrarError();
                 if (isValidTextBoxes)
                 {
-                    AdminPresenter.GuardarInstructor(nombre, apellido, telefono, usuario, contraseña, nameImagen, sexo, fecha_cumpleanos);
+                    if (fecha_cumpleanos < DateTime.Now)
+                    {
+                        AdminPresenter.GuardarInstructor(nombre, apellido, telefono, usuario, contraseña, nameImagen, sexo, fecha_cumpleanos);
 
-                    AppState.needRefreshClientsUserControl = true;
-                    MessageBox.Show("Se Guardaron correcctamente los datos");
-                    this.restablecerTextBoxes();
-
+                        AppState.needRefreshClientsUserControl = true;
+                        MessageBox.Show("Se Guardaron correcctamente los datos");
+                        this.restablecerTextBoxes();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Fecha de nacimiento no valida");
+                    }
 
                 }
                 else

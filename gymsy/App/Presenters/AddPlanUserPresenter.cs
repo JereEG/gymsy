@@ -48,7 +48,7 @@ namespace gymsy.App.Presenters
                 plan.Precio = pPrecio;
                 plan.PlanEntrenamientoInactivo = false;
                 plan.IdEntrenador = AppState.Instructor.IdUsuario;
-
+               
                 gymsydb.PlanEntrenamientos.Add(plan);
                 gymsydb.SaveChanges();
                 return plan;

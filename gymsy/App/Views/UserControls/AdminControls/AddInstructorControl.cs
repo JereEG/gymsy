@@ -42,40 +42,56 @@ namespace gymsy.UserControls.AdminControls
             DateTime fecha_cumpleanos = DPFechaNacimiento.Value;
             string sexo = RBMasculino.Checked?"M":"F";
 
+            //bool isValidTextBoxes = validarCampos();
+            if (validarCampos())
+            {
+                if (this.verificarNacimiento(fecha_cumpleanos))
+                {
+                    if (this.IsNicknameUnique(usuario))
+                    {
+                        this.guardarInstructor(nombre, apellido, telefono, usuario, contraseña, nameImagen, sexo, fecha_cumpleanos);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error al verificar el nombre de usuario");
+                    }
 
-            this.guardarInstructor(nombre, apellido, telefono, usuario, contraseña, nameImagen, sexo, fecha_cumpleanos);
+                }
+                else
+                {
+                    MessageBox.Show("Fecha de nacimiento no valida");
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Revise y complete correctamente los campos.");
+            }
+
             
+            
+        }
+        private bool verificarNacimiento(DateTime fechaNacimiento)
+        {
+            return fechaNacimiento < DateTime.Now;
         }
 
         private void guardarInstructor(string nombre,string apellido,string telefono,string usuario,string contraseña, string nameImagen,string sexo,DateTime fecha_cumpleanos)
         {
             try
             { //Se verifica que se hayan ingresado todos los datos
-                bool isValidTextBoxes = validarCampos();
-                if (isValidTextBoxes)
-                {
-                    if (fecha_cumpleanos < DateTime.Now)
-                    {
-                        AdminPresenter.GuardarInstructor(nombre, apellido, telefono, usuario, contraseña, nameImagen, sexo, fecha_cumpleanos);
 
-                        AppState.needRefreshClientsUserControl = true;
-                        MessageBox.Show("Se Guardaron correcctamente los datos");
-                        this.restablecerTextBoxes();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Fecha de nacimiento no valida");
-                    }
 
-                }
-                else
-                {
-                    MessageBox.Show("Revise y complete correctamente los campos.");
-                }
+                AdminPresenter.GuardarInstructor(nombre, apellido, telefono, usuario, contraseña, nameImagen, sexo, fecha_cumpleanos);
 
+                AppState.needRefreshClientsUserControl = true;
+                MessageBox.Show("Se Guardaron correcctamente los datos");
+
+                this.restablecerTextBoxes();
             }
             catch (Exception ex)
             {
+
                 MessageBox.Show($"Mensaje de la excepción: {ex.Message}\n\n" +
                                 $"Stack Trace: {ex.StackTrace}\n\n" +
                                 $"Excepción interna: {ex.InnerException}\n\n" +
@@ -159,7 +175,7 @@ namespace gymsy.UserControls.AdminControls
             }
 
             //Se verifica que se hay ingresado un correo
-            if (!string.IsNullOrWhiteSpace(TBUsuario.Text) && this.IsNicknameUnique(TBUsuario.Text) && TBUsuario.PlaceholderText != TBUsuario.Text)
+            if (!string.IsNullOrWhiteSpace(TBUsuario.Text) && TBUsuario.PlaceholderText != TBUsuario.Text)
             {
                 LUsurioRequerido.Visible = false;
             }
@@ -229,7 +245,7 @@ namespace gymsy.UserControls.AdminControls
             }
             catch (Exception e)
             {
-                MessageBox.Show("Esta exepcion se produjo en el metodo SaveImage: " + e.Message);
+                //MessageBox.Show("Esta exepcion se produjo en el metodo SaveImage: " + e.Message);
                 return "";
             }
         }

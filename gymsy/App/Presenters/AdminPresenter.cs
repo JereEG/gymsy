@@ -63,7 +63,7 @@ namespace gymsy.App.Presenters
                     }
                     else
                     {
-                        MessageBox.Show("El nombre de usuario ya existe");
+                        //MessageBox.Show("El nombre de usuario ya existe");
                         return false;
                     }
                 }
@@ -336,6 +336,22 @@ namespace gymsy.App.Presenters
                 catch (Exception ex)
                 {
                     throw new Exception("Error al guardar la imagen: " + ex.Message);
+                }
+            }
+        }
+        public static void EliminarOActivarInstructor(int pIdPersona, bool pDeleteOrAcitive)
+        {
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+
+
+                var persona = gymsydb.Usuarios
+                    .Where(p => p.IdUsuario == pIdPersona && p.IdRol == 2).FirstOrDefault();
+
+                if (persona != null)
+                {
+                    persona.UsuarioInactivo = pDeleteOrAcitive;
+                    gymsydb.SaveChanges();
                 }
             }
         }

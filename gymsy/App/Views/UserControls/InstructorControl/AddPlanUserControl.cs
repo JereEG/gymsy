@@ -77,122 +77,127 @@ namespace gymsy.UserControls
 
         private void BAgregarPlan_Click(object sender, EventArgs e)
         {
-
-            this.AgregarPlan(TBPrecio.Text, TBDescripcion.Text);
-            
-        }
-        private bool validarCampos(float precio,string descripcion)
-        {
-            return   precio >= 0 && !string.IsNullOrWhiteSpace(descripcion);
-        }
-
-        private void AgregarPlan(string precio, string descripcion)
-        {
-            try
+            string precio = TBPrecio.Text;
+            string descripcion = TBDescripcion.Text;
+            //en numeroIngresado se guarda el valor ingresado en el textbox de ser un numero valido
+            //Se verifica que se ha ingresado una descripcion
+            if (validarCampos(precio, descripcion))
             {
-                //en numeroIngresado se guarda el valor ingresado en el textbox de ser un numero valido
-                //Se verifica que se ha ingresado una descripcion
-                if (float.TryParse(precio, out float numeroIngresado) &&  validarCampos(numeroIngresado,descripcion))
+
+
+
+                // Aquí puedes realizar la acción que necesites con el número ingresado
+                LPrecioRequerido.Visible = false;
+                LDescripcionRequerido.Visible = false;
+
+                if (isEditMode)
                 {
-                   
-                    
-                    
-                        // Aquí puedes realizar la acción que necesites con el número ingresado
-                        LPrecioRequerido.Visible = false;
-                        LDescripcionRequerido.Visible = false;
-
-                        if (isEditMode)
-                        {
 
 
 
-                            DataGridViewRow selectedRow = DGPlan.Rows[this.indexRowSelect];
-                            selectedRow.Cells["Precio"].Value = precio;
-                            selectedRow.Cells["Descripcion"].Value = descripcion;
+                    DataGridViewRow selectedRow = DGPlan.Rows[this.indexRowSelect];
+                    selectedRow.Cells["Precio"].Value = precio;
+                    selectedRow.Cells["Descripcion"].Value = descripcion;
 
-                            int idPlan = int.Parse(selectedRow.Cells["id_plan"].Value.ToString());
-
-
-                            if (AddPlanUserPresenter.DescripcionUnica(descripcion, idPlan))
-                            {
+                    int idPlan = int.Parse(selectedRow.Cells["id_plan"].Value.ToString());
 
 
-
-                                decimal Fprecio = decimal.Parse(precio);
-
-                                AddPlanUserPresenter.modificarPlan(idPlan, descripcion, Fprecio);
-
-                                // Actualiza la vista del DataGridView.
-                                DGPlan.Refresh();
-
-
-                                //MessageBox.Show("Se Edito correcetamente el plan con un precio de: $" + numeroIngresado.ToString() + "\nDescripcion: " + TBDescripcion.Text);
-
-                                selectedRow = null;
-                                this.isEditMode = false;
-
-                                //Se cambia el boton para que ahora se pueda eliminar planes
-                                BEliminarPlan.IconChar = FontAwesome.Sharp.IconChar.Trash;
-                                BEliminarPlan.Text = "Eliminar Plan";
-
-                                LModoEditOrAdd.Text = "Modo Agregar";
-
-                                // Limpiar los TextBox después de agregar la fila
-                                TBPrecio.Clear();
-                                TBDescripcion.Clear();
-                            }
-                            else
-                            {
-                                MessageBox.Show("Ya existe un plan con esa descripcion.");
-                            }
-
-                        }
-                        else
-                        {
-
-                            if (AddPlanUserPresenter.DescripcionUnica(TBDescripcion.Text))
-                            {
-                                decimal precio_a_guardar = decimal.Parse(TBPrecio.Text);
-
-                                PlanEntrenamiento plan_guardado = AddPlanUserPresenter.guardarPlan(TBDescripcion.Text, precio_a_guardar);
-
-                                DGPlan.Rows.Add(plan_guardado.IdPlanEntrenamiento, TBPrecio.Text, TBDescripcion.Text, false);
-
-                                MessageBox.Show("Plan guardado correctamente.");
-
-                                // Limpiar los TextBox después de agregar la fila
-                                TBPrecio.Clear();
-                                TBDescripcion.Clear();
-
-
-                            }
-                            else
-                            {
-                                MessageBox.Show("Ya existe un plan con esa descripcion.");
-                            }
-
-                        }
+                    if (AddPlanUserPresenter.DescripcionUnica(descripcion, idPlan))
+                    {
 
 
 
+                        decimal Fprecio = decimal.Parse(precio);
+
+                        AddPlanUserPresenter.modificarPlan(idPlan, descripcion, Fprecio);
+
+                        // Actualiza la vista del DataGridView.
+                        DGPlan.Refresh();
 
 
+                        //MessageBox.Show("Se Edito correcetamente el plan con un precio de: $" + numeroIngresado.ToString() + "\nDescripcion: " + TBDescripcion.Text);
 
-                    
-                   
+                        selectedRow = null;
+                        this.isEditMode = false;
+
+                        //Se cambia el boton para que ahora se pueda eliminar planes
+                        BEliminarPlan.IconChar = FontAwesome.Sharp.IconChar.Trash;
+                        BEliminarPlan.Text = "Eliminar Plan";
+
+                        LModoEditOrAdd.Text = "Modo Agregar";
+
+                        // Limpiar los TextBox después de agregar la fila
+                        TBPrecio.Clear();
+                        TBDescripcion.Clear();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ya existe un plan con esa descripcion.");
+                    }
 
                 }
                 else
                 {
-                    LPrecioRequerido.Visible = true;
-                    LDescripcionRequerido.Visible = true;
-                    MessageBox.Show("Por favor, verifique que haya ingresado correctamente todos los campos.");
+
+                    if (AddPlanUserPresenter.DescripcionUnica(TBDescripcion.Text))
+                    {
+                        decimal precio_a_guardar = decimal.Parse(TBPrecio.Text);
+
+                        PlanEntrenamiento plan_guardado = this.agregarPlan(precio_a_guardar, TBDescripcion.Text);
+
+                        DGPlan.Rows.Add(plan_guardado.IdPlanEntrenamiento, TBPrecio.Text, TBDescripcion.Text, false);
+
+                        MessageBox.Show("Plan guardado correctamente.");
+
+                        // Limpiar los TextBox después de agregar la fila
+                        TBPrecio.Clear();
+                        TBDescripcion.Clear();
+
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ya existe un plan con esa descripcion.");
+                    }
+
                 }
+
+
+
+
+
+
+
+
+
+            }
+            else
+            {
+                LPrecioRequerido.Visible = true;
+                LDescripcionRequerido.Visible = true;
+                MessageBox.Show("Por favor, verifique que haya ingresado correctamente todos los campos.");
+            }
+            
+            
+        }
+        private bool validarCampos(string precio,string descripcion)
+        {
+            //decimal precioIngresado = 0.0m;
+            decimal.TryParse(precio, out decimal precioIngresado);
+            return    precioIngresado >= 0.0m && !string.IsNullOrWhiteSpace(precio) && !string.IsNullOrWhiteSpace(descripcion);
+        }
+
+        private PlanEntrenamiento agregarPlan(decimal precio, string descripcion)
+        {
+            /*try
+            {
+                
             }
             catch
             {
                 MessageBox.Show("Error al guardar el plan.");
-            }
+            }*/
+            return AddPlanUserPresenter.guardarPlan(descripcion, precio);
         }
 
         /**

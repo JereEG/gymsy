@@ -231,17 +231,9 @@ namespace gymsy.UserControls.AdminControls
 
                     int idInstructor = int.Parse(DGInstructors.Rows[this.indexRowSelect].Cells["id_instructor"].Value.ToString());
 
-                    var InstructorUpdated = this.dbContext.Usuarios
-                    .Where(i => i.IdUsuario == idInstructor && i.IdRol==2)
-                    .First();
+                    AdminPresenter.EliminarOActivarInstructor(idInstructor, deleteOrActive);
 
-                    if (InstructorUpdated != null)
-                    {
-                        InstructorUpdated.UsuarioInactivo = deleteOrActive;
-
-                        this.dbContext.SaveChanges();
-                    }
-
+                   
 
 
                     //Se actualiza el datagrid con el 

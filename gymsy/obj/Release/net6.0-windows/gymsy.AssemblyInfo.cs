@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("gymsy")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f0db3a6163a8fc9237adb141a854ccbbbac6489e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f179f5023c95117479a84a3c8310641979b9c351")]
 [assembly: System.Reflection.AssemblyProductAttribute("gymsy")]
 [assembly: System.Reflection.AssemblyTitleAttribute("gymsy")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

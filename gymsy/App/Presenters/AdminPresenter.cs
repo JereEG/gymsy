@@ -26,53 +26,23 @@ namespace gymsy.App.Presenters
 
         private static NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
 
-       
-
         // Método para agregar un nuevo usuario (Instructor)
         public static void GuardarInstructor(string nombre, string apellido, string telefono, string usuario, string contraseña, string nameImage, string sexo, DateTime pfecha_cumpleanos)
         {
-            
-                using (var gymsydb = new NuevoGymsyContext())
-                {
 
-                    ProcedimientoAlmacenado.CrearInstructor(usuario, nombre, apellido, nameImage, contraseña, telefono, sexo, pfecha_cumpleanos);
-                }
+            Usuario.GuardarInstructor(usuario, nombre, apellido, nameImage, contraseña, telefono, sexo, pfecha_cumpleanos);
          
         }
-
-        // Método para obtener un usuario por su ID
-        public static Usuario GetUsuario(int idUsuario)
+        public static bool verificarNacimiento(DateTime fechaNacimiento)
         {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-                return gymsydb.Usuarios.FirstOrDefault(u => u.IdUsuario == idUsuario);
-            }
+            return fechaNacimiento < DateTime.Now;
         }
 
+
         // Método para verificar si el nickname es único
-        public static bool NicknameUnique(string nickname)
+        public static bool IsNicknameUnique(string nickname)
         {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-                try
-                {
-                    var existingUsuario = gymsydb.Usuarios.FirstOrDefault(u => u.Apodo == nickname);
-                    if (existingUsuario == null)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        //MessageBox.Show("El nombre de usuario ya existe");
-                        return false;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al verificar el nombre de usuario: " + ex.Message);
-                    return false;
-                }
-            }
+           return Usuario.IsNicknameUnique(nickname);
         }
 
         // Método para crear un backup de la base de datos

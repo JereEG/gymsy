@@ -16,19 +16,10 @@ namespace gymsy.App.Presenters
         private static NuevoGymsyContext gymsydb = ViejoGymsyContext.GymsyContextDB;
 
         public static bool TituloUnico(string nuevoTitulo)
-        {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-                // Consulta para encontrar registros con el mismo título
-                var registrosConMismoTitulo = gymsydb.EstadoFisicos
-                .Where(d => d.Titulo == nuevoTitulo);
-
-                // Verificamos si se encontró algún registro con el mismo título
-                bool tituloUnico = !registrosConMismoTitulo.Any();
-
-                // Devolvemos el resultado
-                return tituloUnico;
-            }
+        { 
+           
+           return EstadoFisico.TituloUnico(nuevoTitulo);
+           
         }
         public static List<EstadoFisico> getProgress(int idAlumno)
         {
@@ -62,39 +53,7 @@ namespace gymsy.App.Presenters
                 File.Save(rutaCompleta, ImageFormat.Png);
 
 
-
-                EstadoFisico DataFisicModel = new EstadoFisico();
-                DataFisicModel.FechaCreacion = DateTime.Now;
-               
-                if (AppState.ClientActive == null)
-                {
-                    DataFisicModel.IdAlumnoSuscripcion = getSuscripcion(AppState.auxIdClient).IdAlumnoSuscripcion ;
-                }
-                else
-                {
-                    DataFisicModel.IdAlumnoSuscripcion =getSuscripcion(AppState.ClientActive.IdUsuario).IdAlumnoSuscripcion;
-                }
-
-                DataFisicModel.EstadoFisicoInactivo = false;
-                DataFisicModel.Titulo = ptitle_dataFisic;
-                DataFisicModel.Notas = pnotes_dataFisic;
-                DataFisicModel.Peso = (decimal)pweight_dataFisic;
-                DataFisicModel.Altura = (decimal)pheight_dataFisic;
-                DataFisicModel.ImagenUrl = NameImage;
-                var DataFisicSave = gymsydb.Add(DataFisicModel);
-                gymsydb.SaveChanges();
-
-                if (DataFisicSave != null)
-                {
-
-                    gymsydb.SaveChanges();
-
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return EstadoFisico.guardarProgreso(ptitle_dataFisic, pnotes_dataFisic, pweight_dataFisic, pheight_dataFisic, NameImage);
             }
         }
     }

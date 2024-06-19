@@ -39,41 +39,13 @@ namespace gymsy.App.Presenters
             }
 
         }
-        public static PlanEntrenamiento guardarPlan(string pDescripcion, decimal pPrecio)
+        public static PlanEntrenamiento agregarPlan(string pDescripcion, decimal pPrecio)
         {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-                PlanEntrenamiento plan = new PlanEntrenamiento();
-                plan.Descripcion = pDescripcion;
-                plan.Precio = pPrecio;
-                plan.PlanEntrenamientoInactivo = false;
-                plan.IdEntrenador = AppState.Instructor.IdUsuario;
-               
-                gymsydb.PlanEntrenamientos.Add(plan);
-                gymsydb.SaveChanges();
-                return plan;
-            }
+            return PlanEntrenamiento.agregarPlan(pDescripcion, pPrecio);
         }
         public static bool DescripcionUnica(string nuevaDescripcion, int? idPlanActual = null)
         {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-                // Consulta para encontrar planes con la misma descripción
-                var planesConMismaDescripcion = gymsydb.PlanEntrenamientos
-                .Where(p => p.Descripcion == nuevaDescripcion);
-
-                // Si se está modificando un plan, excluimos el plan actual de la consulta
-                if (idPlanActual.HasValue)
-                {
-                    planesConMismaDescripcion = planesConMismaDescripcion.Where(p => p.IdPlanEntrenamiento != idPlanActual);
-                }
-
-                // Verificamos si se encontró algún plan con la misma descripción
-                bool descripcionUnica = !planesConMismaDescripcion.Any();
-
-                // Devolvemos el resultado
-                return descripcionUnica;
-            }
+            return PlanEntrenamiento.descripcionUnica(nuevaDescripcion, idPlanActual);
         }
         public static void EliminarOActivarPlan( int pIdPlan, bool pDeleteOrAcitive)
         {

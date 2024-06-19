@@ -45,9 +45,9 @@ namespace gymsy.UserControls.AdminControls
             //bool isValidTextBoxes = validarCampos();
             if (validarCampos())
             {
-                if (this.verificarNacimiento(fecha_cumpleanos))
+                if (AdminPresenter.verificarNacimiento(fecha_cumpleanos))
                 {
-                    if (this.IsNicknameUnique(usuario))
+                    if (AdminPresenter.IsNicknameUnique(usuario))
                     {
                         this.guardarInstructor(nombre, apellido, telefono, usuario, contraseña, nameImagen, sexo, fecha_cumpleanos);
                     }
@@ -71,10 +71,7 @@ namespace gymsy.UserControls.AdminControls
             
             
         }
-        private bool verificarNacimiento(DateTime fechaNacimiento)
-        {
-            return fechaNacimiento < DateTime.Now;
-        }
+    
 
         private void guardarInstructor(string nombre,string apellido,string telefono,string usuario,string contraseña, string nameImagen,string sexo,DateTime fecha_cumpleanos)
         {
@@ -260,11 +257,7 @@ namespace gymsy.UserControls.AdminControls
             RBMasculino.Checked = true;
             IPImagenInstructor.Image = gymsy.Properties.Resources.instructor;
         }
-        private bool IsNicknameUnique(string nickname)
-        {
-           return AdminPresenter.NicknameUnique(nickname);
-
-        }
+       
         public override void Refresh()
         {
             BBack.Visible = AppState.isModeAdd;

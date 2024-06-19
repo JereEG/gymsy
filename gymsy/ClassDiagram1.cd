@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="gymsy.Modelos.AlumnoSuscripcion">
+    <Position X="7.25" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAgBAAgAAAAAAAgAAAAAEAAAAAAACBAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\AlumnoSuscripcion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gymsy.Modelos.Pago">
+    <Position X="7" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAIAAEAAEACAAgAAAIAAAAAAAAAAQAAAAIQAA=</HashCode>
+      <FileName>Models\Pago.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gymsy.Modelos.Rol">
+    <Position X="0.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAQAAAAgAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Models\Rol.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gymsy.Modelos.TipoDePago">
+    <Position X="5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAgAAAAAAAAAAAACAAAAAAQAA=</HashCode>
+      <FileName>Models\TipoDePago.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gymsy.Modelos.Usuario">
+    <Position X="4.75" Y="0.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>ECAACAQIIAAAAAocgAAAgAAAACCAAABAAACEAABAAAA=</HashCode>
+      <FileName>Models\Usuario.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gymsy.Modelos.PlanEntrenamiento">
+    <Position X="3" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAARAACAAAAAAAAAAAAAAA4=</HashCode>
+      <FileName>Models\PlanEntrenamiento.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="gymsy.Modelos.EstadoFisico">
+    <Position X="0.5" Y="3" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAgAAIAFAAAAAAAAAAAAAAAgAIBAAAAAAAAAAABA=</HashCode>
+      <FileName>Models\EstadoFisico.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -197,7 +197,7 @@ namespace gymsy.UserControls
             {
                 MessageBox.Show("Error al guardar el plan.");
             }*/
-            return AddPlanUserPresenter.guardarPlan(descripcion, precio);
+            return AddPlanUserPresenter.agregarPlan(descripcion, precio);
         }
 
         /**

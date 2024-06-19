@@ -273,7 +273,7 @@ namespace gymsy.UserControls.AdminControls
                     // Consulta la base de datos para verificar si ya existe un registro con el mismo 'nickname'
 
                     
-                    var existingPerson = AdminPresenter.NicknameUnique(nickname);
+                    var existingPerson = AdminPresenter.IsNicknameUnique(nickname);
                     // Si 'existingPerson' no es nulo, significa que ya existe un registro con el mismo 'nickname'
                     if (existingPerson == null)
                     {

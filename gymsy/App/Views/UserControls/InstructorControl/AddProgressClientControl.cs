@@ -61,7 +61,7 @@ namespace gymsy.App.Views.UserControls.ClientControls
         }
 
 
-        private bool ValidateTextBox(List<RJTextBox> textBoxList)
+        private bool ValidarCampos(List<RJTextBox> textBoxList)
         {
             foreach (RJTextBox textBoxCurrent in textBoxList)
             {
@@ -98,7 +98,7 @@ namespace gymsy.App.Views.UserControls.ClientControls
                 };
 
                 // Validar texts box
-                if (!ValidateTextBox(textBoxList)) return;
+                if (!ValidarCampos(textBoxList)) return;
 
 
                 // Verifica la extensión del archivo seleccionado

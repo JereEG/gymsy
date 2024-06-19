@@ -51,7 +51,7 @@ namespace gymsy.UserControls.AdminControls
         {
             try
             { //Se verifica que se hayan ingresado todos los datos
-                bool isValidTextBoxes = isValidTextsBoxesMostrarError();
+                bool isValidTextBoxes = validarCampos();
                 if (isValidTextBoxes)
                 {
                     if (fecha_cumpleanos < DateTime.Now)
@@ -119,7 +119,7 @@ namespace gymsy.UserControls.AdminControls
             }
         
         }
-        private bool isValidTextsBoxesMostrarError()
+        private bool validarCampos()
         {
 
             bool isValid = true;

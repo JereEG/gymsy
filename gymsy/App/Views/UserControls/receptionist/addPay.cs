@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Modelos;
 using gymsy.Context;
 using gymsy.Properties;
 using gymsy.App.Presenters;
@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Twilio.TwiML.Voice;
 
 namespace gymsy.App.Views.UserControls.receptionist
 {
@@ -102,50 +103,33 @@ namespace gymsy.App.Views.UserControls.receptionist
             // Limpia cualquier ordenación previa en el DataGridView
             DGUsers.Sort(DGUsers.Columns[0], ListSortDirection.Ascending);
 
-            foreach (TrainingPlan plan in AppState.planes)
+            foreach (AlumnoSuscripcion plan in AppState.AlumnoSuscripciones)
             {
-                foreach (Client client in plan.Clients.ToArray())
-                {
-                    if(client.IdPersonNavigation.Inactive)
+                var client = AddPayPresenter.getAlumno(plan.IdAlumno);
+               
+                
+                    if (!client.UsuarioInactivo)
                     {
                         // Expiration 
-                        TimeSpan diferencia = client.LastExpiration - DateTime.Now;
+                        TimeSpan diferencia = plan.FechaExpiracion - DateTime.Now;
 
                         string ColumnExpirationMsg = diferencia.Days > 0 ?
                             ("En " + diferencia.Days + " días") : ("Hace " + diferencia.Days * -1 + " días");
 
-                        /*
-                            try
-                            {
-                                string ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageClient + "\\" + client.IdPersonNavigation.Avatar;
-
-                                using (var image = System.Drawing.Image.FromFile(ruta))
-
-                                    DGUsers.Rows.Add(
-                                    image,
-                                    client.IdPersonNavigation.FirstName + " " + client.IdPersonNavigation.LastName,
-                                    client.IdTrainingPlanNavigation.Description,
-                                    ColumnExpirationMsg,
-                                    client.IdClient,
-                                    client.IdPersonNavigation.Inactive);
-                            }
-                            catch (Exception e)
-                            {
-
-                        */
-                        DGUsers.Rows.Add(
-                        //Resources.vector_fitness_couple_doing_exercise,
-                        client.IdPersonNavigation.FirstName + " " + client.IdPersonNavigation.LastName,
-                        client.IdTrainingPlanNavigation.Description,
-                        ColumnExpirationMsg,
-                        client.IdClient,
-                        client.IdPersonNavigation.Inactive);
-                        //}
+                        
+                                DGUsers.Rows.Add(
+                                //Resources.vector_fitness_couple_doing_exercise,
+                                client.Nombre + " " + client.Apellido,
+                                plan.IdPlanEntrenamientoNavigation.Descripcion,
+                                ColumnExpirationMsg,
+                                client.IdUsuario,
+                                client.UsuarioInactivo);
+                            
                     }
 
+            
 
-
-                }
+                
             }
 
             // Actualiza la vista del DataGridView.
@@ -207,15 +191,20 @@ namespace gymsy.App.Views.UserControls.receptionist
                 //&& clientSelected.IdTrainingPlanNavigation != null && AppState.Instructor.IdPersonNavigation != null
                 if (clientSelected != null)
                 {
-                    Lid_client.Text = clientSelected.IdClient.ToString();
-                    LClientFullName.Text = clientSelected.IdPersonNavigation.FirstName + " " + clientSelected.IdPersonNavigation.LastName;
-                    LPlan.Text = clientSelected.IdTrainingPlanNavigation.Description;
-                    LInstructorFullName.Text = clientSelected.IdTrainingPlanNavigation.IdInstructorNavigation.IdPersonNavigation.FirstName + " " + clientSelected.IdTrainingPlanNavigation.IdInstructorNavigation.IdPersonNavigation.LastName;
+                    // agregar plan de entrenamiento con id del cliente
+                    var sus= AddPayPresenter.suscripcionCliente(idClient);
+                    var planEntrenamieto = AddPayPresenter.buscarPlanEntrenamiento(sus.IdPlanEntrenamiento);
+                    var instructorDelPlanEntrenamiento = AddPayPresenter.buscarInstrutorDePlanEntrenamiento(planEntrenamieto.IdEntrenador);
+                    //
+                    Lid_client.Text = clientSelected.IdUsuario.ToString();
+                    LClientFullName.Text = clientSelected.Nombre + " " + clientSelected.Apellido;
+                    LPlan.Text = planEntrenamieto.Descripcion;
+                    LInstructorFullName.Text = instructorDelPlanEntrenamiento.Nombre + " " + instructorDelPlanEntrenamiento.Apellido;
 
-                    TbAmount.Text = clientSelected.IdTrainingPlanNavigation.Price.ToString();
+                    TbAmount.Text = planEntrenamieto.Precio.ToString();
                     try
                     {
-                        string ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageClient + "\\" + clientSelected.IdPersonNavigation.Avatar;
+                        string ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageClient + "\\" + clientSelected.AvatarUrl;
                         PimagenPerson.BackgroundImage = System.Drawing.Image.FromFile(ruta);
                     }
                     catch (Exception ex)
@@ -267,7 +256,7 @@ namespace gymsy.App.Views.UserControls.receptionist
         {
             try
             {
-                float monto = float.Parse(TbAmount.Text);
+                decimal monto = decimal.Parse(TbAmount.Text);
 
                 AddPayPresenter.AgregarPago(idClient, monto);
 

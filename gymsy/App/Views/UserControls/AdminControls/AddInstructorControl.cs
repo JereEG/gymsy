@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Modelos;
 using gymsy.Context;
 using gymsy.Utilities;
 using gymsy.UserControls.AdminControls;
@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using gymsy.App.Views.UserControls.AdminControls;
 using gymsy.App.Presenters;
+using System.Windows.Forms.DataVisualization.Charting;
+using Twilio.TwiML.Voice;
 
 namespace gymsy.UserControls.AdminControls
 {
@@ -21,12 +23,11 @@ namespace gymsy.UserControls.AdminControls
     {
         private bool isEditMode = false; // Variable para saber si se esta editando o agregando 
 
-        private AdminPresenter presenter;
         public AddInstructorControl()
         {
 
             InitializeComponent();
-            presenter = new AdminPresenter();
+          
         }
 
         private void BGuardarCliente_Click(object sender, EventArgs e)
@@ -38,31 +39,33 @@ namespace gymsy.UserControls.AdminControls
             string usuario = TBUsuario.Text;
             string contraseña = Bcrypt.HashPassoword(TBContraseña.Text);
             string nameImagen = SaveImage(TBRutaImagen.Text);
-            DateTime birthday = DPFechaNacimiento.Value;
-            string sexo = "";
+            DateTime fecha_cumpleanos = DPFechaNacimiento.Value;
+            string sexo = RBMasculino.Checked?"M":"F";
 
-            if (RBMasculino.Checked)
-            {
-                sexo = "M";
-            }
-            else
-            {
-                sexo = "F";
-            }
 
+            this.guardarInstructor(nombre, apellido, telefono, usuario, contraseña, nameImagen, sexo, fecha_cumpleanos);
+            
+        }
+
+        private void guardarInstructor(string nombre,string apellido,string telefono,string usuario,string contraseña, string nameImagen,string sexo,DateTime fecha_cumpleanos)
+        {
             try
             { //Se verifica que se hayan ingresado todos los datos
-                bool isValidTextBoxes = isValidTextsBoxesMostrarError();
+                bool isValidTextBoxes = validarCampos();
                 if (isValidTextBoxes)
                 {
-                    presenter.GuardarCliente(nombre,apellido,telefono,usuario,contraseña,nameImagen,sexo,birthday);
-                    
-                    AppState.needRefreshClientsUserControl = true;
-                    MessageBox.Show("Se Guardaron correcctamente los datos");
-                    this.restablecerTextBoxes();
+                    if (fecha_cumpleanos < DateTime.Now)
+                    {
+                        AdminPresenter.GuardarInstructor(nombre, apellido, telefono, usuario, contraseña, nameImagen, sexo, fecha_cumpleanos);
 
-
-                    MessageBox.Show("Se Guardaron correcctamente los datos");
+                        AppState.needRefreshClientsUserControl = true;
+                        MessageBox.Show("Se Guardaron correcctamente los datos");
+                        this.restablecerTextBoxes();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Fecha de nacimiento no valida");
+                    }
 
                 }
                 else
@@ -110,13 +113,13 @@ namespace gymsy.UserControls.AdminControls
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Exepcion Inesperado");
+                MessageBox.Show("Esta exepcion se produjo en el metodo BTAgregarImagen_Click: " + ex.Message);
             }
         
         }
-        private bool isValidTextsBoxesMostrarError()
+        private bool validarCampos()
         {
 
             bool isValid = true;
@@ -226,7 +229,7 @@ namespace gymsy.UserControls.AdminControls
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                MessageBox.Show("Esta exepcion se produjo en el metodo SaveImage: " + e.Message);
                 return "";
             }
         }
@@ -243,7 +246,7 @@ namespace gymsy.UserControls.AdminControls
         }
         private bool IsNicknameUnique(string nickname)
         {
-           return  presenter.NicknameUnique(nickname);
+           return AdminPresenter.NicknameUnique(nickname);
 
         }
         public override void Refresh()

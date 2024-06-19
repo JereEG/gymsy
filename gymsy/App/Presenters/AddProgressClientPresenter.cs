@@ -1,5 +1,5 @@
 ﻿using CustomControls.RJControls;
-using gymsy.App.Models;
+using gymsy.Models;
 using gymsy.Context;
 using System;
 using System.Collections.Generic;
@@ -7,79 +7,95 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using gymsy.Modelos;
 
 namespace gymsy.App.Presenters
 {
     internal static class AddProgressClientPresenter
     {
-        private static GymsyDbContext gymsydb = GymsyContext.GymsyContextDB;
+        private static NuevoGymsyContext gymsydb = ViejoGymsyContext.GymsyContextDB;
 
         public static bool TituloUnico(string nuevoTitulo)
         {
-            // Consulta para encontrar registros con el mismo título
-            var registrosConMismoTitulo = gymsydb.DataFisics
-                .Where(d => d.Title == nuevoTitulo);
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                // Consulta para encontrar registros con el mismo título
+                var registrosConMismoTitulo = gymsydb.EstadoFisicos
+                .Where(d => d.Titulo == nuevoTitulo);
 
-            // Verificamos si se encontró algún registro con el mismo título
-            bool tituloUnico = !registrosConMismoTitulo.Any();
+                // Verificamos si se encontró algún registro con el mismo título
+                bool tituloUnico = !registrosConMismoTitulo.Any();
 
-            // Devolvemos el resultado
-            return tituloUnico;
+                // Devolvemos el resultado
+                return tituloUnico;
+            }
         }
-        
-        public static bool SaveProgress(string ptitle_dataFisic, string pnotes_dataFisic, float pweight_dataFisic, float pheight_dataFisic, string pruta_imagen, string pextension)
+        public static List<EstadoFisico> getProgress(int idAlumno)
         {
-
-            // Save image 
-            System.Drawing.Image File;
-            File = System.Drawing.Image.FromFile(pruta_imagen);
-
-            string directory = AppDomain.CurrentDomain.BaseDirectory;
-            string directoryPublic = Path.GetFullPath(Path.Combine(directory, @"..\..\..\App\Public"));
-
-            string RandomName = Guid.NewGuid().ToString();
-            string NameImage = $"{RandomName}{pextension}";
-            string rutaCompleta = Path.Combine(directoryPublic, NameImage);
-            File.Save(rutaCompleta, ImageFormat.Png);
-
-
-
-            DataFisic DataFisicModel = new DataFisic();
-            DataFisicModel.CreatedAt = DateTime.Now;
-            if (AppState.ClientActive == null)
+            using (var gymsydb=new NuevoGymsyContext())
             {
-                DataFisicModel.IdClient = AppState.auxIdClient;
+                return (List<EstadoFisico>)gymsydb.EstadoFisicos.Where(a => a.IdAlumnoSuscripcion==getSuscripcion(idAlumno).IdAlumnoSuscripcion).ToList();
             }
-            else
+        }
+        public static AlumnoSuscripcion getSuscripcion(int idAlumno)
+        {
+            using (var gymsydb=new NuevoGymsyContext())
             {
-                DataFisicModel.IdClient = AppState.ClientActive.IdClient;
+                return gymsydb.AlumnoSuscripcions.FirstOrDefault(a => a.IdAlumno == idAlumno);
             }
-
-            DataFisicModel.Inactive = false;
-            DataFisicModel.Title = ptitle_dataFisic;
-            DataFisicModel.Notes = pnotes_dataFisic;
-            DataFisicModel.Weight = pweight_dataFisic;
-            DataFisicModel.Height = pheight_dataFisic;
-
-            var DataFisicSave = gymsydb.Add(DataFisicModel);
-            gymsydb.SaveChanges();
-
-            if (DataFisicSave != null)
+        }
+        public static bool guardarProgreso(string ptitle_dataFisic, string pnotes_dataFisic, float pweight_dataFisic, float pheight_dataFisic, string pruta_imagen, string pextension)
+        {
+            using (var gymsydb = new NuevoGymsyContext())
             {
-                Models.Image ImageModel = new Models.Image();
-                ImageModel.ImageUrl = NameImage;
-                ImageModel.IdDataFisic = DataFisicSave.Entity.IdDataFisic;
-                ImageModel.Inactive = false;
 
-                gymsydb.Add(ImageModel);
+                // Save image 
+                System.Drawing.Image File;
+                File = System.Drawing.Image.FromFile(pruta_imagen);
+
+                string directory = AppDomain.CurrentDomain.BaseDirectory;
+                string directoryPublic = Path.GetFullPath(Path.Combine(directory, @"..\..\..\App\Public"));
+
+                string RandomName = Guid.NewGuid().ToString();
+                string NameImage = $"{RandomName}{pextension}";
+                string rutaCompleta = Path.Combine(directoryPublic, NameImage);
+                File.Save(rutaCompleta, ImageFormat.Png);
+
+
+
+                EstadoFisico DataFisicModel = new EstadoFisico();
+                DataFisicModel.FechaCreacion = DateTime.Now;
+               
+                if (AppState.ClientActive == null)
+                {
+                    DataFisicModel.IdAlumnoSuscripcion = getSuscripcion(AppState.auxIdClient).IdAlumnoSuscripcion ;
+                }
+                else
+                {
+                    DataFisicModel.IdAlumnoSuscripcion =getSuscripcion(AppState.ClientActive.IdUsuario).IdAlumnoSuscripcion;
+                }
+
+                DataFisicModel.EstadoFisicoInactivo = false;
+                DataFisicModel.Titulo = ptitle_dataFisic;
+                DataFisicModel.Notas = pnotes_dataFisic;
+                DataFisicModel.Peso = (decimal)pweight_dataFisic;
+                DataFisicModel.Altura = (decimal)pheight_dataFisic;
+                DataFisicModel.ImagenUrl = NameImage;
+                var DataFisicSave = gymsydb.Add(DataFisicModel);
                 gymsydb.SaveChanges();
 
-                return true;
-            } else
-            {
-                return false;
-            }
+                if (DataFisicSave != null)
+                {
 
+                    gymsydb.SaveChanges();
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
     }
 }

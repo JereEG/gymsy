@@ -1,9 +1,10 @@
-using gymsy.App.Models;
+using gymsy.Models;
 using gymsy.App.Presenters;
 using gymsy.App.Views.Interfaces;
 using gymsy.Context;
 using gymsy.Properties;
 using Microsoft.EntityFrameworkCore;
+using gymsy.Modelos;
 
 namespace gymsy
 {
@@ -14,13 +15,13 @@ namespace gymsy
         {
             //Config & Conect to database
             string stringConnection = Resources.stringConnection;
-            DbContextOptionsBuilder<GymsyDbContext> optionsBuilder = new();
+            DbContextOptionsBuilder<NuevoGymsyContext> optionsBuilder = new();
 
-            GymsyDbContext GymsyContextDb = new(
+            NuevoGymsyContext GymsyContextDb = new(
                optionsBuilder.UseSqlServer(stringConnection).Options
             );
 
-            GymsyContext.GymsyContextDB = GymsyContextDb!;
+            ViejoGymsyContext.GymsyContextDB = GymsyContextDb!;
             ApplicationConfiguration.Initialize();
 
             IAuthView view = new AuthView();

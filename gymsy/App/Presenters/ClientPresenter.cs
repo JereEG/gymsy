@@ -1,5 +1,6 @@
-﻿using gymsy.App.Models;
-using gymsy.Context;
+﻿using gymsy.Context;
+using gymsy.Modelos;
+using gymsy.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,20 +9,19 @@ using System.Threading.Tasks;
 
 namespace gymsy.App.Presenters
 {
-    internal class ClientPresenter
+    internal static class ClientPresenter
     {
-        Person person;
-        private GymsyDbContext dbContext;
+        private static Usuario person = AppState.person;
+        private static NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
 
-        public ClientPresenter() {
-            this.dbContext = GymsyContext.GymsyContextDB;
-            this.person = AppState.person;
-        }
-
+       
         //aboutClientControl
-        public Client getClient(int idPerson)
+        public static Usuario getClient(int idPerson)
         {
-            return dbContext.Clients.Where(cl => cl.IdPerson == idPerson).First();
+            using (var gymsy = new NuevoGymsyContext())
+            {
+                return gymsydb.Usuarios.Where(cl => cl.IdUsuario == idPerson && cl.IdRol == 3).First();
+            }
         }
 
 

@@ -1,5 +1,4 @@
-﻿using gymsy.App.Models;
-using gymsy.Context;
+﻿using gymsy.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,86 +6,100 @@ using System.Text;
 using System.Threading.Tasks;
 using gymsy.Utilities;
 using System.Runtime.CompilerServices;
+using gymsy.Models;
+using gymsy.Modelos;
+using Microsoft.EntityFrameworkCore;
 
 namespace gymsy.App.Presenters
 {
     internal static class AddClientPresenter
     {
-        private static GymsyDbContext gymsydb = GymsyContext.GymsyContextDB;
+        private static NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
 
-        public static TrainingPlan TraerPrimerPlan()
+        public static PlanEntrenamiento TraerPrimerPlan()
         {
-            return gymsydb.TrainingPlans.FirstOrDefault();
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                return gymsydb.PlanEntrenamientos.FirstOrDefault();
+            }
         }
-        public static TrainingPlan BuscarPlan(int pIdPlanBuscado)
+
+        public static PlanEntrenamiento BuscarPlan(int pIdPlanBuscado)
         {
-            return gymsydb.TrainingPlans
-                    .Where(trainingPlan => trainingPlan.IdTrainingPlan == pIdPlanBuscado)
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                return gymsydb.PlanEntrenamientos
+                    .Where(plan => plan.IdPlanEntrenamiento == pIdPlanBuscado)
                     .First();
+            }
         }
-        public static List<TrainingPlan> TraerPlanes()
+        public static Usuario BuscarInstrucorDePlan(int pIdPlan)
         {
-            return gymsydb.TrainingPlans.ToList();
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                // Busca el plan de entrenamiento por su Id e incluye la entidad Instructor relacionada
+                var plan = gymsydb.PlanEntrenamientos
+                                  .Include(p => p.IdEntrenador) // Asume que PlanEntrenamiento tiene una propiedad de navegación Instructor
+                                  .FirstOrDefault(plan => plan.IdPlanEntrenamiento == pIdPlan);
+
+                // Retorna el instructor asociado al plan si se encuentra, de lo contrario devuelve null
+                return plan?.IdEntrenadorNavigation;
+            }
         }
 
-        public static void guardarCliente( string pUsuario, string pNombre, string pApellido, string pAvatar, string pPassword, string pNumberPhone, 
-            DateTime pBirthday, string pSexo, DateTime pExpiration, int pIdPlan)
+        public static List<PlanEntrenamiento> TraerPlanes()
         {
-            Person persona = new Person
+            using (var gymsydb = new NuevoGymsyContext())
             {
-                Nickname = pUsuario,
-                FirstName = pNombre,
-                Avatar = SaveImage(pAvatar),
-                Password = Bcrypt.HashPassoword(pPassword),
-                CreatedAt = DateTime.Now,
-                LastName = pApellido,
-                //CBU = usuario,
-                NumberPhone = pNumberPhone,
-                Birthday = pBirthday, //DPFechaNacimiento.Value,
-                Gender = pSexo,
-                RolId = 3,//3 es el rol de cliente
-                Inactive = true // ya que aun no ha pagado
-            };
-
-            //se guarda en la base de datos, primero la persona por la relacion de la llave foranea
-            gymsydb.People.Add(persona);
-            gymsydb.SaveChanges();
-
-            Client cliente = new Client
-            {
-                LastExpiration = pExpiration,//Se le añade un mes mas a la fecha actual
-                IdPerson = persona.IdPerson,
-                IdTrainingPlan = pIdPlan,
-            };
-
-            //Se guarda en AppState
-            AppState.clients.Add(persona);
-
-            Wallet wallet = new Wallet
-            {
-                Total = 0.0,
-                Retirable = 0.0,
-                Inactive = false,
-                CBU = pUsuario,
-                IdPerson = persona.IdPerson
-            };
-
-            gymsydb.Add(wallet);
-            gymsydb.SaveChanges();
-
-
-
-            gymsydb.Clients.Add(cliente);
-            gymsydb.SaveChanges();
+                return gymsydb.PlanEntrenamientos.ToList();
+            }
         }
+        
+        public static void GuardarCliente(string pUsuario, string pNombre, string pApellido, string pAvatar, string pPassword, string pNumberPhone,
+            string pSexo, DateTime pFechaNacimiento, DateTime pExpiration, int pIdPlan)
+        {
+            Usuario usuario = new Usuario()
+            {
+                Apodo = pUsuario,
+                Nombre = pNombre,
+                Apellido = pApellido,
+                AvatarUrl = SaveImage(pAvatar),
+                Contrasena = Bcrypt.HashPassoword(pPassword),
+                FechaCreacion = DateTime.Now,
+                FechaNacimiento= pFechaNacimiento,
+                NumeroTelefono = pNumberPhone,
+                Sexo = pSexo,
+                IdRol = 3, // 3 es el rol de cliente
+                UsuarioInactivo = true // ya que aun no ha pagado
+            };
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+
+
+                // Se guarda en la base de datos
+                gymsydb.Usuarios.Add(usuario);
+                gymsydb.SaveChanges();
+
+                AlumnoSuscripcion suscripcion = new AlumnoSuscripcion
+                {
+                    IdAlumno = usuario.IdUsuario,
+                    IdPlanEntrenamiento = pIdPlan,
+                    FechaExpiracion = pExpiration
+                };
+
+                gymsydb.AlumnoSuscripcions.Add(suscripcion);
+                gymsydb.SaveChanges();
+            }
+            // Se guarda en AppState
+            AppState.clients.Add(usuario);
+        }
+        
         private static string SaveImage(string imagePath)
         {
             try
             {
-
-                //Ruta completa para guardar la imagen en la carpeta
+                // Ruta completa para guardar la imagen en la carpeta
                 string pathDestinationFolder = AppState.pathDestinationFolder + AppState.nameCarpetImageClient;
-
 
                 // Asegúrate de que la carpeta exista, y si no, créala
                 if (!Directory.Exists(pathDestinationFolder))
@@ -106,7 +119,7 @@ namespace gymsy.App.Presenters
                 // Copia la imagen desde la ubicación original a la carpeta de destino
                 File.Copy(imagePath, destinationPath, true);
 
-                return uniqueFileName;//nombre del archivo 
+                return uniqueFileName; // nombre del archivo 
             }
             catch (Exception e)
             {
@@ -114,32 +127,46 @@ namespace gymsy.App.Presenters
                 return "";
             }
         }
+        public static List<Usuario> getUsuarios(int idUsuario)
+        {
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                return (List<Usuario>)gymsydb.Usuarios.Where(u => u.IdUsuario == idUsuario);
+            }
+        }
+        public static Usuario getUsuario(int idUsuario)
+        {
+            using (var gymsydb=new NuevoGymsyContext())
+            {
+                return gymsydb.Usuarios.FirstOrDefault(u => u.IdUsuario == idUsuario);
+            }
+        }
         public static bool IsNicknameUnique(string nickname)
         {
-            try
-            {
-                // Consulta la base de datos para verificar si ya existe un registro con el mismo 'nickname'
-                var existingPerson = gymsydb.People.FirstOrDefault(p => p.Nickname == nickname);
+            using (var gymsydb = new NuevoGymsyContext())
+            { 
+                try
+                {
+                    // Consulta la base de datos para verificar si ya existe un registro con el mismo 'nickname'
+                    var existingPerson = gymsydb.Usuarios.FirstOrDefault(u => u.Apodo == nickname);
 
-                // Si 'existingPerson' no es nulo, significa que ya existe un registro con el mismo 'nickname'
-                if (existingPerson == null)
-                {
-                    return true;
+                    // Si 'existingPerson' no es nulo, significa que ya existe un registro con el mismo 'nickname'
+                    if (existingPerson == null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("El nombre de usuario ya existe");
+                        return false;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("El nombre de usuario ya existe");
+                    MessageBox.Show("Error al verificar el nombre de usuario: " + ex.Message);
                     return false;
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al verificar el nombre de usuario: " + ex.Message);
-                return false;
-            }
-
+        }
         }
     }
-
-   
 }

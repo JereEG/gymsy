@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using gymsy.Context;
-using gymsy.App.Models;
+using gymsy.Modelos;
 using System.Numerics;
 using System.Reflection;
 using gymsy.Utilities;
@@ -196,29 +196,31 @@ namespace gymsy.UserControls
             {
                 //Ahora se cargan los demas elementos
 
-                List<TrainingPlan> trainingPlans = AddClientPresenter.TraerPlanes();
+                List<PlanEntrenamiento> trainingPlans = AddClientPresenter.TraerPlanes();
 
-                TrainingPlan trainingPlan = AddClientPresenter.TraerPrimerPlan();
+                PlanEntrenamiento trainingPlan = AddClientPresenter.TraerPrimerPlan();
 
                 if (trainingPlan != null)
                 {
-                    if(trainingPlan != null)
-                    {
-                        LidPlan.Text = trainingPlan.IdTrainingPlan.ToString();
-                        TBPrecio.Text = trainingPlan.Price.ToString();
-                        TBDescripcion.Text = trainingPlan.Description;
-                        TBNombreInstructor.Text = trainingPlan.IdInstructorNavigation.IdPersonNavigation.FirstName + " " + trainingPlan.IdInstructorNavigation.IdPersonNavigation.LastName;
+                    
+                        LidPlan.Text = trainingPlan.IdPlanEntrenamiento.ToString();
+                        TBPrecio.Text = trainingPlan.Precio.ToString();
+                        TBDescripcion.Text = trainingPlan.Descripcion;
+                        
+                        
+                    
+                        TBNombreInstructor.Text =AddClientPresenter.getUsuario(trainingPlan.IdEntrenador).Nombre + " " + AddClientPresenter.getUsuario(trainingPlan.IdEntrenador).Apellido;
 
-                        CBPlanes.Items.Add(trainingPlan.Description);
-                    }
+                        CBPlanes.Items.Add(trainingPlan.Descripcion);
+                    
                     
                 }
 
-                foreach (TrainingPlan plan in trainingPlans)
+                foreach (PlanEntrenamiento plan in trainingPlans)
                 {
-                    if (!plan.Inactive && trainingPlan.IdTrainingPlan != plan.IdTrainingPlan)
+                    if (!plan.PlanEntrenamientoInactivo && trainingPlan.IdPlanEntrenamiento != plan.IdPlanEntrenamiento)
                     {
-                        CBPlanes.Items.Add(plan.IdTrainingPlan + "-" + plan.Description);
+                        CBPlanes.Items.Add(plan.IdPlanEntrenamiento + "-" + plan.Descripcion);
                     }
 
                 }
@@ -256,37 +258,45 @@ namespace gymsy.UserControls
         {
             try
             { //Se verifica que se hayan ingresado todos los datos
-                bool isValidTextBoxes = isValidTextsBoxesMostrarError();
-                if (isValidTextBoxes)
+                if (DPFechaNacimiento.Value < DateTime.Now)
                 {
+                    
 
-
-                    string usuario = TBUsuario.Text;
-
-                    int idPlan = int.Parse(LidPlan.Text);
-                    string sexo = "";
-
-                    if (RBMasculino.Checked)
+                    bool isValidTextBoxes = isValidTextsBoxesMostrarError();
+                    if (isValidTextBoxes)
                     {
-                        sexo = "M";
+
+
+                        string usuario = TBUsuario.Text;
+
+                        int idPlan = int.Parse(LidPlan.Text);
+                        string sexo = "";
+
+                        if (RBMasculino.Checked)
+                        {
+                            sexo = "M";
+                        }
+                        else
+                        {
+                            sexo = "F";
+                        }
+
+
+
+                        AddClientPresenter.GuardarCliente(usuario, TBNombre.Text, TBApellido.Text, TBRutaImagen.Text, Bcrypt.HashPassoword(TBContraseña.Text),
+                        TBTelefono.Text, sexo, DPFechaNacimiento.Value, DPVencimiento.Value, idPlan);
+
+                        AppState.needRefreshClientsUserControl = true;
+                        MessageBox.Show("Se Guardaron correcctamente los datos");
+                        this.restablecerTextBoxes();
+
+
                     }
-                    else
-                    {
-                        sexo = "F";
-                    }
-                   
-         
-        
-                    AddClientPresenter.guardarCliente(usuario, TBNombre.Text, TBApellido.Text, TBRutaImagen.Text, Bcrypt.HashPassoword(TBContraseña.Text),
-                    TBTelefono.Text, DPFechaNacimiento.Value, sexo, DPVencimiento.Value, idPlan);
-
-                    AppState.needRefreshClientsUserControl = true;
-                    MessageBox.Show("Se Guardaron correcctamente los datos");
-                    this.restablecerTextBoxes();
-
-
                 }
-
+                else
+                {
+                    MessageBox.Show("Error en la fecha de nacimiento");
+                }
             }
             catch (Exception ex)
             {
@@ -317,11 +327,12 @@ namespace gymsy.UserControls
                 string selectedPlanDescription = parts[1];
 
                 var trainingPlan = AddClientPresenter.BuscarPlan(selectedPlanId);
+                var entrenador = AddClientPresenter.BuscarInstrucorDePlan(selectedPlanId);
 
-                LidPlan.Text = trainingPlan.IdTrainingPlan.ToString();
-                TBPrecio.Text = trainingPlan.Price.ToString();
-                TBDescripcion.Text = trainingPlan.Description;
-                TBNombreInstructor.Text = trainingPlan.IdInstructorNavigation.IdPersonNavigation.FirstName + " " + trainingPlan.IdInstructorNavigation.IdPersonNavigation.LastName;
+                LidPlan.Text = trainingPlan.IdPlanEntrenamiento.ToString();
+                TBPrecio.Text = trainingPlan.Precio.ToString();
+                TBDescripcion.Text = trainingPlan.Descripcion;
+                TBNombreInstructor.Text = entrenador.Nombre + " " + entrenador.Apellido;
 
 
             }

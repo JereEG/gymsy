@@ -1,5 +1,4 @@
-﻿using gymsy.App.Models;
-using gymsy.App.Views.Interfaces;
+﻿using gymsy.App.Views.Interfaces;
 using gymsy.Context;
 using gymsy.Properties;
 using gymsy.utilities;
@@ -9,17 +8,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using gymsy.Models;
+using gymsy.Modelos;
 
-using gymsy.App.Models;
+//using GymsyContext = gymsy.Models.GymsyContext;
+
+
 
 namespace gymsy.App.Presenters
 {
     public class AuthPresenter
     {
         private IAuthView authView;
-        private GymsyDbContext gymsydb;
+        private NuevoGymsyContext gymsydb;
 
-        public AuthPresenter(IAuthView authView, GymsyDbContext gymsydb)
+        public AuthPresenter(IAuthView authView, NuevoGymsyContext gymsydb)
         {
 
             this.authView = authView;
@@ -34,203 +37,228 @@ namespace gymsy.App.Presenters
             this.authView.Show();
         }
 
-        private void  inactivarClientes()
+        private void inactivarClientes()
         {
-            var clients = this.gymsydb.Clients.ToList();
-            var persons = this.gymsydb.People.ToList();
+            using (var gymsydb = new NuevoGymsyContext()) { 
 
-            foreach(Client cliente in clients)
-            {
-                if(cliente.LastExpiration < DateTime.Now)
+                var persons = this.gymsydb.Usuarios.ToList();
+
+                foreach (Usuario cliente in persons)
                 {
-                    cliente.IdPersonNavigation.Inactive = true;
+                    var sus = this.gymsydb.AlumnoSuscripcions.Where(s => s.IdAlumno == cliente.IdUsuario).FirstOrDefault();
+                     if (sus != null)
+                    {
+                        if (sus.FechaExpiracion < DateTime.Now)
+                        {
+                            cliente.UsuarioInactivo = true;
+                        }
+                    }
+
                 }
             }
         }
 
         private void Signin(object? sender, EventArgs e)
         {
-            try
+            using (var gymsydb = new NuevoGymsyContext())
             {
-                //SI DICE SECUENSE NO CONTAINS ES QUE NO HAY UNA PERSONA CON ESE NICKNAME
-                // Signin to database
-                var peopleFound = this.gymsydb.People
-                                              .Where(p => p.Nickname == this.authView.Nickname)
-                                              .First();
-
-                // validar existencia del usuario
-                if (peopleFound != null)
+                try
                 {
+                    //SI DICE SECUENSE NO CONTAINS ES QUE NO HAY UNA PERSONA CON ESE NICKNAME
+                    // Signin to database
+                    var peopleFound = this.gymsydb.Usuarios
+                                                  .Where(p => p.Apodo == this.authView.Nickname)
+                                                  .First();
 
-                    //- Validar password
-                    if (!Bcrypt.ComparePassowrd(this.authView.Password, peopleFound.Password))
+                    // validar existencia del usuario
+                    if (peopleFound != null)
                     {
-                        this.authView.IsSuccessful = false;
-                        this.authView.Message = "Nickname o Contraseña Incorrecto";
-                        this.authView.HandleResponseDBMessage();
-                        return;
-                    }
-                    else
-                    {
-                        if (!peopleFound.Inactive && (peopleFound.RolId != 3))
+
+                        //- Validar password
+                        if (!Bcrypt.ComparePassowrd(this.authView.Password, peopleFound.Contrasena))
                         {
-                            this.authView.IsSuccessful = true;
-                            this.authView.Message = "Hola, " + peopleFound.FirstName + "    ;)";
-
-                            // Delay
+                            this.authView.IsSuccessful = false;
+                            this.authView.Message = "Nickname o Contraseña Incorrecto";
                             this.authView.HandleResponseDBMessage();
-                            //Thread.Sleep(3000);
-
-                            // Update global state
-                            AppState.person = peopleFound;
-
-                            this.asignMethods(peopleFound);
-
-                            this.authView.Hide();
-
-                            // Open form
-                            IMainView view = new MainView();
-                            new MainPresenter(view, this.gymsydb);
-
                             return;
                         }
                         else
                         {
-                            this.authView.IsSuccessful = false;
-                            this.authView.Message = "No tienes permiso de ingresar al sistema!";
-                            this.authView.HandleResponseDBMessage();
-                            return;
-                        }
 
+                            if (!peopleFound.UsuarioInactivo)
+                            {
+                                this.authView.IsSuccessful = true;
+                                this.authView.Message = "Hola, " + peopleFound.Nombre + "    ;)";
+
+                                // Delay
+                                this.authView.HandleResponseDBMessage();
+                                //Thread.Sleep(3000);
+
+                                // Update global state
+                                AppState.person = peopleFound;
+
+                                this.asignMethods(peopleFound);
+
+                                this.authView.Hide();
+
+                                // Open form
+                                IMainView view = new MainView();
+
+                                new MainPresenter(view, gymsydb);
+
+                                return;
+                            }
+                            else
+                            {
+                                this.authView.IsSuccessful = false;
+                                this.authView.Message = "Usuario inactivo!";
+                                this.authView.HandleResponseDBMessage();
+                                return;
+                            }
+
+                        }
                     }
+                    else {
+                        MessageBox.Show("No existe un usuario con ese apodo!");
+                        return;
+                    }
+                    
                 }
-                else return;
-            }
-            catch (Exception ex)
-            {
-                this.authView.IsSuccessful = false;
-                this.authView.Message = "Error inesperdado";
-                this.authView.HandleResponseDBMessage();
-                // Muestra un MessageBox con el mensaje de error
-                MessageBox.Show("Ocurrió un error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                this.authView.Loading = false;
+                catch (Exception ex)
+                {
+                    this.authView.IsSuccessful = false;
+                    this.authView.Message = "Error inesperdado";
+                    this.authView.HandleResponseDBMessage();
+                    // Muestra un MessageBox con el mensaje de error
+                    MessageBox.Show("Ocurrió un error en el metodo Signin: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    this.authView.Loading = false;
+                }
             }
         }
 
 
-        private void asignMethods(Person personFound)
+        private void asignMethods(Usuario personFound)
         {
-            try
+            using (var gymsydb = new NuevoGymsyContext())
             {
-                switch (personFound.RolId)
+                try
                 {
-                    // this person is admin
-                    case 1:
+                    switch (personFound.IdRol)
+                    {
+                        // this person is admin
+                        case 1:
 
-                        var instructorsFound = this.gymsydb.People
-                                                .Where(person => person.RolId == 2)
-                                                .ToList();
+                            var instructorsFound = this.gymsydb.Usuarios
+                                                    .Where(u => u.IdRol == 2)
+                                                    .ToList();
 
-                        var personss = this.gymsydb.People.ToList();
-                        this.gymsydb.Pays.ToList();
-                        this.gymsydb.PayTypes.ToList();
-                        this.gymsydb.Wallets.ToList();
-                        this.gymsydb.TrainingPlans.ToList();
+                            var personss = this.gymsydb.Usuarios.ToList();
+                            this.gymsydb.Pagos.ToList();
+                            this.gymsydb.TipoDePagos.ToList();
+                            this.gymsydb.PlanEntrenamientos.ToList();
 
 
-                        AppState.instructors = instructorsFound;
-                        AppState.persons = personss;
-                        AppState.Instructor = new Instructor();
+                            AppState.instructors = instructorsFound;
+                            AppState.persons = personss;
+                            AppState.Instructor = new Usuario() { IdRol = 2 };
+                            //nota mental: hacer un constructor en usuario que
+                            //permita discriminar el rol desde el mismo
 
-                        break;
+                            break;
 
-                    // this person is instructor
-                    case 2:
-                        var instructorFound = this.gymsydb.Instructors
-                                                .Where(instructor => instructor.IdPerson == personFound.IdPerson)
-                                                .First();
+                        // this person is an instructor
+                        case 2:
+                            var instructorFound = this.gymsydb.Usuarios
+                                                    .Where(instructor => instructor.IdUsuario == personFound.IdUsuario)
+                                                    .First();
 
-                        var planesFound = this.gymsydb.TrainingPlans.ToList();
-                        var clientsFound = this.gymsydb.Clients.ToList();
+                            var planesFound = this.gymsydb.PlanEntrenamientos.ToList();
+                            var clientsFound = this.gymsydb.Usuarios.Where(u => u.IdRol == 3).ToList();
 
-                        var dataFisico = this.gymsydb.DataFisics.ToList();
-                        var Images = this.gymsydb.Images.ToList();
+                            var dataFisico = this.gymsydb.EstadoFisicos.ToList();
+                            var Images = this.gymsydb.Usuarios.Select(u => u.AvatarUrl).ToList();
 
-                        this.gymsydb.Pays.ToList();
-                        this.gymsydb.PayTypes.ToList();
-                        this.gymsydb.Wallets.ToList();
+                            this.gymsydb.Pagos.ToList();
+                            this.gymsydb.TipoDePagos.ToList();
+                            //this.gymsydb.Wallets.ToList();
+                            this.gymsydb.AlumnoSuscripcions.ToList();
 
-                        var persons = this.gymsydb.People.ToList();
+                            AppState.planes = this.gymsydb.PlanEntrenamientos.ToList();
+                            var usuario = this.gymsydb.Usuarios.ToList();
 
-                        AppState.clients = persons;
-                        AppState.persons = persons;
-                        AppState.Instructor = instructorFound;
+                            AppState.clients = usuario;
+                            AppState.persons = usuario;
+                            AppState.Instructor = instructorFound;
 
-                        break;
+                            break;
 
-                    // this person is client
-                    case 3:
+                        // this person is client
+                        case 3:
 
-                        this.gymsydb.DataFisics.ToList();
-                        this.gymsydb.Images.ToList();
-                        this.gymsydb.Pays.ToList();
-                        this.gymsydb.PayTypes.ToList();
-                        this.gymsydb.TrainingPlans.ToList();
-                        var clientFound = this.gymsydb.Clients
-                                                .Where(cl => cl.IdPerson == personFound.IdPerson)
-                                                .First();
+                            this.gymsydb.EstadoFisicos.ToList();
+                            this.gymsydb.Usuarios.Select(u => u.AvatarUrl).ToList();
+                            this.gymsydb.Pagos.ToList();
+                            this.gymsydb.TipoDePagos.ToList();
+                            this.gymsydb.PlanEntrenamientos.ToList();
+                            var clientFound = this.gymsydb.Usuarios
+                                                    .Where(cl => cl.IdUsuario == personFound.IdUsuario)
+                                                    .First();
 
-                        AppState.ClientActive = clientFound;
+                            AppState.ClientActive = clientFound;
 
-                        break;
+                            break;
 
-                    // this person is a receptionist
-                    case 4:
-                        /*
-                        var personsss = this.gymsydb.People.ToList();
-                        var planes = this.gymsydb.TrainingPlans
-                            .Where(plan => plan.Inactive == false)
-                            .ToList();
-                        this.gymsydb.Clients.ToList();
-                        this.gymsydb.TrainingPlans.ToList();
-                        this.gymsydb.Instructors.ToList();
-                        this.gymsydb.Admins.ToList();
-                        this.gymsydb.PayTypes.ToList();
-                        this.gymsydb.Pays.ToList();
-                        this.gymsydb.Wallets.ToList();
+                        // this person is a receptionist
+                        case 4:
+                            /*
+                            var personsss = this.gymsydb.People.ToList();
+                            var planes = this.gymsydb.TrainingPlans
+                                .Where(plan => plan.Inactive == false)
+                                .ToList();
+                            this.gymsydb.Clients.ToList();
+                            this.gymsydb.TrainingPlans.ToList();
+                            this.gymsydb.Instructors.ToList();
+                            this.gymsydb.Admins.ToList();
+                            this.gymsydb.PayTypes.ToList();
+                            this.gymsydb.Pays.ToList();
+                            this.gymsydb.Wallets.ToList();
 
-                        MessageBox.Show(planes.Count().ToString());
-                        AppState.planes = planes;
-                        AppState.clients = personsss;
-                        AppState.persons = personsss;
-                        AppState.Instructor = new Instructor();
-                        */
-                        var personsss = this.gymsydb.People.ToList();
-                        var planes = this.gymsydb.TrainingPlans
-                            .Where(plan => plan.Inactive == false)
-                            .ToList();
-                        this.gymsydb.Clients.ToList();
-                        this.gymsydb.TrainingPlans.ToList();
-                        this.gymsydb.Instructors.ToList();
-                        this.gymsydb.Admins.ToList();
-                        this.gymsydb.PayTypes.ToList();
-                        this.gymsydb.Pays.ToList();
-                        this.gymsydb.Wallets.ToList();
+                            MessageBox.Show(planes.Count().ToString());
+                            AppState.planes = planes;
+                            AppState.clients = personsss;
+                            AppState.persons = personsss;
+                            AppState.Instructor = new Instructor();
+                            */
+                            var personsss = this.gymsydb.Usuarios.ToList();
+                            var planes = this.gymsydb.PlanEntrenamientos
+                                .Where(plan => plan.PlanEntrenamientoInactivo == false)
+                                .ToList();
+                            this.gymsydb.Usuarios.Where(u => u.IdRol == 3).ToList();
+                            this.gymsydb.PlanEntrenamientos.ToList();
+                            this.gymsydb.Usuarios.Where(u => u.IdUsuario == 2).ToList();
+                            this.gymsydb.Usuarios.Where(u => u.IdUsuario == 1).ToList();
+                            this.gymsydb.TipoDePagos.ToList();
+                            this.gymsydb.Pagos.ToList();
+                            // this.gymsydb.Wallets.ToList();
+                            AppState.AlumnoSuscripciones = this.gymsydb.AlumnoSuscripcions
+                                .Where(alumSub => alumSub.FechaExpiracion <= DateTime.Now).ToList();
 
-                        MessageBox.Show(planes.Count().ToString());
-                        AppState.planes = planes;
-                        AppState.clients = personsss;
-                        AppState.persons = personsss;
-                        AppState.Instructor = new Instructor();
-                        break;
+
+                            //MessageBox.Show(planes.Count().ToString());
+                            AppState.planes = planes;
+                            AppState.clients = personsss;
+                            AppState.persons = personsss;
+                            AppState.Instructor = new Usuario() { IdRol = 2 };//nota: hacer un constructor por cada rol en la clase usuarios
+                            break;
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
             }
 
         }

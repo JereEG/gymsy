@@ -1,8 +1,5 @@
-﻿using gymsy.Context;
-using gymsy.Modelos;
+﻿using gymsy.Modelos;
 using gymsy.Models;
-using gymsy.Modelos;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,19 +8,13 @@ using System.Threading.Tasks;
 
 namespace gymsy.App.Presenters
 {
-    internal static class ClientePresenter
+    internal static class ControlAlumnosPresenter
     {
         private static NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
-
-
-
-
-        public static Usuario BuscarCliente( int pIdCliente)
+        public static Usuario BuscarCliente(int pIdCliente)
         {
             using (var gymsydb = new NuevoGymsyContext())
             {
-
-
                 return gymsydb.Usuarios
                                     .Where(client => client.IdUsuario == pIdCliente && client.IdRol == 3)
                                     .First();
@@ -31,10 +22,12 @@ namespace gymsy.App.Presenters
         }
         public static void EliminarOActivarCliente(int pIdPersona, bool pDeleteOrAcitive)
         {
-            using (var gymsy = new NuevoGymsyContext())
+            using (var gymsydb = new NuevoGymsyContext())
             {
+
+
                 var persona = gymsydb.Usuarios
-                .Where(p => p.IdUsuario == pIdPersona && p.IdRol == 3).FirstOrDefault();
+                    .Where(p => p.IdUsuario == pIdPersona).FirstOrDefault();
 
                 if (persona != null)
                 {
@@ -43,18 +36,5 @@ namespace gymsy.App.Presenters
                 }
             }
         }
-        public static List<PlanEntrenamiento> BuscarPlanesInstructor(int pIdInstructor)
-        {
-            // Obtener todos los planes de entrenamiento del instructor actual
-            using (var gymsydb =new NuevoGymsyContext())
-            {
-                return gymsydb.PlanEntrenamientos
-                   .Where(plan => plan.IdEntrenador == pIdInstructor)
-                   .Include(plan => plan.AlumnoSuscripcions)
-                   .ToList();
-            }
-               
-        }
-       
     }
 }

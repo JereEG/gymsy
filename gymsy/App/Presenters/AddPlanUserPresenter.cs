@@ -1,5 +1,6 @@
-﻿using gymsy.App.Models;
-using gymsy.Context;
+﻿using gymsy.Context;
+using gymsy.Modelos;
+using gymsy.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,69 +12,90 @@ namespace gymsy.App.Presenters
 {
     internal static class AddPlanUserPresenter
     {
-        private static GymsyDbContext gymsydb = GymsyContext.GymsyContextDB;
+        private static NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
 
-        public static List<TrainingPlan> listarPlanesInstructor()
+        public static List<PlanEntrenamiento> listarPlanesInstructor(int pIdInstructor)
         {
-            return gymsydb.TrainingPlans.Where(p => p.IdInstructor == AppState.Instructor.IdInstructor).ToList();
+            using (var gymsydb=new NuevoGymsyContext())
+            {
+                return gymsydb.PlanEntrenamientos
+                    .Where(p => p.IdEntrenadorNavigation.IdRol == 2 && p.IdEntrenador == pIdInstructor).ToList();
+            }
+                
         }
 
-        public static void modificarPlan(int pidPlan, string pDescripcion, float pPrecio)
+        public static void modificarPlan(int pidPlan, string pDescripcion, decimal pPrecio)
         {
-            var plan = gymsydb.TrainingPlans.Where(p => p.IdTrainingPlan == pidPlan).FirstOrDefault();
-            plan.Description = pDescripcion;
-            plan.Price = pPrecio;
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                var plan = gymsydb.PlanEntrenamientos
+                    .Where(p => p.IdPlanEntrenamiento == pidPlan).FirstOrDefault();
+                plan.Descripcion = pDescripcion;
+                plan.Precio = pPrecio;
 
-            gymsydb.SaveChanges();
+                gymsydb.SaveChanges();
 
-            //Se actualiza el plan en la base de datos
-
+                //Se actualiza el plan en la base de datos
+            }
 
         }
-        public static TrainingPlan guardarPlan(string pDescripcion, float pPrecio)
+        public static PlanEntrenamiento guardarPlan(string pDescripcion, decimal pPrecio)
         {
-            TrainingPlan plan = new TrainingPlan();
-            plan.Description = pDescripcion;
-            plan.Price = pPrecio;
-            plan.Inactive = false;
-            plan.IdInstructor = AppState.Instructor.IdInstructor;
-
-            gymsydb.TrainingPlans.Add(plan);
-            gymsydb.SaveChanges();
-            return plan;
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                PlanEntrenamiento plan = new PlanEntrenamiento();
+                plan.Descripcion = pDescripcion;
+                plan.Precio = pPrecio;
+                plan.PlanEntrenamientoInactivo = false;
+                plan.IdEntrenador = AppState.Instructor.IdUsuario;
+               
+                gymsydb.PlanEntrenamientos.Add(plan);
+                gymsydb.SaveChanges();
+                return plan;
+            }
         }
         public static bool DescripcionUnica(string nuevaDescripcion, int? idPlanActual = null)
         {
-            // Consulta para encontrar planes con la misma descripción
-            var planesConMismaDescripcion = gymsydb.TrainingPlans
-                .Where(p => p.Description == nuevaDescripcion);
-
-            // Si se está modificando un plan, excluimos el plan actual de la consulta
-            if (idPlanActual.HasValue)
+            using (var gymsydb = new NuevoGymsyContext())
             {
-                planesConMismaDescripcion = planesConMismaDescripcion.Where(p => p.IdTrainingPlan != idPlanActual);
+                // Consulta para encontrar planes con la misma descripción
+                var planesConMismaDescripcion = gymsydb.PlanEntrenamientos
+                .Where(p => p.Descripcion == nuevaDescripcion);
+
+                // Si se está modificando un plan, excluimos el plan actual de la consulta
+                if (idPlanActual.HasValue)
+                {
+                    planesConMismaDescripcion = planesConMismaDescripcion.Where(p => p.IdPlanEntrenamiento != idPlanActual);
+                }
+
+                // Verificamos si se encontró algún plan con la misma descripción
+                bool descripcionUnica = !planesConMismaDescripcion.Any();
+
+                // Devolvemos el resultado
+                return descripcionUnica;
             }
-
-            // Verificamos si se encontró algún plan con la misma descripción
-            bool descripcionUnica = !planesConMismaDescripcion.Any();
-
-            // Devolvemos el resultado
-            return descripcionUnica;
         }
         public static void EliminarOActivarPlan( int pIdPlan, bool pDeleteOrAcitive)
         {
-
-           var plan = gymsydb.TrainingPlans.Where(p => p.IdTrainingPlan == pIdPlan).FirstOrDefault();
-            if (plan != null)
+            using (var gymsydb = new NuevoGymsyContext())
             {
-                plan.Inactive = pDeleteOrAcitive;
-                gymsydb.SaveChanges();
+
+                var plan = gymsydb.PlanEntrenamientos.Where(p => p.IdPlanEntrenamiento == pIdPlan).FirstOrDefault();
+                if (plan != null)
+                {
+                    plan.PlanEntrenamientoInactivo = pDeleteOrAcitive;
+                    gymsydb.SaveChanges();
+                }
             }
             
         }
-        public static TrainingPlan buscarPlan(int pidPlan)
+        public static PlanEntrenamiento buscarPlan(int pidPlan)
         {
-            return gymsydb.TrainingPlans.Where(p => p.IdTrainingPlan == pidPlan).FirstOrDefault();
+            using (var gymsydb=new NuevoGymsyContext())
+            {
+                return gymsydb.PlanEntrenamientos.Where(p => p.IdPlanEntrenamiento == pidPlan).FirstOrDefault();
+            }
+               
         }
 
 

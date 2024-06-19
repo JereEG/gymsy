@@ -1,4 +1,5 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Modelos;
+using gymsy.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,24 +8,27 @@ using System.Threading.Tasks;
 
 namespace gymsy.Context
 {
+ 
     public static class AppState
     {
-        public static Person person { get; set; }
-        public static List<TrainingPlan> planes { get; set; }
+        private static NuevoGymsyContext gymsydb = new NuevoGymsyContext();
+        public static Usuario person { get; set; }
+        public static List<PlanEntrenamiento> planes { get; set; }
         public static Array planess { get; set; }
-        public static List<Person> clients { get; set; }
-        public static List<Person> persons { get; set; }
-        public static Person userActive { get; set; }
-        public static List<Person> instructors { get; set; }
+        public static List<Usuario> clients { get ; set; }
+        public static List<Usuario> persons { get; set; }
+        public static Usuario userActive { get; set; }
+        public static List<Usuario> instructors { get; set; }
 
-        public static List<Client> clientesDeRes { get; set; }
+        public static List<Usuario> clientesDeRes { get; set; }
 
         // Now
-        public static Instructor Instructor { get; set; }
-        public static Client ClientActive { get; set; }
+        public static Usuario Instructor { get; set; }
+        public static Usuario ClientActive { get; set; }
 
-        public static Instructor InstructorActive { get; set; }
-
+        public static Usuario InstructorActive { get; set; }
+        public static AlumnoSuscripcion AlumnoSuscripcion { get; set; }
+        public static List<AlumnoSuscripcion> AlumnoSuscripciones { get; set; }
         public static bool isModeAdd { get; set; } = false;
 
        

@@ -1,77 +1,118 @@
-﻿using gymsy.App.Models;
-using gymsy.Context;
+﻿using gymsy.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using gymsy.Utilities;
+using gymsy.Models;
+using gymsy.Modelos;
+using Microsoft.EntityFrameworkCore;
 
 namespace gymsy.App.Presenters
 {
     internal static class EditClientPresenter
     {
-        private static GymsyDbContext gymsydb = GymsyContext.GymsyContextDB;
+        private static NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
 
-        public static TrainingPlan PlanDelCliente()
+        public static AlumnoSuscripcion AlumSubDelCliente()
         {
-           return gymsydb.TrainingPlans
-                        .Where(trainingPlan => trainingPlan.IdTrainingPlan == AppState.ClientActive.IdTrainingPlan)
-                        .First();
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                return gymsydb.AlumnoSuscripcions
+                             .Where(trainingPlan => trainingPlan.IdAlumno == AppState.ClientActive.IdUsuario)
+                             .First();
+            }
         }
-        public static List<TrainingPlan> PlanesQueNoSonDelCliente()
+        public static AlumnoSuscripcion BuscarPlanUnCliente( int idClienteBuscado)
         {
-            return gymsydb.TrainingPlans
-                        .Where(trainingPlan => trainingPlan.IdTrainingPlan != AppState.ClientActive.IdTrainingPlan)
-                        .ToList();
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                return gymsydb.AlumnoSuscripcions
+                             .Where(trainingPlan => trainingPlan.IdAlumno == idClienteBuscado)
+                             .First();
+            }
+        }
+        public static Usuario BuscarInstrucorDePlan(int pIdPlan)
+        {
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                // Busca el plan de entrenamiento por su Id e incluye la entidad Instructor relacionada
+                var plan = gymsydb.PlanEntrenamientos
+                                  .Include(p => p.IdEntrenadorNavigation) // Incluye la propiedad de navegación correcta
+                                  .FirstOrDefault(plan => plan.IdPlanEntrenamiento == pIdPlan);
+
+                // Retorna el instructor asociado al plan si se encuentra, de lo contrario devuelve null
+                return plan?.IdEntrenadorNavigation;
+            }
+        }
+        public static List<PlanEntrenamiento> PlanesQueNoSonDelCliente()
+        {
+            using (var gymsy = new NuevoGymsyContext()) {
+                // Obtener la lista de ID de planes de entrenamiento asociados al cliente
+                var planesCliente = gymsy.AlumnoSuscripcions
+                                        .Where(subAlum => subAlum.IdAlumno == AppState.ClientActive.IdUsuario)
+                                        .Select(subAlum => subAlum.IdPlanEntrenamiento)
+                                        .ToList();
+
+                // Obtener los planes de entrenamiento que no están asociados al cliente
+                var planesNoCliente = gymsy.PlanEntrenamientos
+                                        .Where(planEntrenamiento => !planesCliente.Contains(planEntrenamiento.IdPlanEntrenamiento))
+                                        .ToList();
+
+                return planesNoCliente; }
         }
 
         public static void ActualizarCliente(string pUsuario, string pNombre, string pApellido, string pRutaImagen, string pContraseña,
             string pNumeroTelefono, string pGenero, DateTime pBirthDay, DateTime pLastExpiration, int pIdPlan)
         {
-            var personUpdated = gymsydb.People
-                               .Where(people => people.IdPerson == AppState.ClientActive.IdPersonNavigation.IdPerson)
+            using (var gymsy = new NuevoGymsyContext())
+            {
+                var personUpdated = gymsy.Usuarios
+                               .Where(people => people.IdUsuario == AppState.ClientActive.IdUsuario)
                                .First();
 
 
-            var clientUpdated = gymsydb.Clients
-                            .Where(client => client.IdClient == AppState.ClientActive.IdClient)
-                            .First();
-
-
-            if (personUpdated != null && clientUpdated != null)
-            {
-                // Actualiza las propiedades de la tabla person
-                personUpdated.Nickname = pUsuario;
-                personUpdated.FirstName = pNombre;
-                if (personUpdated.Avatar != pRutaImagen)
+                if (personUpdated != null)
                 {
-                    personUpdated.Avatar = SaveImage(pRutaImagen);
-                }
-                //Si se cambio la contraseña se actualizara
-                if (personUpdated.Password != pContraseña)
-                {
-                    personUpdated.Password = Bcrypt.HashPassoword(pContraseña);
-                }
-                personUpdated.LastName = pApellido;
-                //personUpdated.CBU = usuario;
-                personUpdated.NumberPhone = pNumeroTelefono;
-                personUpdated.Gender = pGenero;
-                personUpdated.Birthday = pBirthDay;
+                    // Actualiza las propiedades de la tabla person
+                    personUpdated.Apodo = pUsuario;
+                    personUpdated.Apellido = pNombre;
+                    if (personUpdated.AvatarUrl != pRutaImagen)
+                    {
+                        personUpdated.AvatarUrl = SaveImage(pRutaImagen);
+                    }
+                    //Si se cambio la contraseña se actualizara
+                    if (personUpdated.Contrasena != pContraseña)
+                    {
+                        personUpdated.Contrasena = Bcrypt.HashPassoword(pContraseña);
+                    }
+                    personUpdated.Apellido = pApellido;
+                    //personUpdated.CBU = usuario;
+                    personUpdated.NumeroTelefono = pNumeroTelefono;
+                    personUpdated.Sexo = pGenero;
+                    personUpdated.FechaCreacion = pBirthDay;
 
-                // Actualiza las propiedades de la tabla client
-                clientUpdated.LastExpiration = pLastExpiration;
-                clientUpdated.IdTrainingPlan = pIdPlan;
+                    // Actualiza las propiedades de la tabla client
+                    var subcripcionAlumno = gymsy.AlumnoSuscripcions
+                                   .Where(subAlum => subAlum.IdAlumno == personUpdated.IdUsuario)
+                                   .First();
+                    subcripcionAlumno.FechaExpiracion = pLastExpiration;
+                    subcripcionAlumno.IdPlanEntrenamiento = pIdPlan;
 
-                gymsydb.SaveChanges();
+                    gymsy.SaveChanges();
+                } 
             }
         }
         
-        public static TrainingPlan BuscarPlan(int pIdPlan)
+        public static PlanEntrenamiento BuscarPlan(int pIdPlan)
         {
-            return gymsydb.TrainingPlans
-                    .Where(trainingPlan => trainingPlan.IdTrainingPlan == pIdPlan)
+            using (var gymsy = new NuevoGymsyContext())
+            {
+                return gymsy.PlanEntrenamientos
+                    .Where(trainingPlan => trainingPlan.IdPlanEntrenamiento == pIdPlan)
                     .First();
+            }
         }
 
         private static string SaveImage(string imagePath)

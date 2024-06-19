@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Modelos;
 using gymsy.Context;
 using gymsy.Utilities;
 using Microsoft.Win32;
@@ -12,7 +12,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using gymsy.App.Models;
 using gymsy.App.Presenters;
 
 namespace gymsy.UserControls.AdminControls
@@ -21,11 +20,10 @@ namespace gymsy.UserControls.AdminControls
     {
         private bool isEditMode = false; // Variable para saber si se esta editando o agregando 
 
-        private AdminPresenter presenter;
         public EditInstructor()
         {
             InitializeComponent();
-            presenter = new AdminPresenter();
+
         }
         public override void Refresh()
         {
@@ -38,22 +36,22 @@ namespace gymsy.UserControls.AdminControls
 
         private void CargarInstructor()
         {
-            if (AppState.InstructorActive != null && AppState.InstructorActive.IdPersonNavigation != null)
+            if (AppState.InstructorActive != null && AppState.InstructorActive != null)
             {
-                string name = AppState.InstructorActive.IdPersonNavigation.FirstName.ToString();
-                string lastName = AppState.InstructorActive.IdPersonNavigation.LastName.ToString();
-                string numberPhone = AppState.InstructorActive.IdPersonNavigation.NumberPhone.ToString();
-                string nickname = AppState.InstructorActive.IdPersonNavigation.Nickname.ToString();
+                string name = AppState.InstructorActive.Nombre.ToString();
+                string lastName = AppState.InstructorActive.Apellido.ToString();
+                string numberPhone = AppState.InstructorActive.NumeroTelefono.ToString();
+                string nickname = AppState.InstructorActive.Apodo.ToString();
 
                 TBNombre.Text = name;
                 TBApellido.Text = lastName;
                 TBTelefono.Text = numberPhone;
                 TBUsuario.Text = nickname;
-                TBContraseña.Text = AppState.InstructorActive.IdPersonNavigation.Password.ToString();
+                TBContraseña.Text = AppState.InstructorActive.ToString();
                 //Que hacer con la contraseña?
                 //TBContraseña.Text = AppState.InstructorActive.IdPersonNavigation.;
 
-                if (AppState.InstructorActive.IdPersonNavigation.Gender.ToString() == "M" || AppState.InstructorActive.IdPersonNavigation.Gender.ToString() == "m")
+                if (AppState.InstructorActive.Sexo.ToString() == "M" || AppState.InstructorActive.Sexo.ToString() == "m")
                 {
                     RBMasculino.Checked = true;
                 }
@@ -62,11 +60,11 @@ namespace gymsy.UserControls.AdminControls
                     RBFemenino.Checked = true;
                 }
 
-                DPFechaNacimiento.Value = AppState.InstructorActive.IdPersonNavigation.Birthday;
+         
 
                 try
                 {
-                    string ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageInstructor + "\\" + AppState.InstructorActive.IdPersonNavigation.Avatar;
+                    string ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageInstructor + "\\" + AppState.InstructorActive.AvatarUrl;
                     TBRutaImagen.Text = ruta;
 
                     IPImagenInstructor.Image = System.Drawing.Image.FromFile(ruta);
@@ -105,8 +103,8 @@ namespace gymsy.UserControls.AdminControls
         }
         private void actualizarInstructor()
         {
-            
-                presenter.personUpdated(TBNombre.Text, TBApellido.Text, TBTelefono.Text, TBUsuario.Text, TBContraseña.Text,TBRutaImagen.Text,RBMasculino.Checked, DPFechaNacimiento.Value);
+
+            AdminPresenter.PersonUpdated(TBNombre.Text, TBApellido.Text, TBTelefono.Text, TBUsuario.Text, TBContraseña.Text,TBRutaImagen.Text,RBMasculino.Checked, DPFechaNacimiento.Value);
     
 
         }
@@ -275,7 +273,7 @@ namespace gymsy.UserControls.AdminControls
                     // Consulta la base de datos para verificar si ya existe un registro con el mismo 'nickname'
 
                     
-                    var existingPerson = presenter.NicknameUnique(nickname);
+                    var existingPerson = AdminPresenter.NicknameUnique(nickname);
                     // Si 'existingPerson' no es nulo, significa que ya existe un registro con el mismo 'nickname'
                     if (existingPerson == null)
                     {

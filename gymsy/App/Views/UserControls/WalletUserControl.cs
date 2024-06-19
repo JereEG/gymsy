@@ -10,8 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Twilio.TwiML.Voice;
-using gymsy.App.Models;
-using Pay = gymsy.App.Models.Pay;
+using gymsy.Modelos;
+//using Pay = gymsy.Models.Pago;
 using gymsy.App.Views.Interfaces;
 using PdfSharp.Pdf;
 using PdfSharp;
@@ -23,28 +23,29 @@ using PdfSharp.Drawing;
 using System.Drawing.Imaging;
 using System.Net.NetworkInformation;
 using gymsy.Properties;
+using gymsy.Models;
 
 namespace gymsy.UserControls
 {
     public partial class WalletUserControl : UserControl, IWalletView
     {
 
-        private GymsyDbContext gymsydb = GymsyContext.GymsyContextDB;
-        private IEnumerable<Pay> PaysList;
-        private Pay PayActive;
-        private GymsyDbContext dbContext;
+       // private NuevoGymsyContext gymsydb = ViejoGymsyContext.GymsyContextDB;
+        private IEnumerable<Pago> PaysList;
+        private Pago PayActive;
+        //private NuevoGymsyContext dbContext;
 
         public WalletUserControl()
         {
             InitializeComponent();
             InitializeData();
             InitializeGridTransactions();
-            this.dbContext = GymsyContext.GymsyContextDB;
+            //this.dbContext = ViejoGymsyContext.GymsyContextDB;
         }
 
         private void InitializeData()
         {
-            if (AppState.person.Wallets.Count > 0)
+         /*   if (AppState.person.Wallets.Count > 0)
             {
                 TbAmount.Text = $"$ {AppState.person.Wallets.First().Retirable}";
                 TbTotalAmount.Text = $"$ {AppState.person.Wallets.First().Total}";
@@ -58,19 +59,19 @@ namespace gymsy.UserControls
 
             AppState.persons.ForEach(per =>
             {
-                if (per.RolId != 3 && per.IdPerson != AppState.person.IdPerson)
+                if (per.IdRol != 3 && per.IdUsuario != AppState.person.IdUsuario)
                 {
-                    diccionario.Add(per.IdPerson.ToString(), per.FirstName);
+                    diccionario.Add(per.IdUsuario.ToString(), per.Nombre);
                 }
             });
 
             comboBoxInstructors.DataSource = new BindingSource(diccionario, null);
             comboBoxInstructors.DisplayMember = "Value";
-            comboBoxInstructors.ValueMember = "Key";
+            comboBoxInstructors.ValueMember = "Key";*/
         }
 
         private void InitializeGridTransactions()
-        {
+        {/*
             // Concatenar pagos realizados y entrantes
             if (PaysList.Count() > 0)
             {
@@ -80,15 +81,15 @@ namespace gymsy.UserControls
 
                 foreach (Pay pay in PaysList)
                 {
-                    TimeSpan diferencia = (DateTime.Now - pay.CreatedAt);
+                    TimeSpan diferencia = (DateTime.Now - pay.FechaCreacion);
                     String formart = $"Hace {diferencia.Days} dias";
                     int destinoId = pay.RemitenteId == AppState.person.IdPerson ? pay.DestinatarioId : pay.RemitenteId;
 
                     dataGridTransactions.Rows.Add(
-                        pay.IdPay,
+                        pay.IdPago,
                         formart,
-                        pay.IdPayTypeNavigation.Name,
-                        $"$ {pay.Amount}",
+                        pay.IdTipoPagoNavigation.Nombre,
+                        $"$ {pay.Monto}",
                         $"Destino: {destinoId}"
                     );
                 }
@@ -99,24 +100,26 @@ namespace gymsy.UserControls
             {
                 PanelMsg.Visible = true;
             }
-
+            */
         }
 
-        private void AddTransaction(Pay pay)
+        private void AddTransaction(Pago pay)
         {
-            TimeSpan diferencia = (DateTime.Now - pay.CreatedAt);
+            /*
+            TimeSpan diferencia = (DateTime.Now - pay.FechaCreacion);
             String formart = $"Hace {diferencia.Days} dias";
-            int destinoId = pay.RemitenteId == AppState.person.IdPerson ? pay.DestinatarioId : pay.RemitenteId;
+            //int destinoId = pay.RemitenteId == AppState.person.IdPerson ? pay.DestinatarioId : pay.RemitenteId;
 
             dataGridTransactions.Rows.Add(
-                pay.IdPay,
+                pay.IdPago,
                 formart,
-                pay.IdPayTypeNavigation.Name,
-                $"$ {pay.Amount}",
-                $"Destino: {destinoId}"
+                pay.IdTipoPagoNavigation.Nombre,
+                $"$ {pay.Monto}",
+                $"Origen: {pay.IdUsuario}"
             );
 
             dataGridTransactions.Refresh();
+            */
         }
 
         private void TextBoxAmount_KeyPress(object sender, KeyPressEventArgs e)
@@ -125,10 +128,10 @@ namespace gymsy.UserControls
         }
 
         private void BtnNewTransaction_Click(object sender, EventArgs e)
-        {
+        {/*
             try
             {
-               
+              
                 // Ocultar errores anteriores
                 labelTransactionError.Visible = false;
 
@@ -151,19 +154,19 @@ namespace gymsy.UserControls
 
                 // se hace la transaccion
                 Pay ModelPay = new Pay();
-                ModelPay.CreatedAt = DateTime.Now;
-                ModelPay.Amount = double.Parse(TbAmountTran.Text);
-                ModelPay.RemitenteId = AppState.person.IdPerson;
-                ModelPay.IdPayType = 1;
-                ModelPay.Inactive = false;
-                ModelPay.DestinatarioId = int.Parse(comboBoxInstructors.SelectedValue.ToString());
+                ModelPay.FechaCreacion = DateTime.Now;
+                ModelPay.Monto =(decimal) double.Parse(TbAmountTran.Text);
+                ModelPay.IdUsuario = AppState.person.IdUsuario;
+                ModelPay.IdTipoPago = 1;
+                ModelPay.InactivoPago = false;
+               
 
 
                 // Resta monto de billetera
                 Wallet WalletModel = AppState.person.Wallets.First();
                 WalletModel.Retirable -= double.Parse(TbAmountTran.Text);
 
-                this.gymsydb.Pays.Add(ModelPay);
+                this.gymsydb.Pagos.Add(ModelPay);
                 var PaysResponse = this.gymsydb.SaveChanges();
 
                 if (PaysResponse != 0)
@@ -192,11 +195,11 @@ namespace gymsy.UserControls
                 MessageBox.Show(ex.Message);
                 labelTransactionError.Text = "Error Inesperado";
                 labelTransactionError.Visible = true;
-            }
+            }*/
         }
 
         private void BtnNewWithdraw_Click(object sender, EventArgs e)
-        {
+        {/*
             // Ocultar errores anteriores
             labelErrorWithdraw.Visible = false;
 
@@ -232,7 +235,7 @@ namespace gymsy.UserControls
             }
 
             PanelInvoiceWallet.Visible = true;
-        }
+        */}
 
         private bool CheckAvailableMoney(float money = 0)
         {
@@ -246,6 +249,7 @@ namespace gymsy.UserControls
 
         private void dataGridTransactions_CellContentClick(object sender, DataGridViewCellEventArgs e)
         { 
+            /*
             if (e.RowIndex >= 0 && e.ColumnIndex == 1)
             {
 
@@ -255,8 +259,8 @@ namespace gymsy.UserControls
 
                 int IdPaySelected = int.Parse(dataGridTransactions.Rows[rowIndex].Cells["ID"].Value.ToString());
 
-                var PaySelected = this.dbContext.Pays
-                                .Where(pay => pay.IdPay == IdPaySelected)
+                var PaySelected = this.dbContext.Pagos
+                                .Where(pay => pay.IdPago == IdPaySelected)
                                 .First();
 
                 // Navigate to training history
@@ -266,13 +270,16 @@ namespace gymsy.UserControls
                     PanelInvoiceWallet.Visible = true;
                 }
             } 
+            */
         }
 
         private void BtnDownloadPDF_Click(object sender, EventArgs e)
         {
+            /*
             string rutaArchivo  = utilities.GenarateComprobante.GeneratePdfComprobante(this.PayActive);
             MessageBox.Show("Archivo HTML generado exitosamente en: " + rutaArchivo);
             PanelInvoiceWallet.Visible = false;
+            */
         }
 
 
@@ -280,6 +287,7 @@ namespace gymsy.UserControls
 
         private void BtnSendWhatsapp_Click(object sender, EventArgs e)
         {
+            /*
 
             if (!utilities.Verify.IsConnectedToNetwork())
             {
@@ -361,6 +369,7 @@ namespace gymsy.UserControls
             {
                 PanelInvoiceWallet.Visible = false;
             }
+            */
         }
 
 

@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Modelos;
 using gymsy.App.Presenters;
 using gymsy.Context;
 using System;
@@ -21,11 +21,11 @@ namespace gymsy.UserControls
     public partial class DashboardUserControl : UserControl
     {
 
-        private GymsyDbContext dbContext;
+        //private Models.GymsyContext dbContext;
 
         public DashboardUserControl()
         {
-            this.dbContext = GymsyContext.GymsyContextDB;
+            //this.dbContext = ViejoGymsyContext.GymsyContextDB;
             InitializeComponent();
             InitializeData();
         }
@@ -41,7 +41,7 @@ namespace gymsy.UserControls
         {
             // Busca la serie existente por su nombre
             Series series = chartInstructor.Series.FindByName("Ganancia");
-
+            /*
             if (series != null)
             {
                 // Limpia la serie (elimina todos los puntos de datos actuales)
@@ -60,41 +60,60 @@ namespace gymsy.UserControls
 
                 // Llamar al método del Presenter para obtener los datos
                 var pagosAgrupadosPorMes = DashboardInstructorPresenter.ObtenerPagosAgrupadosPorMes();
-
-                foreach (var data in pagosAgrupadosPorMes)
+                if (pagosAgrupadosPorMes != null)
                 {
-                    series.Points.AddXY(listMonths[data.Mes - 1], data.Cantidad);
+                    foreach (var data in pagosAgrupadosPorMes)
+                    {
+                        series.Points.AddXY(listMonths[data.Mes - 1], data.Cantidad);
+                    }
                 }
             }
+            */
         }
 
         public void InitializeGrid()
         {
-
-            List<int> ListIdPlans = new List<int>();
-
-            foreach (TrainingPlan plan in AppState.Instructor.TrainingPlans)
+            try
             {
-                ListIdPlans.Add(plan.IdTrainingPlan);
-            }
+                /*
+                List<int> ListIdPlans = new List<int>();
 
-            var ClientsFound = DashboardInstructorPresenter.BuscarClientesActivosDelInstructor(ListIdPlans);
-
-
-            if (ClientsFound.Count > 0)
-            {
-                PanelMsg.Visible = false;
-                foreach (App.Models.Client cl in ClientsFound)
+                foreach (PlanEntrenamiento plan in AppState.Instructor.PlanEntrenamientos)
                 {
-                    dataGridView2.Rows.Add(cl.IdClient,
-                                            $"{cl.IdPersonNavigation.LastName}, {cl.IdPersonNavigation.FirstName}",
-                                            string.Format("{0:yyyy-MM-dd}", cl.LastExpiration),
-                                            null);
+                    ListIdPlans.Add(plan.IdPlanEntrenamiento);
                 }
+
+                var ClientsFound = DashboardInstructorPresenter.BuscarClientesActivosDelInstructor(ListIdPlans);
+
+                if (ClientsFound != null)
+                {
+
+                    if (ClientsFound.Count > 0)
+                    {
+                        PanelMsg.Visible = false;
+                        foreach (Usuario cl in ClientsFound)
+                        {
+                            var sus = DashboardInstructorPresenter.getAlumnoSuscripcion(cl.IdUsuario);
+
+
+                            dataGridView2.Rows.Add(cl.IdUsuario,
+                                                    $"{cl.Apellido}, {cl.Nombre}",
+                                                    string.Format("{0:yyyy-MM-dd}", sus.FechaExpiracion),
+                                                    null);
+                        }
+                    }
+                }
+                */
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+           
 
         }
-
+        
 
         public void InitializeChartTorta()
         {
@@ -114,12 +133,13 @@ namespace gymsy.UserControls
                 seriesTorta.Font = new System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold);
                 seriesTorta.MarkerStyle = MarkerStyle.Cross;
 
-                foreach (TrainingPlan plan in AppState.Instructor.TrainingPlans)
+                foreach (PlanEntrenamiento plan in AppState.Instructor.PlanEntrenamientos)
                 {
-                    if (!plan.Inactive && plan.Clients.Count > 0)
+                    //en duda el segundo if
+                    if (!plan.PlanEntrenamientoInactivo && plan.IdEntrenadorNavigation.AlumnoSuscripcions.Count > 0)
                     {
-                        seriesTorta.Points.AddXY("", plan.Clients.Count());
-                        seriesTorta.LegendText = $"{plan.Description} - {plan.Clients.Count()} Clientes.";
+                        seriesTorta.Points.AddXY("", plan.IdEntrenadorNavigation.AlumnoSuscripcions.Count());
+                        seriesTorta.LegendText = $"{plan.Descripcion} - {plan.IdEntrenadorNavigation.AlumnoSuscripcions.Count()} Clientes.";
                     }
                 }
 

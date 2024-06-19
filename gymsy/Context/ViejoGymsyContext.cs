@@ -1,4 +1,5 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Modelos;
+using gymsy.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace gymsy.Context
 {
-    public static class GymsyContext
+    public static class ViejoGymsyContext
     {
-        public static GymsyDbContext? GymsyContextDB { get; set; }
+        public static NuevoGymsyContext? GymsyContextDB { get; set; }
     }
 }

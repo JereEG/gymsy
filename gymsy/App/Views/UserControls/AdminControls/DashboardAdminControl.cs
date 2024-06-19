@@ -1,4 +1,4 @@
-﻿using gymsy.App.Models;
+﻿using gymsy.Models;
 using gymsy.App.Presenters;
 using gymsy.Context;
 using Microsoft.EntityFrameworkCore;
@@ -19,11 +19,10 @@ namespace gymsy.UserControls.AdminControls
     public partial class DashboardAdminControl : UserControl
     {
 
-        private GymsyDbContext dbContext;
-        private AdminPresenter presenter;
+        //private NuevoGymsyContext dbContext;
+
         public DashboardAdminControl()
         {
-            presenter= new AdminPresenter();
             InitializeComponent();
             InitilizeChar();
             InitilizeCharPie();
@@ -37,7 +36,7 @@ namespace gymsy.UserControls.AdminControls
             row.Height = 35;
             row.MinimumHeight = 20;
 
-            DataGridPays= presenter.DatagridPay(DataGridPays);
+            DataGridPays= AdminPresenter.DatagridPay(DataGridPays);
 
         }
 
@@ -66,7 +65,7 @@ namespace gymsy.UserControls.AdminControls
                 //                var mesesCompletos = presenter.mes();
 
                 // Trabaja con 'resultado' según sea necesario
-                series = presenter.mes(listMonths, series);
+                series = AdminPresenter.Mes(listMonths, series);
             }
         }
 
@@ -83,7 +82,7 @@ namespace gymsy.UserControls.AdminControls
                 series.BorderColor = Color.White;
                 series.Font = new System.Drawing.Font("Arial", 10, System.Drawing.FontStyle.Bold);
                 series.MarkerStyle = MarkerStyle.Cross;
-                series = presenter.InstructorCant(series);
+                series = AdminPresenter.InstructorCant(series);
 
 
                 // Agrega los nuevos datos a la serie
@@ -191,7 +190,7 @@ namespace gymsy.UserControls.AdminControls
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Esta exepcion se produjo en el metodo BtnDownload_Click: " + ex.Message);
             }
         }
 

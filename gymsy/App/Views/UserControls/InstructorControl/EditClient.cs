@@ -11,10 +11,11 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using gymsy.Context;
-using gymsy.App.Models;
+using gymsy.Modelos;
 using System.Collections;
 using gymsy.Utilities;
 using gymsy.App.Presenters;
+using gymsy.Models;
 
 namespace gymsy.UserControls
 {
@@ -45,24 +46,24 @@ namespace gymsy.UserControls
         }
         private void CargarCliente()
         {
-            if (AppState.ClientActive != null && AppState.ClientActive.IdPersonNavigation != null)
+            if (AppState.ClientActive != null && AppState.ClientActive.IdUsuario != null)
             {
-                string name = AppState.ClientActive.IdPersonNavigation.FirstName.ToString();
-                string lastName = AppState.ClientActive.IdPersonNavigation.LastName.ToString();
-                string numberPhone = AppState.ClientActive.IdPersonNavigation.NumberPhone.ToString();
-                string nickname = AppState.ClientActive.IdPersonNavigation.Nickname.ToString();
+                string name = AppState.ClientActive.Nombre.ToString();
+                string lastName = AppState.ClientActive.Apellido.ToString();
+                string numberPhone = AppState.ClientActive.NumeroTelefono.ToString();
+                string nickname = AppState.ClientActive.Apodo.ToString();
 
-                TBContraseña.Text = AppState.ClientActive.IdPersonNavigation.Password.ToString();
+                TBContraseña.Text = AppState.ClientActive.Contrasena.ToString();
 
                 TBNombre.Text = name;
                 TBApellido.Text = lastName;
                 TBTelefono.Text = numberPhone;
                 TBUsuario.Text = nickname;
                 //Que hacer con la contraseña?
-                TBContraseña.Text = AppState.ClientActive.IdPersonNavigation.Password;
+                TBContraseña.Text = AppState.ClientActive.Contrasena;
 
-                TBRutaImagen.Text = AppState.ClientActive.IdPersonNavigation.Avatar.ToString();
-                if (AppState.ClientActive.IdPersonNavigation.Gender.ToString() == "M" || AppState.ClientActive.IdPersonNavigation.Gender.ToString() == "m")
+                TBRutaImagen.Text = AppState.ClientActive.AvatarUrl.ToString();
+                if (AppState.ClientActive.Sexo.ToString() == "M" || AppState.ClientActive.Sexo.ToString() == "m")
                 {
                     RBMasculino.Checked = true;
                 }
@@ -70,12 +71,13 @@ namespace gymsy.UserControls
                 {
                     RBFemenino.Checked = true;
                 }
-                DPFechaNacimiento.Value = AppState.ClientActive.IdPersonNavigation.Birthday;
-                DPVencimiento.Value = AppState.ClientActive.LastExpiration;
+                DPFechaNacimiento.Value = AppState.ClientActive.FechaCreacion;
+
+                DPVencimiento.Value = EditClientPresenter.BuscarPlanUnCliente(AppState.ClientActive.IdUsuario).FechaExpiracion;
 
                 try
                 {
-                    string ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageClient + "\\" + AppState.ClientActive.IdPersonNavigation.Avatar;
+                    string ruta = AppState.pathDestinationFolder + AppState.nameCarpetImageClient + "\\" + AppState.ClientActive.AvatarUrl;
 
                     IPImagenUsuario.Image = System.Drawing.Image.FromFile(ruta);
                 } catch
@@ -252,24 +254,26 @@ namespace gymsy.UserControls
 
                     CBPlanes.Items.Clear();
 
-                    var trainingPlan = EditClientPresenter.PlanDelCliente();
+                    var alumnoSub = EditClientPresenter.AlumSubDelCliente();
+                    var entrenador = EditClientPresenter.BuscarInstrucorDePlan(alumnoSub.IdPlanEntrenamiento);
+                    var planEntrenamiento = EditClientPresenter.BuscarPlan(alumnoSub.IdPlanEntrenamiento);
+                    LidPlan.Text = alumnoSub.IdPlanEntrenamiento.ToString();
 
-                    LidPlan.Text = trainingPlan.IdTrainingPlan.ToString();
-                    TBPrecio.Text = trainingPlan.Price.ToString();
-                    TBDescripcion.Text = trainingPlan.Description;
-                    TBNombreInstructor.Text = trainingPlan.IdInstructorNavigation.IdPersonNavigation.FirstName + " " + trainingPlan.IdInstructorNavigation.IdPersonNavigation.LastName;
+                    TBPrecio.Text = planEntrenamiento.Precio.ToString();
+                    TBDescripcion.Text = planEntrenamiento.Descripcion;
+                    TBNombreInstructor.Text = entrenador.Nombre + " " + entrenador.Apellido;
 
-                    CBPlanes.Items.Add(trainingPlan.Description);
+                    CBPlanes.Items.Add(planEntrenamiento.Descripcion);
 
                     //Ahora se cargan los demas elementos
 
                     var trainingPlans = EditClientPresenter.PlanesQueNoSonDelCliente(); 
 
-                    foreach (TrainingPlan plan in trainingPlans)
+                    foreach (PlanEntrenamiento plan in trainingPlans)
                     {
-                        if (!plan.Inactive)
+                        if (!plan.PlanEntrenamientoInactivo && plan.IdEntrenador == AppState.Instructor.IdUsuario)
                         {
-                            CBPlanes.Items.Add(plan.IdTrainingPlan + "-" + plan.Description);
+                            CBPlanes.Items.Add(plan.IdPlanEntrenamiento + "-" + plan.Descripcion);
                         }
 
                     }
@@ -277,7 +281,7 @@ namespace gymsy.UserControls
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                MessageBox.Show("Este error se produjo en el metodo CargarElementosComboBox: " + e.Message);
             }
         }
 
@@ -392,11 +396,12 @@ namespace gymsy.UserControls
                 string selectedPlanDescription = parts[1];
 
                 var trainingPlan = EditClientPresenter.BuscarPlan(selectedPlanId);
+                var entrenador = EditClientPresenter.BuscarInstrucorDePlan(trainingPlan.IdPlanEntrenamiento);
 
-                LidPlan.Text = trainingPlan.IdTrainingPlan.ToString();
-                TBPrecio.Text = trainingPlan.Price.ToString();
-                TBDescripcion.Text = trainingPlan.Description;
-                TBNombreInstructor.Text = trainingPlan.IdInstructorNavigation.IdPersonNavigation.FirstName + " " + trainingPlan.IdInstructorNavigation.IdPersonNavigation.LastName;
+                LidPlan.Text = trainingPlan.IdPlanEntrenamiento.ToString();
+                TBPrecio.Text = trainingPlan.Precio.ToString();
+                TBDescripcion.Text = trainingPlan.Descripcion;
+                TBNombreInstructor.Text = entrenador.Nombre + " " + entrenador.Apellido;
 
 
             }

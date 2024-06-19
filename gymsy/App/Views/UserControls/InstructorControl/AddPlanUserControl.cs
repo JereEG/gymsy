@@ -1,5 +1,4 @@
 ﻿using CustomControls.RJControls;
-using gymsy.App.Models;
 using gymsy.Context;
 using System;
 using System.Collections.Generic;
@@ -12,6 +11,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Linq;
 using gymsy.App.Presenters;
+using gymsy;
+using gymsy.Modelos;
 
 namespace gymsy.UserControls
 {
@@ -40,13 +41,13 @@ namespace gymsy.UserControls
 
         private void InitializeGridPlanes()
         {
-            var trainingPlans = AddPlanUserPresenter.listarPlanesInstructor();
+            var trainingPlans = AddPlanUserPresenter.listarPlanesInstructor(AppState.Instructor.IdUsuario);
 
             if (trainingPlans != null)
             {
-                foreach (TrainingPlan plan in trainingPlans)
+                foreach (PlanEntrenamiento plan in trainingPlans)
                 {
-                    DGPlan.Rows.Add(plan.IdTrainingPlan, plan.Price, plan.Description, plan.Inactive);
+                    DGPlan.Rows.Add(plan.IdPlanEntrenamiento, plan.Precio, plan.Descripcion, plan.PlanEntrenamientoInactivo);
 
                 }
             }
@@ -75,14 +76,27 @@ namespace gymsy.UserControls
         }
 
         private void BAgregarPlan_Click(object sender, EventArgs e)
-        {  try
+        {
+
+            this.AgregarPlan(TBPrecio.Text, TBDescripcion.Text);
+            
+        }
+        private bool validarCampos(float precio,string descripcion)
+        {
+            return   precio >= 0 && !string.IsNullOrWhiteSpace(descripcion);
+        }
+
+        private void AgregarPlan(string precio, string descripcion)
+        {
+            try
             {
                 //en numeroIngresado se guarda el valor ingresado en el textbox de ser un numero valido
-                if (float.TryParse(TBPrecio.Text, out float numeroIngresado) && numeroIngresado >= 0)
+                //Se verifica que se ha ingresado una descripcion
+                if (float.TryParse(precio, out float numeroIngresado) &&  validarCampos(numeroIngresado,descripcion))
                 {
-                    //Se verifica que se ha ingresado una descripcion
-                    if (!string.IsNullOrWhiteSpace(TBDescripcion.Text))
-                    {
+                   
+                    
+                    
                         // Aquí puedes realizar la acción que necesites con el número ingresado
                         LPrecioRequerido.Visible = false;
                         LDescripcionRequerido.Visible = false;
@@ -93,20 +107,20 @@ namespace gymsy.UserControls
 
 
                             DataGridViewRow selectedRow = DGPlan.Rows[this.indexRowSelect];
-                            selectedRow.Cells["Precio"].Value = TBPrecio.Text;
-                            selectedRow.Cells["Descripcion"].Value = TBDescripcion.Text;
+                            selectedRow.Cells["Precio"].Value = precio;
+                            selectedRow.Cells["Descripcion"].Value = descripcion;
 
                             int idPlan = int.Parse(selectedRow.Cells["id_plan"].Value.ToString());
 
 
-                            if (AddPlanUserPresenter.DescripcionUnica(TBDescripcion.Text, idPlan))
+                            if (AddPlanUserPresenter.DescripcionUnica(descripcion, idPlan))
                             {
 
 
 
-                                float precio = float.Parse(TBPrecio.Text);
+                                decimal Fprecio = decimal.Parse(precio);
 
-                                AddPlanUserPresenter.modificarPlan(idPlan, TBDescripcion.Text, precio);
+                                AddPlanUserPresenter.modificarPlan(idPlan, descripcion, Fprecio);
 
                                 // Actualiza la vista del DataGridView.
                                 DGPlan.Refresh();
@@ -138,11 +152,11 @@ namespace gymsy.UserControls
 
                             if (AddPlanUserPresenter.DescripcionUnica(TBDescripcion.Text))
                             {
-                                float precio_a_guardar = float.Parse(TBPrecio.Text);
+                                decimal precio_a_guardar = decimal.Parse(TBPrecio.Text);
 
-                                TrainingPlan plan_guardado = AddPlanUserPresenter.guardarPlan(TBDescripcion.Text, precio_a_guardar);
+                                PlanEntrenamiento plan_guardado = AddPlanUserPresenter.guardarPlan(TBDescripcion.Text, precio_a_guardar);
 
-                                DGPlan.Rows.Add(plan_guardado.IdTrainingPlan, TBPrecio.Text, TBDescripcion.Text, false);
+                                DGPlan.Rows.Add(plan_guardado.IdPlanEntrenamiento, TBPrecio.Text, TBDescripcion.Text, false);
 
                                 MessageBox.Show("Plan guardado correctamente.");
 
@@ -164,19 +178,18 @@ namespace gymsy.UserControls
 
 
 
-                    }
-                    else
-                    {
-                        LDescripcionRequerido.Visible = true;
-                    }
+                    
+                   
 
                 }
                 else
                 {
                     LPrecioRequerido.Visible = true;
+                    LDescripcionRequerido.Visible = true;
                     MessageBox.Show("Por favor, verifique que haya ingresado correctamente todos los campos.");
                 }
-            } catch
+            }
+            catch
             {
                 MessageBox.Show("Error al guardar el plan.");
             }

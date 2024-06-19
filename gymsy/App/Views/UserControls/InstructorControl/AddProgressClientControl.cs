@@ -1,5 +1,5 @@
 ﻿using CustomControls.RJControls;
-using gymsy.App.Models;
+using gymsy.Modelos;
 using gymsy.Context;
 using gymsy.utilities;
 using Microsoft.Win32;
@@ -61,7 +61,7 @@ namespace gymsy.App.Views.UserControls.ClientControls
         }
 
 
-        private bool ValidateTextBox(List<RJTextBox> textBoxList)
+        private bool ValidarCampos(List<RJTextBox> textBoxList)
         {
             foreach (RJTextBox textBoxCurrent in textBoxList)
             {
@@ -78,9 +78,18 @@ namespace gymsy.App.Views.UserControls.ClientControls
 
         private void BtnSaveProgress_Click(object sender, EventArgs e)
         {
+            
+
+            string extension_imagen = System.IO.Path.GetExtension(fileDialog.FileName).ToLower();
+          
+
+            this.guardarProgreso(TbTitle.Text, TbNotes.Text, TbPeso.Text, TbAltura.Text, fileDialog.FileName,extension_imagen);         
+        }
+        private void guardarProgreso(string title_dataFisic,string notes_dataFisic,string weight_dataFisic,string height_dataFisic,string ruta_imagen,string extension_imagen)
+        {
             try
             {
-                
+
                 labelError.Visible = false;
 
                 List<RJTextBox> textBoxList = new List<RJTextBox>()
@@ -89,36 +98,35 @@ namespace gymsy.App.Views.UserControls.ClientControls
                 };
 
                 // Validar texts box
-                if (!ValidateTextBox(textBoxList)) return;
-  
+                if (!ValidarCampos(textBoxList)) return;
+
 
                 // Verifica la extensión del archivo seleccionado
-                string extension_imagen = System.IO.Path.GetExtension(fileDialog.FileName).ToLower();
-                if (!(extension_imagen == ".jpg" || extension_imagen == ".jpeg" || extension_imagen == ".png" || extension_imagen == ".jfif"))
-                {
-                    MessageBox.Show("Agrega una imagen al registro!");
-                    return;
-                }
+                
                 if (AddProgressClientPresenter.TituloUnico(TbTitle.Text))
                 {
-                    string ruta_imagen = fileDialog.FileName;
-                    string title_dataFisic = TbTitle.Text;
-                    string notes_dataFisic = TbNotes.Text;
-                    float weight_dataFisic = float.Parse(TbPeso.Text);
-                    float height_dataFisic = float.Parse(TbAltura.Text);
+                    if (!(extension_imagen == ".jpg" || extension_imagen == ".jpeg" || extension_imagen == ".png" || extension_imagen == ".jfif"))
+                    {
+                        MessageBox.Show("Agrega una imagen al registro!");
+                        return;
+                    }
 
-                    if (AddProgressClientPresenter.SaveProgress(title_dataFisic, notes_dataFisic, weight_dataFisic, height_dataFisic, ruta_imagen, extension_imagen))
+                    float weight = float.Parse(weight_dataFisic);
+                     float height = float.Parse(height_dataFisic);
+                    if (AddProgressClientPresenter.guardarProgreso(title_dataFisic, notes_dataFisic, weight, height, ruta_imagen, extension_imagen))
                     {
                         MessageBox.Show("Se agrego Correctamente");
-                    } else
+                    }
+                    else
                     {
                         MessageBox.Show("A ocurrido un Error inesperado!");
                     }
-                    
+
 
                     this.ClearTextBox();
                     MainView.navigationControl.Display(7, true);
-                } else
+                }
+                else
                 {
                     MessageBox.Show("Ya existe un progreso con ese titulo.");
                 }

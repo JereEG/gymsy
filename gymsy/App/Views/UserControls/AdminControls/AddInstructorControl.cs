@@ -27,7 +27,7 @@ namespace gymsy.UserControls.AdminControls
         {
 
             InitializeComponent();
-          
+
         }
 
         private void BGuardarCliente_Click(object sender, EventArgs e)
@@ -40,7 +40,7 @@ namespace gymsy.UserControls.AdminControls
             string contraseña = Bcrypt.HashPassoword(TBContraseña.Text);
             string nameImagen = SaveImage(TBRutaImagen.Text);
             DateTime fecha_cumpleanos = DPFechaNacimiento.Value;
-            string sexo = RBMasculino.Checked?"M":"F";
+            string sexo = RBMasculino.Checked ? "M" : "F";
 
             //bool isValidTextBoxes = validarCampos();
             if (validarCampos())
@@ -68,12 +68,12 @@ namespace gymsy.UserControls.AdminControls
                 MessageBox.Show("Revise y complete correctamente los campos.");
             }
 
-            
-            
+
+
         }
     
 
-        private void guardarInstructor(string nombre,string apellido,string telefono,string usuario,string contraseña, string nameImagen,string sexo,DateTime fecha_cumpleanos)
+        private void guardarInstructor(string nombre, string apellido, string telefono, string usuario, string contraseña, string nameImagen, string sexo, DateTime fecha_cumpleanos)
         {
             try
             { //Se verifica que se hayan ingresado todos los datos
@@ -130,7 +130,7 @@ namespace gymsy.UserControls.AdminControls
             {
                 MessageBox.Show("Esta exepcion se produjo en el metodo BTAgregarImagen_Click: " + ex.Message);
             }
-        
+
         }
         private bool validarCampos()
         {
@@ -267,6 +267,32 @@ namespace gymsy.UserControls.AdminControls
         {
             MainView.navigationControl.Display(1, true);
             AppState.isModeAdd = false;
+        }
+
+        private void TBNombre_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Verificar si la tecla presionada no es una letra del alfabeto
+            if (!char.IsLetter(e.KeyChar) && e.KeyChar != (char)Keys.Back && e.KeyChar != (char)Keys.Space)
+            {
+                // Si no es una letra, ni la tecla de retroceso ni la tecla espacio, suprime la pulsación
+                e.Handled = true;
+            }
+        }
+
+        private void TBApellido_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsLetter(e.KeyChar) && e.KeyChar != (char)Keys.Back && e.KeyChar != (char)Keys.Space)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void TBTelefono_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Si no es un carácter válido, se ignora
+            }
         }
     }
 }

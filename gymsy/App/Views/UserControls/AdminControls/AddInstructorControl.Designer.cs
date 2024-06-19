@@ -220,6 +220,7 @@
             TBNombre.Size = new Size(204, 31);
             TBNombre.TabIndex = 84;
             TBNombre.UnderlinedStyle = false;
+            TBNombre.KeyPress += TBNombre_KeyPress;
             // 
             // LFechaNacimiento
             // 
@@ -396,6 +397,7 @@
             TBTelefono.Size = new Size(204, 31);
             TBTelefono.TabIndex = 70;
             TBTelefono.UnderlinedStyle = false;
+            TBTelefono.KeyPress += TBTelefono_KeyPress;
             // 
             // TBUsuario
             // 
@@ -440,6 +442,7 @@
             TBApellido.Size = new Size(204, 31);
             TBApellido.TabIndex = 68;
             TBApellido.UnderlinedStyle = false;
+            TBApellido.KeyPress += TBApellido_KeyPress;
             // 
             // BTAgregarImagen
             // 

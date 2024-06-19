@@ -352,6 +352,7 @@ namespace gymsy.UserControls
             TBNombre.Size = new Size(204, 31);
             TBNombre.TabIndex = 84;
             TBNombre.UnderlinedStyle = false;
+            TBNombre.KeyPress += TBNombre_KeyPress;
             // 
             // CBPlanes
             // 
@@ -607,6 +608,7 @@ namespace gymsy.UserControls
             TBTelefono.Size = new Size(204, 31);
             TBTelefono.TabIndex = 70;
             TBTelefono.UnderlinedStyle = false;
+            TBTelefono.KeyPress += TBTelefono_KeyPress;
             // 
             // TBUsuario
             // 

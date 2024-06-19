@@ -48,7 +48,13 @@ namespace gymsy.UserControls
                 e.Handled = true;
             }
         }
-
+        private void TBTelefono_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Si no es un carácter válido, se ignora
+            }
+        }
         private void TBApellido_KeyPress(object sender, KeyPressEventArgs e)
         {
             // Verificar si la tecla presionada no es una letra del alfabeto

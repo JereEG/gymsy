@@ -83,4 +83,40 @@ public partial class PlanEntrenamiento
         }
 
     }
+
+
+    public static List<PlanEntrenamiento> buscarPlanesPorInstructor(int id)
+    {
+        // Obtener todos los planes de entrenamiento del instructor actual
+        using (var gymsydb = new NuevoGymsyContext())
+        {
+            return gymsydb.PlanEntrenamientos
+               .Where(plan => plan.IdEntrenador == id)
+               .Include(plan => plan.AlumnoSuscripcions)
+               .ToList();
+        }
+
+    }
+
+    public static Usuario buscarInstrucorDelPlan(int idPlan)
+        {
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                // Busca el plan de entrenamiento por su Id e incluye la entidad Instructor relacionada
+                var plan = gymsydb.PlanEntrenamientos
+                                  .Include(p => p.IdEntrenador) // Asume que PlanEntrenamiento tiene una propiedad de navegación Instructor
+                                  .FirstOrDefault(plan => plan.IdPlanEntrenamiento == idPlan);
+
+                // Retorna el instructor asociado al plan si se encuentra, de lo contrario devuelve null
+                return plan?.IdEntrenadorNavigation;
+            }
+        }
+
+    public static List<PlanEntrenamiento> listarPlanes()
+    {
+        using (var gymsydb = new NuevoGymsyContext())
+        {
+            return gymsydb.PlanEntrenamientos.ToList();
+        }
+    }
 }

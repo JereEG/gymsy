@@ -104,7 +104,7 @@ namespace gymsy.UserControls.AdminControls
         private void actualizarInstructor()
         {
 
-            AdminPresenter.PersonUpdated(TBNombre.Text, TBApellido.Text, TBTelefono.Text, TBUsuario.Text, TBContraseña.Text,TBRutaImagen.Text,RBMasculino.Checked, DPFechaNacimiento.Value);
+            AdminPresenter.EditarInstructor(TBNombre.Text, TBApellido.Text, TBTelefono.Text, TBUsuario.Text, TBContraseña.Text,TBRutaImagen.Text,RBMasculino.Checked, DPFechaNacimiento.Value);
     
 
         }

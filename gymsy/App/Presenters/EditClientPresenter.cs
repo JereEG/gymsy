@@ -14,37 +14,23 @@ namespace gymsy.App.Presenters
     internal static class EditClientPresenter
     {
 
-        public static AlumnoSuscripcion AlumSubDelCliente()
+        public static AlumnoSuscripcion AlumSubcripcionDelCliente()
         {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-                return gymsydb.AlumnoSuscripcions
-                             .Where(trainingPlan => trainingPlan.IdAlumno == AppState.ClientActive.IdUsuario)
-                             .First();
-            }
+            return AlumnoSuscripcion.obtenerSuscripcionPorAlumno(AppState.ClientActive.IdUsuario);
         }
-        public static AlumnoSuscripcion BuscarPlanUnCliente(int idClienteBuscado)
+
+        public static AlumnoSuscripcion BuscarsSuscripcionPorCliente(int idCliente)
         {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-                return gymsydb.AlumnoSuscripcions
-                             .Where(trainingPlan => trainingPlan.IdAlumno == idClienteBuscado)
-                             .First();
-            }
+            return AlumnoSuscripcion.obtenerSuscripcionPorAlumno(idCliente);
         }
+
         public static Usuario BuscarInstrucorDePlan(int idPlan)
         {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-                // Busca el plan de entrenamiento por su Id e incluye la entidad Instructor relacionada
-                var plan = gymsydb.PlanEntrenamientos
-                                  .Include(p => p.IdEntrenadorNavigation) // Incluye la propiedad de navegación correcta
-                                  .FirstOrDefault(plan => plan.IdPlanEntrenamiento == idPlan);
 
-                // Retorna el instructor asociado al plan si se encuentra, de lo contrario devuelve null
-                return plan?.IdEntrenadorNavigation;
-            }
+            return PlanEntrenamiento.buscarInstrucorDelPlan(idPlan);
+
         }
+
         public static List<PlanEntrenamiento> PlanesQueNoSonDelCliente()
         {
             using (var gymsy = new NuevoGymsyContext())

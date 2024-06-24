@@ -120,7 +120,7 @@ namespace gymsy.App.Views.UserControls.ClientControls
 
                 float weight = float.Parse(weight_dataFisic);
                 float height = float.Parse(height_dataFisic);
-                if (AddProgressClientPresenter.guardarProgreso(title_dataFisic, notes_dataFisic, weight, height, ruta_imagen, extension_imagen))
+                if (AddProgressClientPresenter.GuardarProgreso(title_dataFisic, notes_dataFisic, weight, height, ruta_imagen, extension_imagen))
                 {
                     MessageBox.Show("Se agrego Correctamente");
                 }

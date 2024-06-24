@@ -14,11 +14,7 @@ namespace gymsy.App.Presenters
     {
         public static List<PlanEntrenamiento> ListarPlanesInstructor(int pIdInstructor)
         {
-            using (var gymsydb=new NuevoGymsyContext())
-            {
-                return gymsydb.PlanEntrenamientos
-                    .Where(p => p.IdEntrenadorNavigation.IdRol == 2 && p.IdEntrenador == pIdInstructor).ToList();
-            }
+            return PlanEntrenamiento.buscarInstrucorDelPlan(pIdInstructor);
                 
         }
 
@@ -27,7 +23,7 @@ namespace gymsy.App.Presenters
             PlanEntrenamiento.modificarPlan(idPlan,descripcion,precio);
 
         }
-        
+
         public static PlanEntrenamiento AgregarPlan(string descripcion, decimal precio)
         {
             return PlanEntrenamiento.agregarPlan(descripcion, precio);

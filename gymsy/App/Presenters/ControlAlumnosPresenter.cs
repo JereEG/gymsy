@@ -11,11 +11,11 @@ namespace gymsy.App.Presenters
     internal static class ControlAlumnosPresenter
     {
 
-        public static Usuario BuscarCliente(int pIdCliente)
+        public static Usuario BuscarCliente(int id)
         {
-            Usuario.buscarCliente(pIdCliente);
+            Usuario.buscarUsuario(id,3);
         }
-        
+
         public static void DesactivarOActivarCliente(int idUsuario, bool estado)
         {
             Usuario.desactivarOActivarUsuario(idUsuario,estado);

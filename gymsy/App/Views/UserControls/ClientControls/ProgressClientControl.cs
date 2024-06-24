@@ -66,7 +66,7 @@ namespace gymsy.UserControls.ClientControls
             if(AppState.auxIdClient > 0)
             {
                 Usuario clienteBuscado = ClientePresenter.BuscarCliente(AppState.auxIdClient);
-                List<EstadoFisico> Estado = AddProgressClientPresenter.getProgress(AppState.auxIdClient);
+                List<EstadoFisico> Estado = AddProgressClientPresenter.ListarProgresosPorAlumno(AppState.auxIdClient);
                 int edad = DateTime.Now.Year - clienteBuscado.FechaCreacion.Year;
                 //TimeSpan TimeTraning = clienteBuscado.IdPersonNavigation.CreatedAt - DateTime.Now;
 
@@ -98,7 +98,7 @@ namespace gymsy.UserControls.ClientControls
                 int edad = DateTime.Now.Year - AppState.ClientActive.FechaNacimiento.Year;
                // int edad = 18;
                 TimeSpan TimeTraning = AppState.ClientActive.FechaCreacion - DateTime.Now;
-                List<EstadoFisico> Estado = AddProgressClientPresenter.getProgress
+                List<EstadoFisico> Estado = AddProgressClientPresenter.ListarProgresosPorAlumno
                  (AppState.ClientActive.IdUsuario);
                 TBDescripcionClient.Text = $"{AppState.ClientActive.Nombre + " " + AppState.ClientActive.Apellido}, " +
                 $"{edad} años comenzo a enrenarse hace {TimeTraning.Days * -1} días, "
@@ -159,7 +159,7 @@ namespace gymsy.UserControls.ClientControls
 
                 object IdDfSelected = dataGridProgress.Rows[rowIndex].Cells[0].Value;
 
-                var ListDataFisics =AddProgressClientPresenter.getProgress(AppState.ClientActive.IdUsuario);
+                var ListDataFisics =AddProgressClientPresenter.ListarProgresosPorAlumno(AppState.ClientActive.IdUsuario);
 
                 EstadoFisico DataFisicSelected = ListDataFisics.Find(df => IdDfSelected.Equals(df.IdEstadoFisico));
 

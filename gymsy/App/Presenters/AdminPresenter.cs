@@ -242,7 +242,7 @@ namespace gymsy.App.Presenters
         }
 
         // Método para actualizar un usuario (Instructor)
-        public static void PersonUpdated(string nombre, string apellido, string telefono, string usuario, string contraseña, string rutaImagen, bool masculino, DateTime fechaNacimiento)
+        public static void EditarInstructor(string nombre, string apellido, string telefono, string usuario, string contraseña, string rutaImagen, bool masculino, DateTime fechaNacimiento)
         {
             using (var gymsydb = new NuevoGymsyContext())
             {
@@ -314,23 +314,10 @@ namespace gymsy.App.Presenters
                 }
             }
         }
-        public static void EliminarOActivarInstructor(int pIdPersona, bool pDeleteOrAcitive)
+        public static void DesactivarOActivarInstructor(int id, bool estado)
         {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-
-
-                var persona = gymsydb.Usuarios
-                    .Where(p => p.IdUsuario == pIdPersona && p.IdRol == 2).FirstOrDefault();
-
-                if (persona != null)
-                {
-                    persona.UsuarioInactivo = pDeleteOrAcitive;
-                    gymsydb.SaveChanges();
-                }
-            }
+            Usuario.desactivarOActivarUsuario(id,estado);
         }
-        // InstructorAdmin
 
         public static IEnumerable<Usuario> GetInstructors()
         {

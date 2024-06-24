@@ -73,7 +73,7 @@ namespace gymsy.UserControls
                 }
                 DPFechaNacimiento.Value = AppState.ClientActive.FechaCreacion;
 
-                DPVencimiento.Value = EditClientPresenter.BuscarPlanUnCliente(AppState.ClientActive.IdUsuario).FechaExpiracion;
+                DPVencimiento.Value = EditClientPresenter.BuscarsSuscripcionPorCliente(AppState.ClientActive.IdUsuario).FechaExpiracion;
 
                 try
                 {
@@ -254,7 +254,7 @@ namespace gymsy.UserControls
 
                     CBPlanes.Items.Clear();
 
-                    var alumnoSub = EditClientPresenter.AlumSubDelCliente();
+                    var alumnoSub = EditClientPresenter.AlumSubcripcionDelCliente();
                     var entrenador = EditClientPresenter.BuscarInstrucorDePlan(alumnoSub.IdPlanEntrenamiento);
                     var planEntrenamiento = EditClientPresenter.BuscarPlan(alumnoSub.IdPlanEntrenamiento);
                     LidPlan.Text = alumnoSub.IdPlanEntrenamiento.ToString();

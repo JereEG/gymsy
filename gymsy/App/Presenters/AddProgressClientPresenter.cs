@@ -13,29 +13,28 @@ namespace gymsy.App.Presenters
 {
     internal static class AddProgressClientPresenter
     {
-        private static NuevoGymsyContext gymsydb = ViejoGymsyContext.GymsyContextDB;
-
         public static bool TituloUnico(string nuevoTitulo)
         { 
            
-           return EstadoFisico.TituloUnico(nuevoTitulo);
+           return EstadoFisico.tituloUnico(nuevoTitulo);
            
         }
-        public static List<EstadoFisico> getProgress(int idAlumno)
+
+        public static List<EstadoFisico> ListarProgresosPorAlumno(int idAlumnoSucripcion)
         {
             using (var gymsydb=new NuevoGymsyContext())
             {
-                return (List<EstadoFisico>)gymsydb.EstadoFisicos.Where(a => a.IdAlumnoSuscripcion==getSuscripcion(idAlumno).IdAlumnoSuscripcion).ToList();
+                return (List<EstadoFisico>)gymsydb.EstadoFisicos.Where(a => a.IdAlumnoSuscripcion==ObtenerSuscripcionPorAlumno(idAlumnoSucripcion).IdAlumnoSuscripcion).ToList();
             }
         }
-        public static AlumnoSuscripcion getSuscripcion(int idAlumno)
+
+        
+        public static AlumnoSuscripcion ObtenerSuscripcionPorAlumno(int idAlumno)
         {
-            using (var gymsydb=new NuevoGymsyContext())
-            {
-                return gymsydb.AlumnoSuscripcions.FirstOrDefault(a => a.IdAlumno == idAlumno);
-            }
+            return AlumnoSuscripcion.obtenerSuscripcionPorAlumno(idAlumno);
         }
-        public static bool guardarProgreso(string ptitle_dataFisic, string pnotes_dataFisic, float pweight_dataFisic, float pheight_dataFisic, string pruta_imagen, string pextension)
+
+        public static bool GuardarProgreso(string ptitle_dataFisic, string pnotes_dataFisic, float pweight_dataFisic, float pheight_dataFisic, string pruta_imagen, string pextension)
         {
             using (var gymsydb = new NuevoGymsyContext())
             {

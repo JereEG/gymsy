@@ -231,7 +231,7 @@ namespace gymsy.UserControls.AdminControls
 
                     int idInstructor = int.Parse(DGInstructors.Rows[this.indexRowSelect].Cells["id_instructor"].Value.ToString());
 
-                    AdminPresenter.EliminarOActivarInstructor(idInstructor, deleteOrActive);
+                    AdminPresenter.DesactivarOActivarInstructor(idInstructor, deleteOrActive);
 
                    
 

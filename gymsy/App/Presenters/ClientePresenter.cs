@@ -13,26 +13,14 @@ namespace gymsy.App.Presenters
 {
     internal static class ClientePresenter
     {
-        public static Usuario BuscarCliente( int pIdCliente)
+        public static Usuario BuscarCliente(int pIdCliente)
         {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-                return gymsydb.Usuarios
-                                    .Where(client => client.IdUsuario == pIdCliente && client.IdRol == 3)
-                                    .First();
-            }
+            return Usuario.buscarUsuario(pIdCliente,3);
         }
         
-        public static List<PlanEntrenamiento> BuscarPlanesInstructor(int pIdInstructor)
+        public static List<PlanEntrenamiento> BuscarPlanesPorInstructor(int id)
         {
-            // Obtener todos los planes de entrenamiento del instructor actual
-            using (var gymsydb =new NuevoGymsyContext())
-            {
-                return gymsydb.PlanEntrenamientos
-                   .Where(plan => plan.IdEntrenador == pIdInstructor)
-                   .Include(plan => plan.AlumnoSuscripcions)
-                   .ToList();
-            }
+           return PlanEntrenamiento.buscarPlanesPorInstructor(id);
                
         }
        

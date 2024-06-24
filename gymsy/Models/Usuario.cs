@@ -89,13 +89,23 @@ public partial class Usuario
 
     }
 
-    public static Usuario buscarCliente(int id)
+    public static Usuario buscarUsuario(int id, int idRol)
     {
+
+        //Cuando el id rol es cero significa que busca cualquier usuario en cualquier role
         using (var gymsydb = new NuevoGymsyContext())
         {
-            return gymsydb.Usuarios
-                                .Where(client => client.IdUsuario == id && client.IdRol == 3)
+            if (idRol != 0)
+            {
+                return gymsydb.Usuarios
+                                .Where(usuario => usuario.IdUsuario == id && usuario.IdRol == idRol)
                                 .First();
+            }
+            else
+            {
+                return gymsydb.Usuarios.Where(usuario => usuario.IdUsuario == id).First();
+            }
+
         }
     }
 

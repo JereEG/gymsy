@@ -14,8 +14,8 @@ namespace gymsy.App.Presenters
     {
         public static List<PlanEntrenamiento> ListarPlanesInstructor(int pIdInstructor)
         {
-            return PlanEntrenamiento.buscarInstrucorDelPlan(pIdInstructor);
-                
+            return PlanEntrenamiento.buscarPlanesPorInstructor(pIdInstructor);
+    
         }
 
         public static void ModificarPlan(int idPlan, string descripcion, decimal precio)

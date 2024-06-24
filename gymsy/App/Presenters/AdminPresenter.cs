@@ -133,27 +133,7 @@ namespace gymsy.App.Presenters
             }
         }
 
-        // Métodos relacionados con pagos y suscripciones
-        public static IEnumerable<object> Pays()
-        {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-                return gymsydb.Pagos
-                 .GroupBy(p => new { Mes = p.FechaCreacion.Month, Anio = p.FechaCreacion.Year })
-                 .Select(g => new
-                 {
-                     Mes = g.Key.Mes,
-                     Anio = g.Key.Anio,
-                     // SumaPagos = g.Sum(p => p.monto)
-                 })
-                 .Select(item => new
-                 {
-                     Mes = item.Mes,
-                     // Amount = item.SumaPagos
-                 })
-                 .ToArray();
-            }
-        }
+        
 
         public static System.Windows.Forms.DataVisualization.Charting.Series Mes(List<string> listMonth, System.Windows.Forms.DataVisualization.Charting.Series series)
         {
@@ -319,6 +299,7 @@ namespace gymsy.App.Presenters
             Usuario.desactivarOActivarUsuario(id,estado);
         }
 
+
         public static IEnumerable<Usuario> GetInstructors()
         {
             using (var gymsydb = new NuevoGymsyContext())
@@ -328,15 +309,11 @@ namespace gymsy.App.Presenters
                                  .ToList();
             }
         }
-        public static Usuario getInstructor(int pId_intructor)
+        public static Usuario ObtenerInstructor(int pId_intructor)
         {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-                return gymsydb.Usuarios
-                                 .Where(instructor => instructor.IdRol == 2 && instructor.IdUsuario == pId_intructor)
-                                 .First();
-            }
+            return Usuario.buscarUsuario(pId_intructor,2);
         }
+        
         public static int InstructorCantClientes(Usuario instructor)
         {
             using (var gymsydb = new NuevoGymsyContext())

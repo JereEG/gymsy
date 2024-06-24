@@ -14,8 +14,7 @@ namespace gymsy.App.Presenters
 {
     internal static class AddClientPresenter
     {
-        private static NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
-
+       
         public static PlanEntrenamiento TraerPrimerPlan()
         {
             using (var gymsydb = new NuevoGymsyContext())
@@ -24,12 +23,12 @@ namespace gymsy.App.Presenters
             }
         }
 
-        public static PlanEntrenamiento BuscarPlan(int pIdPlanBuscado)
+        public static PlanEntrenamiento BuscarPlan(int idPlan)
         {
             using (var gymsydb = new NuevoGymsyContext())
             {
                 return gymsydb.PlanEntrenamientos
-                    .Where(plan => plan.IdPlanEntrenamiento == pIdPlanBuscado)
+                    .Where(plan => plan.IdPlanEntrenamiento == idPlan)
                     .First();
             }
         }
@@ -127,13 +126,6 @@ namespace gymsy.App.Presenters
                 return "";
             }
         }
-        public static List<Usuario> getUsuarios(int idUsuario)
-        {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-                return (List<Usuario>)gymsydb.Usuarios.Where(u => u.IdUsuario == idUsuario);
-            }
-        }
         public static Usuario getUsuario(int idUsuario)
         {
             using (var gymsydb=new NuevoGymsyContext())
@@ -141,6 +133,8 @@ namespace gymsy.App.Presenters
                 return gymsydb.Usuarios.FirstOrDefault(u => u.IdUsuario == idUsuario);
             }
         }
+
+        
         public static bool IsNicknameUnique(string nickname)
         {
             using (var gymsydb = new NuevoGymsyContext())

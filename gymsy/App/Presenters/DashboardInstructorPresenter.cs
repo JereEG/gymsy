@@ -13,7 +13,6 @@ namespace gymsy.App.Presenters
 {
     internal static class DashboardInstructorPresenter
     {
-        private static gymsy.Models.NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
 
         // Método para obtener pagos agrupados por mes
         public static List<PagoPorMes> ObtenerPagosAgrupadosPorMes()
@@ -42,14 +41,14 @@ namespace gymsy.App.Presenters
                     return pagosAgrupadosPorMes.OrderBy(g => g.Mes).ThenBy(g => g.Anio).ToList();
                 }
                 // Ordenar los resultados
-                
+
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
                 return null;
             }
-           
+
         }
 
         public static List<Usuario> BuscarClientesActivosDelInstructor(List<int> pIdsPlanesInstructor)
@@ -59,7 +58,7 @@ namespace gymsy.App.Presenters
             try
             {
                 // Filtrar Usuarios con el rol de Cliente (IdRol == 3) y IDs en pIdsPlanesInstructor
-                using (var gymsydb=new NuevoGymsyContext())
+                using (var gymsydb = new NuevoGymsyContext())
                 {
                     var filteredUsuarios = gymsydb.AlumnoSuscripcions
                       .Where(alumSub => alumSub.IdAlumnoNavigation != null
@@ -88,7 +87,7 @@ namespace gymsy.App.Presenters
                                      join plan in activePlans on sus.IdPlanEntrenamiento equals plan.IdPlanEntrenamiento
                                      select usuario).Distinct().ToList();
                 }
-                    
+
 
             }
             catch (NullReferenceException ex)
@@ -161,17 +160,10 @@ namespace gymsy.App.Presenters
                 }
             }
         }
-        public static AlumnoSuscripcion getAlumnoSuscripcion(int idusuario)
-        {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-                return gymsydb.AlumnoSuscripcions
-                    .Where(a => a.IdAlumno == idusuario).FirstOrDefault();
-            }
-        }
+        
     }
 
-        public class PagoPorMes
+    public class PagoPorMes
     {
         public int Mes { get; set; }
         public int Anio { get; set; }

@@ -13,7 +13,6 @@ namespace gymsy.App.Presenters
 {
     internal static class EditClientPresenter
     {
-        private static NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
 
         public static AlumnoSuscripcion AlumSubDelCliente()
         {
@@ -24,7 +23,7 @@ namespace gymsy.App.Presenters
                              .First();
             }
         }
-        public static AlumnoSuscripcion BuscarPlanUnCliente( int idClienteBuscado)
+        public static AlumnoSuscripcion BuscarPlanUnCliente(int idClienteBuscado)
         {
             using (var gymsydb = new NuevoGymsyContext())
             {
@@ -33,14 +32,14 @@ namespace gymsy.App.Presenters
                              .First();
             }
         }
-        public static Usuario BuscarInstrucorDePlan(int pIdPlan)
+        public static Usuario BuscarInstrucorDePlan(int idPlan)
         {
             using (var gymsydb = new NuevoGymsyContext())
             {
                 // Busca el plan de entrenamiento por su Id e incluye la entidad Instructor relacionada
                 var plan = gymsydb.PlanEntrenamientos
                                   .Include(p => p.IdEntrenadorNavigation) // Incluye la propiedad de navegación correcta
-                                  .FirstOrDefault(plan => plan.IdPlanEntrenamiento == pIdPlan);
+                                  .FirstOrDefault(plan => plan.IdPlanEntrenamiento == idPlan);
 
                 // Retorna el instructor asociado al plan si se encuentra, de lo contrario devuelve null
                 return plan?.IdEntrenadorNavigation;
@@ -48,7 +47,8 @@ namespace gymsy.App.Presenters
         }
         public static List<PlanEntrenamiento> PlanesQueNoSonDelCliente()
         {
-            using (var gymsy = new NuevoGymsyContext()) {
+            using (var gymsy = new NuevoGymsyContext())
+            {
                 // Obtener la lista de ID de planes de entrenamiento asociados al cliente
                 var planesCliente = gymsy.AlumnoSuscripcions
                                         .Where(subAlum => subAlum.IdAlumno == AppState.ClientActive.IdUsuario)
@@ -60,7 +60,8 @@ namespace gymsy.App.Presenters
                                         .Where(planEntrenamiento => !planesCliente.Contains(planEntrenamiento.IdPlanEntrenamiento))
                                         .ToList();
 
-                return planesNoCliente; }
+                return planesNoCliente;
+            }
         }
 
         public static void ActualizarCliente(string pUsuario, string pNombre, string pApellido, string pRutaImagen, string pContraseña,
@@ -101,18 +102,15 @@ namespace gymsy.App.Presenters
                     subcripcionAlumno.IdPlanEntrenamiento = pIdPlan;
 
                     gymsy.SaveChanges();
-                } 
+                }
             }
         }
-        
-        public static PlanEntrenamiento BuscarPlan(int pIdPlan)
+
+        public static PlanEntrenamiento BuscarPlan(int idPlan)
         {
-            using (var gymsy = new NuevoGymsyContext())
-            {
-                return gymsy.PlanEntrenamientos
-                    .Where(trainingPlan => trainingPlan.IdPlanEntrenamiento == pIdPlan)
-                    .First();
-            }
+
+            return planEntrenamiento = PlanEntrenamiento.buscarPlan(idPlan);
+
         }
 
         private static string SaveImage(string imagePath)

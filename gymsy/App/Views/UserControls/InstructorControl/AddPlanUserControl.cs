@@ -41,7 +41,7 @@ namespace gymsy.UserControls
 
         private void InitializeGridPlanes()
         {
-            var trainingPlans = AddPlanUserPresenter.listarPlanesInstructor(AppState.Instructor.IdUsuario);
+            var trainingPlans = AddPlanUserPresenter.ListarPlanesInstructor(AppState.Instructor.IdUsuario);
 
             if (trainingPlans != null)
             {
@@ -109,7 +109,7 @@ namespace gymsy.UserControls
 
                         decimal Fprecio = decimal.Parse(precio);
 
-                        AddPlanUserPresenter.modificarPlan(idPlan, descripcion, Fprecio);
+                        AddPlanUserPresenter.ModificarPlan(idPlan, descripcion, Fprecio);
 
                         // Actualiza la vista del DataGridView.
                         DGPlan.Refresh();
@@ -197,7 +197,7 @@ namespace gymsy.UserControls
             {
                 MessageBox.Show("Error al guardar el plan.");
             }*/
-            return AddPlanUserPresenter.agregarPlan(descripcion, precio);
+            return AddPlanUserPresenter.AgregarPlan(descripcion, precio);
         }
 
         /**

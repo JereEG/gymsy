@@ -344,7 +344,7 @@ namespace gymsy.UserControls
                     */
                     int idClient = int.Parse(DGUsers.Rows[this.indexRowSelect].Cells["IdClient"].Value.ToString());
 
-                    ControlAlumnosPresenter.EliminarOActivarCliente(idClient, deleteOrActive);
+                    ControlAlumnosPresenter.DesactivarOActivarCliente(idClient, deleteOrActive);
 
                     //Se actualiza el datagrid con el 
                     this.mostrar(!this.isModeVerNoDelete);

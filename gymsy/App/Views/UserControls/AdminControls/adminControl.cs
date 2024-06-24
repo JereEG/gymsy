@@ -63,7 +63,7 @@ namespace gymsy.App.Views.UserControls.AdminControls
 
         private void BBuscarArchivo_Click_1(object sender, EventArgs e)
         {
-           TBRutaArchivo.Text= AdminPresenter.Buscar();
+           TBRutaArchivo.Text= AdminPresenter.BuscarBackup();
         }
 
         private void rjButton1_Click(object sender, EventArgs e)

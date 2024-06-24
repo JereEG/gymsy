@@ -45,7 +45,7 @@ namespace gymsy.UserControls.AdminControls
             //bool isValidTextBoxes = validarCampos();
             if (validarCampos())
             {
-                if (AdminPresenter.verificarNacimiento(fecha_cumpleanos))
+                if (AdminPresenter.VerificarNacimiento(fecha_cumpleanos))
                 {
                     if (AdminPresenter.IsNicknameUnique(usuario))
                     {

@@ -57,4 +57,30 @@ public partial class PlanEntrenamiento
             return plan;
         }
     }
+
+
+    public static PlanEntrenamiento buscarPlan(int idPlan)
+    {
+        using (var gymsy = new NuevoGymsyContext())
+        {
+            return gymsy.PlanEntrenamientos
+                .Where(trainingPlan => trainingPlan.IdPlanEntrenamiento == idPlan)
+                .First();
+        }
+    }
+
+
+    public static void modificarPlan(int idPlan, string descripcion, decimal precio)
+    {
+        using (var gymsydb = new NuevoGymsyContext())
+        {
+            var plan = gymsydb.PlanEntrenamientos
+                .Where(p => p.IdPlanEntrenamiento == idPlan).FirstOrDefault();
+            plan.Descripcion = descripcion;
+            plan.Precio = precio;
+
+            gymsydb.SaveChanges();
+        }
+
+    }
 }

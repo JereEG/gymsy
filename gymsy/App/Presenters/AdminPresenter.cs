@@ -22,27 +22,32 @@ namespace gymsy.App.Presenters
 {
     internal static class AdminPresenter
     {
-        private static bool isEditMode = false; // Variable para saber si se está editando o agregando 
 
-        private static NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
-
-        // Método para agregar un nuevo usuario (Instructor)
         public static void GuardarInstructor(string nombre, string apellido, string telefono, string usuario, string contraseña, string nameImage, string sexo, DateTime pfecha_cumpleanos)
         {
 
-            Usuario.GuardarInstructor(usuario, nombre, apellido, nameImage, contraseña, telefono, sexo, pfecha_cumpleanos);
+            Usuario.guardarInstructor(usuario, nombre, apellido, nameImage, contraseña, telefono, sexo, pfecha_cumpleanos);
          
         }
-        public static bool verificarNacimiento(DateTime fechaNacimiento)
+        public static bool VerificarNacimiento(DateTime fechaNacimiento)
         {
-            return fechaNacimiento < DateTime.Now;
+            return Usuario.verificarNacimiento(fechaNacimiento);
         }
 
 
         // Método para verificar si el nickname es único
         public static bool IsNicknameUnique(string nickname)
         {
-           return Usuario.IsNicknameUnique(nickname);
+            try
+            {
+                return Usuario.isNicknameUnique(nickname);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al verificar el nombre de usuario: " + ex.Message);
+                return false;
+            }
+           
         }
 
         // Método para crear un backup de la base de datos
@@ -102,7 +107,7 @@ namespace gymsy.App.Presenters
         }
 
         // Método para seleccionar un archivo de backup
-        public static string Buscar()
+        public static string BuscarBackup()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {

@@ -11,16 +11,9 @@ namespace gymsy.App.Presenters
 {
     internal static class PaymentsPresenter
     {
-        private static NuevoGymsyContext gymsydb = ViejoGymsyContext.GymsyContextDB;
-
-       public static Pago BuscarPago(int pIdPaySelected)
+       public static Pago BuscarPago(int idPago)
         {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-                return gymsydb.Pagos
-                                    .Where(pay => pay.IdPago == pIdPaySelected)
-                                    .First();
-            }
+           return Pago.buscarPago(idPago);
         }
     }
 }

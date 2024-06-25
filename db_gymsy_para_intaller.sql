@@ -1,8 +1,8 @@
 USE [master]
 GO
-CREATE DATABASE gymsyDemo
+CREATE DATABASE gymsy
 GO
-USE gymsyDemo
+USE gymsy
 GO
 
 -- Creación de la tabla Rol

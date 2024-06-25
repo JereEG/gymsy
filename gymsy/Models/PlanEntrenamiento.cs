@@ -120,4 +120,20 @@ public partial class PlanEntrenamiento
             return gymsydb.PlanEntrenamientos.ToList();
         }
     }
+
+
+     public static void desactivarOActivarPlan(int idPlan, bool estado)
+        {
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+
+                var plan = gymsydb.PlanEntrenamientos.Where(p => p.IdPlanEntrenamiento == idPlan).FirstOrDefault();
+                if (plan != null)
+                {
+                    plan.PlanEntrenamientoInactivo = estado;
+                    gymsydb.SaveChanges();
+                }
+            }
+
+        }
 }

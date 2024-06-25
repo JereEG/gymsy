@@ -306,7 +306,7 @@ namespace gymsy.UserControls
 
                             var idPlan = int.Parse(DGPlan.SelectedRows[0].Cells["id_plan"].Value.ToString());
 
-                            AddPlanUserPresenter.EliminarOActivarPlan(idPlan, deleteOrAcitive);
+                            AddPlanUserPresenter.DesactivarOActivarPlan(idPlan, deleteOrAcitive);
 
                             //Se limpia el indice
                             this.indexRowSelect = 0;
@@ -334,7 +334,7 @@ namespace gymsy.UserControls
 
                             var idPlan = int.Parse(DGPlan.SelectedRows[0].Cells["id_plan"].Value.ToString());
 
-                            AddPlanUserPresenter.EliminarOActivarPlan(idPlan, deleteOrAcitive);
+                            AddPlanUserPresenter.DesactivarOActivarPlan(idPlan, deleteOrAcitive);
 
 
                             //Se limpia el indice

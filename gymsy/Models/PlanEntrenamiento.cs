@@ -22,7 +22,7 @@ public partial class PlanEntrenamiento
 
     public virtual Usuario IdEntrenadorNavigation { get; set; } = null!;
 
-    public static bool descripcionUnica(string nuevaDescripcion, int? idPlanActual = null)
+    public static bool esDescripcionUnica(string nuevaDescripcion, int? idPlanActual = null)
     {
         using (var gymsydb = new NuevoGymsyContext())
         {

@@ -49,12 +49,12 @@ public partial class Usuario
         }
     }
 
-    public static bool isNicknameUnique(string nickname)
+    public static bool esUnicoElApodo(string apodo)
     {
         using (var gymsydb = new NuevoGymsyContext())
         {
 
-            var existingUsuario = gymsydb.Usuarios.FirstOrDefault(u => u.Apodo == nickname);
+            var existingUsuario = gymsydb.Usuarios.FirstOrDefault(u => u.Apodo == apodo);
             if (existingUsuario == null)
             {
                 return true;

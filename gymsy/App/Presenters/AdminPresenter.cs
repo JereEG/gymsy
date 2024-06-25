@@ -40,7 +40,7 @@ namespace gymsy.App.Presenters
         {
             try
             {
-                return Usuario.isNicknameUnique(nickname);
+                return Usuario.esUnicoElApodo(nickname);
             }
             catch (Exception ex)
             {

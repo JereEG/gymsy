@@ -36,7 +36,7 @@ namespace gymsy.App.Presenters
 
         public static bool DescripcionUnica(string nuevaDescripcion, int? idPlanActual = null)
         {
-            return PlanEntrenamiento.descripcionUnica(nuevaDescripcion, idPlanActual);
+            return PlanEntrenamiento.esDescripcionUnica(nuevaDescripcion, idPlanActual);
         }
        
 

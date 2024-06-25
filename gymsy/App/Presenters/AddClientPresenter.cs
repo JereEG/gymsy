@@ -114,7 +114,7 @@ namespace gymsy.App.Presenters
             try
             {
 
-                if (Usuario.isNicknameUnique(nickname))
+                if (Usuario.esUnicoElApodo(nickname))
                 {
                     return true;
                 }

@@ -18,7 +18,7 @@ namespace gymsy.Models
         private static NuevoGymsyContext dbContext = StacticGymsyContext.GymsyContextDB;
 
 
-        public static void CrearInstructor(string apodo, string nombre, string apellido, string avatarUrl, string contrasena, string numeroTelefono, string sexo,DateTime fechaNacimiento)
+        public static void crearInstructor(string apodo, string nombre, string apellido, string avatarUrl, string contrasena, string numeroTelefono, string sexo,DateTime fechaNacimiento)
         {
             using (var dbContext = new NuevoGymsyContext())
             {

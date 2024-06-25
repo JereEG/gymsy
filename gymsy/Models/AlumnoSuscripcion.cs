@@ -20,11 +20,29 @@ public partial class AlumnoSuscripcion
 
     public virtual PlanEntrenamiento IdPlanEntrenamientoNavigation { get; set; } = null!;
 
-    public static AlumnoSuscripcion getSuscripcion(int idAlumno)
+    public static AlumnoSuscripcion obtenerSuscripcionPorAlumno(int idAlumno)
     {
         using (var gymsydb = new NuevoGymsyContext())
         {
             return gymsydb.AlumnoSuscripcions.FirstOrDefault(a => a.IdAlumno == idAlumno);
+        }
+    }
+
+
+    public static void guardarSuscripcion(int idAlumno,int pIdPlan,DateTime pExpiration)
+    {
+        using (var gymsydb = new NuevoGymsyContext())
+        {
+
+            AlumnoSuscripcion suscripcion = new AlumnoSuscripcion
+            {
+                IdAlumno = idAlumno,
+                IdPlanEntrenamiento = pIdPlan,
+                FechaExpiracion = pExpiration
+            };
+
+            gymsydb.AlumnoSuscripcions.Add(suscripcion);
+            gymsydb.SaveChanges();
         }
     }
 }

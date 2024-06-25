@@ -111,7 +111,7 @@ namespace gymsy.UserControls
 
 
             // Obtener todos los planes de entrenamiento del instructor actual
-            var planesEntrenamiento = ClientePresenter.BuscarPlanesInstructor(AppState.Instructor.IdUsuario);
+            var planesEntrenamiento = ClientePresenter.BuscarPlanesPorInstructor(AppState.Instructor.IdUsuario);
 
                 foreach (var plan in planesEntrenamiento)
                 {
@@ -344,7 +344,7 @@ namespace gymsy.UserControls
                     */
                     int idClient = int.Parse(DGUsers.Rows[this.indexRowSelect].Cells["IdClient"].Value.ToString());
 
-                    ControlAlumnosPresenter.EliminarOActivarCliente(idClient, deleteOrActive);
+                    ControlAlumnosPresenter.DesactivarOActivarCliente(idClient, deleteOrActive);
 
                     //Se actualiza el datagrid con el 
                     this.mostrar(!this.isModeVerNoDelete);

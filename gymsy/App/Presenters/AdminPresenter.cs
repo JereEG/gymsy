@@ -22,27 +22,32 @@ namespace gymsy.App.Presenters
 {
     internal static class AdminPresenter
     {
-        private static bool isEditMode = false; // Variable para saber si se está editando o agregando 
 
-        private static NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
-
-        // Método para agregar un nuevo usuario (Instructor)
         public static void GuardarInstructor(string nombre, string apellido, string telefono, string usuario, string contraseña, string nameImage, string sexo, DateTime pfecha_cumpleanos)
         {
 
-            Usuario.GuardarInstructor(usuario, nombre, apellido, nameImage, contraseña, telefono, sexo, pfecha_cumpleanos);
+            Usuario.guardarInstructor(usuario, nombre, apellido, nameImage, contraseña, telefono, sexo, pfecha_cumpleanos);
          
         }
-        public static bool verificarNacimiento(DateTime fechaNacimiento)
+        public static bool VerificarNacimiento(DateTime fechaNacimiento)
         {
-            return fechaNacimiento < DateTime.Now;
+            return Usuario.verificarNacimiento(fechaNacimiento);
         }
 
 
         // Método para verificar si el nickname es único
         public static bool IsNicknameUnique(string nickname)
         {
-           return Usuario.IsNicknameUnique(nickname);
+            try
+            {
+                return Usuario.esUnicoElApodo(nickname);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al verificar el nombre de usuario: " + ex.Message);
+                return false;
+            }
+           
         }
 
         // Método para crear un backup de la base de datos
@@ -102,7 +107,7 @@ namespace gymsy.App.Presenters
         }
 
         // Método para seleccionar un archivo de backup
-        public static string Buscar()
+        public static string BuscarBackup()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
@@ -128,27 +133,7 @@ namespace gymsy.App.Presenters
             }
         }
 
-        // Métodos relacionados con pagos y suscripciones
-        public static IEnumerable<object> Pays()
-        {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-                return gymsydb.Pagos
-                 .GroupBy(p => new { Mes = p.FechaCreacion.Month, Anio = p.FechaCreacion.Year })
-                 .Select(g => new
-                 {
-                     Mes = g.Key.Mes,
-                     Anio = g.Key.Anio,
-                     // SumaPagos = g.Sum(p => p.monto)
-                 })
-                 .Select(item => new
-                 {
-                     Mes = item.Mes,
-                     // Amount = item.SumaPagos
-                 })
-                 .ToArray();
-            }
-        }
+        
 
         public static System.Windows.Forms.DataVisualization.Charting.Series Mes(List<string> listMonth, System.Windows.Forms.DataVisualization.Charting.Series series)
         {
@@ -237,7 +222,7 @@ namespace gymsy.App.Presenters
         }
 
         // Método para actualizar un usuario (Instructor)
-        public static void PersonUpdated(string nombre, string apellido, string telefono, string usuario, string contraseña, string rutaImagen, bool masculino, DateTime fechaNacimiento)
+        public static void EditarInstructor(string nombre, string apellido, string telefono, string usuario, string contraseña, string rutaImagen, bool masculino, DateTime fechaNacimiento)
         {
             using (var gymsydb = new NuevoGymsyContext())
             {
@@ -309,42 +294,23 @@ namespace gymsy.App.Presenters
                 }
             }
         }
-        public static void EliminarOActivarInstructor(int pIdPersona, bool pDeleteOrAcitive)
+        public static void DesactivarOActivarInstructor(int id, bool estado)
         {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-
-
-                var persona = gymsydb.Usuarios
-                    .Where(p => p.IdUsuario == pIdPersona && p.IdRol == 2).FirstOrDefault();
-
-                if (persona != null)
-                {
-                    persona.UsuarioInactivo = pDeleteOrAcitive;
-                    gymsydb.SaveChanges();
-                }
-            }
+            Usuario.desactivarOActivarUsuario(id,estado);
         }
-        // InstructorAdmin
+
 
         public static IEnumerable<Usuario> GetInstructors()
         {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-                return gymsydb.Usuarios
-                                 .Where(instructor => instructor.IdRol == 2)
-                                 .ToList();
-            }
+            return Usuario.listarUsuariosPorRoles(2);
+            
         }
-        public static Usuario getInstructor(int pId_intructor)
+
+        public static Usuario ObtenerInstructor(int pId_intructor)
         {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-                return gymsydb.Usuarios
-                                 .Where(instructor => instructor.IdRol == 2 && instructor.IdUsuario == pId_intructor)
-                                 .First();
-            }
+            return Usuario.buscarUsuario(pId_intructor,2);
         }
+        
         public static int InstructorCantClientes(Usuario instructor)
         {
             using (var gymsydb = new NuevoGymsyContext())

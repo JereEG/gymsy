@@ -154,8 +154,8 @@ namespace gymsy.UserControls
 
             TortaCuota.Points.Clear();
 
-            int Expirados = DashboardInstructorPresenter.ContarExpiradosONoExp(true);
-            int NoExpirados = DashboardInstructorPresenter.ContarExpiradosONoExp(false);
+            int Expirados = DashboardInstructorPresenter.ContarExpiradosONoExpirados(true);
+            int NoExpirados = DashboardInstructorPresenter.ContarExpiradosONoExpirados(false);
 
             TortaCuota.Points.AddXY($"Al dia {NoExpirados}", NoExpirados);
             TortaCuota.Points.AddXY($"Vencidos {Expirados}", Expirados);

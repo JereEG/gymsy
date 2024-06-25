@@ -30,7 +30,7 @@ namespace gymsy.UserControls
             if (AppState.person != null)
             {
 
-                this.PaysList = ControlPagosAlumnoPresenter.listarTodasTransferencias(AppState.person.IdUsuario);
+                this.PaysList = ControlPagosAlumnoPresenter.ListarPagosPorUsuario(AppState.person.IdUsuario);
             }
 
             if (this.PaysList.Count() > 0)

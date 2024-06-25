@@ -183,7 +183,7 @@ namespace gymsy.UserControls.AdminControls
 
                 int idInstructorSelected = int.Parse(DGInstructors.Rows[this.indexRowSelect].Cells["id_instructor"].Value.ToString());
 
-                var instructorSelected = AdminPresenter.getInstructor(idInstructorSelected);
+                var instructorSelected = AdminPresenter.ObtenerInstructor(idInstructorSelected);
 
                 AppState.InstructorActive = instructorSelected;
                 AppState.isModeEdit = true;
@@ -231,7 +231,7 @@ namespace gymsy.UserControls.AdminControls
 
                     int idInstructor = int.Parse(DGInstructors.Rows[this.indexRowSelect].Cells["id_instructor"].Value.ToString());
 
-                    AdminPresenter.EliminarOActivarInstructor(idInstructor, deleteOrActive);
+                    AdminPresenter.DesactivarOActivarInstructor(idInstructor, deleteOrActive);
 
                    
 

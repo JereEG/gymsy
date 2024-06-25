@@ -32,12 +32,12 @@ namespace gymsy.App.Presenters
 
 
             this.authView.Signin += Signin;
-            inactivarClientes();
+            desactivarClientesConSuscripcionesExpiradas();
             // Show view
             this.authView.Show();
         }
 
-        private void inactivarClientes()
+        private void desactivarClientesConSuscripcionesExpiradas()
         {
             using (var gymsydb = new NuevoGymsyContext()) { 
 
@@ -213,25 +213,7 @@ namespace gymsy.App.Presenters
 
                         // this person is a receptionist
                         case 4:
-                            /*
-                            var personsss = this.gymsydb.People.ToList();
-                            var planes = this.gymsydb.TrainingPlans
-                                .Where(plan => plan.Inactive == false)
-                                .ToList();
-                            this.gymsydb.Clients.ToList();
-                            this.gymsydb.TrainingPlans.ToList();
-                            this.gymsydb.Instructors.ToList();
-                            this.gymsydb.Admins.ToList();
-                            this.gymsydb.PayTypes.ToList();
-                            this.gymsydb.Pays.ToList();
-                            this.gymsydb.Wallets.ToList();
-
-                            MessageBox.Show(planes.Count().ToString());
-                            AppState.planes = planes;
-                            AppState.clients = personsss;
-                            AppState.persons = personsss;
-                            AppState.Instructor = new Instructor();
-                            */
+                            
                             var personsss = this.gymsydb.Usuarios.ToList();
                             var planes = this.gymsydb.PlanEntrenamientos
                                 .Where(plan => plan.PlanEntrenamientoInactivo == false)

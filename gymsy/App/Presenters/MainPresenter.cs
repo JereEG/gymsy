@@ -14,17 +14,15 @@ namespace gymsy.App.Presenters
         private IMainView mainView;
         private NuevoGymsyContext gymsydb;
 
-        public MainPresenter(IMainView mainView, NuevoGymsyContext gymsyDb){
-            using (var gymsydb=new NuevoGymsyContext())
+        public MainPresenter(IMainView mainView, NuevoGymsyContext gymsyDb)
+        {
+            using (var gymsydb = new NuevoGymsyContext())
             {
                 this.gymsydb = gymsyDb;
             }
-                this.mainView = mainView;
-           ;
+            this.mainView = mainView;
+            ;
 
-            // subscribe
-
-            // Show view
             this.mainView.Show();
         }
 

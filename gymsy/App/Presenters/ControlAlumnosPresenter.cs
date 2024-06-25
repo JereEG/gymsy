@@ -10,31 +10,15 @@ namespace gymsy.App.Presenters
 {
     internal static class ControlAlumnosPresenter
     {
-        private static NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
-        public static Usuario BuscarCliente(int pIdCliente)
+
+        public static Usuario BuscarCliente(int id)
         {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-                return gymsydb.Usuarios
-                                    .Where(client => client.IdUsuario == pIdCliente && client.IdRol == 3)
-                                    .First();
-            }
+            return Usuario.buscarUsuario(id,3);
         }
-        public static void EliminarOActivarCliente(int pIdPersona, bool pDeleteOrAcitive)
+
+        public static void DesactivarOActivarCliente(int idUsuario, bool estado)
         {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-
-
-                var persona = gymsydb.Usuarios
-                    .Where(p => p.IdUsuario == pIdPersona).FirstOrDefault();
-
-                if (persona != null)
-                {
-                    persona.UsuarioInactivo = pDeleteOrAcitive;
-                    gymsydb.SaveChanges();
-                }
-            }
+            Usuario.desactivarOActivarUsuario(idUsuario,estado);
         }
     }
 }

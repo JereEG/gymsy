@@ -1,5 +1,6 @@
 ﻿using gymsy.Context;
 using gymsy.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 
@@ -21,7 +22,7 @@ public partial class PlanEntrenamiento
 
     public virtual Usuario IdEntrenadorNavigation { get; set; } = null!;
 
-    public static bool descripcionUnica(string nuevaDescripcion, int? idPlanActual = null)
+    public static bool esDescripcionUnica(string nuevaDescripcion, int? idPlanActual = null)
     {
         using (var gymsydb = new NuevoGymsyContext())
         {
@@ -57,4 +58,82 @@ public partial class PlanEntrenamiento
             return plan;
         }
     }
+
+
+    public static PlanEntrenamiento buscarPlan(int idPlan)
+    {
+        using (var gymsy = new NuevoGymsyContext())
+        {
+            return gymsy.PlanEntrenamientos
+                .Where(trainingPlan => trainingPlan.IdPlanEntrenamiento == idPlan)
+                .First();
+        }
+    }
+
+
+    public static void modificarPlan(int idPlan, string descripcion, decimal precio)
+    {
+        using (var gymsydb = new NuevoGymsyContext())
+        {
+            var plan = gymsydb.PlanEntrenamientos
+                .Where(p => p.IdPlanEntrenamiento == idPlan).FirstOrDefault();
+            plan.Descripcion = descripcion;
+            plan.Precio = precio;
+
+            gymsydb.SaveChanges();
+        }
+
+    }
+
+
+    public static List<PlanEntrenamiento> buscarPlanesPorInstructor(int id)
+    {
+        // Obtener todos los planes de entrenamiento del instructor actual
+        using (var gymsydb = new NuevoGymsyContext())
+        {
+            return gymsydb.PlanEntrenamientos
+               .Where(plan => plan.IdEntrenador == id)
+               .Include(plan => plan.AlumnoSuscripcions)
+               .ToList();
+        }
+
+    }
+
+    public static Usuario buscarInstrucorDelPlan(int idPlan)
+        {
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                // Busca el plan de entrenamiento por su Id e incluye la entidad Instructor relacionada
+                var plan = gymsydb.PlanEntrenamientos
+                                  .Include(p => p.IdEntrenador) // Asume que PlanEntrenamiento tiene una propiedad de navegación Instructor
+                                  .FirstOrDefault(plan => plan.IdPlanEntrenamiento == idPlan);
+
+                // Retorna el instructor asociado al plan si se encuentra, de lo contrario devuelve null
+                return plan?.IdEntrenadorNavigation;
+            }
+        }
+
+    public static List<PlanEntrenamiento> listarPlanes()
+    {
+        using (var gymsydb = new NuevoGymsyContext())
+        {
+            return gymsydb.PlanEntrenamientos.ToList();
+        }
+    }
+
+
+     public static void desactivarOActivarPlan(int idPlan, bool estado)
+        {
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+
+                var plan = gymsydb.PlanEntrenamientos.Where(p => p.IdPlanEntrenamiento == idPlan).FirstOrDefault();
+                if (plan != null)
+                {
+                    plan.PlanEntrenamientoInactivo = estado;
+                    gymsydb.SaveChanges();
+                }
+            }
+
+        }
 }

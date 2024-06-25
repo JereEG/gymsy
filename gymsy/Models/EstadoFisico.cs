@@ -27,7 +27,7 @@ public partial class EstadoFisico
     public string ImagenUrl { get; set; } = null!;
 
     public virtual AlumnoSuscripcion IdAlumnoSuscripcionNavigation { get; set; } = null!;
-    public static bool TituloUnico(string nuevoTitulo)
+    public static bool tituloUnico(string nuevoTitulo)
     {
         using (var gymsydb = new NuevoGymsyContext())
         {
@@ -52,11 +52,11 @@ public partial class EstadoFisico
 
             if (AppState.ClientActive == null)
             {
-                DataFisicModel.IdAlumnoSuscripcion = AlumnoSuscripcion.getSuscripcion(AppState.auxIdClient).IdAlumnoSuscripcion;
+                DataFisicModel.IdAlumnoSuscripcion = AlumnoSuscripcion.obtenerSuscripcionPorAlumno(AppState.auxIdClient).IdAlumnoSuscripcion;
             }
             else
             {
-                DataFisicModel.IdAlumnoSuscripcion = AlumnoSuscripcion.getSuscripcion(AppState.ClientActive.IdUsuario).IdAlumnoSuscripcion;
+                DataFisicModel.IdAlumnoSuscripcion = AlumnoSuscripcion.obtenerSuscripcionPorAlumno(AppState.ClientActive.IdUsuario).IdAlumnoSuscripcion;
             }
 
             DataFisicModel.EstadoFisicoInactivo = false;
@@ -81,5 +81,14 @@ public partial class EstadoFisico
             }
         }
     }
+
+
+    public static List<EstadoFisico> listarProgresosPorAlumnoSuscripcion(int idAlumnoSuscripcion)
+        {
+            using (var gymsydb=new NuevoGymsyContext())
+            {
+                return (List<EstadoFisico>)gymsydb.EstadoFisicos.Where(a => a.IdAlumnoSuscripcion==idAlumnoSuscripcion).ToList();
+            }
+        }
 
  }

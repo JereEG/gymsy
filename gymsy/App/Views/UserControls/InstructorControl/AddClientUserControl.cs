@@ -215,7 +215,7 @@ namespace gymsy.UserControls
                         
                         
                     
-                        TBNombreInstructor.Text =AddClientPresenter.getUsuario(trainingPlan.IdEntrenador).Nombre + " " + AddClientPresenter.getUsuario(trainingPlan.IdEntrenador).Apellido;
+                        TBNombreInstructor.Text =AddClientPresenter.ObtenerUsuario(trainingPlan.IdEntrenador).Nombre + " " + AddClientPresenter.ObtenerUsuario(trainingPlan.IdEntrenador).Apellido;
 
                         CBPlanes.Items.Add(trainingPlan.Descripcion);
                     
@@ -333,7 +333,7 @@ namespace gymsy.UserControls
                 string selectedPlanDescription = parts[1];
 
                 var trainingPlan = AddClientPresenter.BuscarPlan(selectedPlanId);
-                var entrenador = AddClientPresenter.BuscarInstrucorDePlan(selectedPlanId);
+                var entrenador = AddClientPresenter.BuscarInstrucorDelPlan(selectedPlanId);
 
                 LidPlan.Text = trainingPlan.IdPlanEntrenamiento.ToString();
                 TBPrecio.Text = trainingPlan.Precio.ToString();

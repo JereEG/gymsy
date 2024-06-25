@@ -13,43 +13,10 @@ namespace gymsy.App.Presenters
 {
     internal static class ControlPagosAlumnoPresenter
     {
-        private static NuevoGymsyContext gymsydb = StacticGymsyContext.GymsyContextDB;
-        //Corregir
-        public static List<Pago> listarPagosRealizados(int pIdUsuario)
+        public static List<Pago> ListarPagosPorUsuario(int idUsuario)
         {
-            using (var gymsy = new NuevoGymsyContext())
-            {
-                return gymsydb.Pagos
-                   .Where(p => p.IdUsuario == pIdUsuario)
-                   .Include(p => p.IdTipoPagoNavigation)
-                   .ToList();
-            }
+            return Pago.listarPagosPorUsuario(idUsuario);
         }
-        //Corregir
-        public static List<Pago> listarPagosRecibidos(int pIdUsuario)
-        {
-            using (var gymsy = new NuevoGymsyContext())
-            {
-                return gymsydb.Pagos
-            .Where(p => p.IdUsuario == pIdUsuario)
-            .Include(p => p.IdTipoPagoNavigation)
-            .ToList();
-            }
-        }
-
-        public static List<Pago> listarTodasTransferencias(int pIdUsuario)
-        {
-            using (var gymsydb=new NuevoGymsyContext())
-            {
-                return gymsydb.Pagos
-                .Where(p => p.IdUsuario == pIdUsuario)
-                .Include(p => p.IdTipoPagoNavigation)
-                .ToList();
-            }
-                
-        }
-
-
 
     }
 }

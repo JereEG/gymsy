@@ -40,44 +40,84 @@ public partial class Usuario
 
 
 
-    public static void GuardarInstructor(string nombre, string apellido, string telefono, string usuario, string contraseña, string nameImage, string sexo, DateTime pfecha_cumpleanos)
+    public static void guardarInstructor(string nombre, string apellido, string telefono, string usuario, string contraseña, string nameImage, string sexo, DateTime pfecha_cumpleanos)
     {
 
         using (var gymsydb = new NuevoGymsyContext())
         {
-
-            ProcedimientoAlmacenado.CrearInstructor(usuario, nombre, apellido, nameImage, contraseña, telefono, sexo, pfecha_cumpleanos);
+            ProcedimientoAlmacenado.crearInstructor(usuario, nombre, apellido, nameImage, contraseña, telefono, sexo, pfecha_cumpleanos);
         }
-
     }
 
-    public static bool IsNicknameUnique(string nickname)
+    public static bool esUnicoElApodo(string apodo)
     {
         using (var gymsydb = new NuevoGymsyContext())
         {
-            try
+
+            var existingUsuario = gymsydb.Usuarios.FirstOrDefault(u => u.Apodo == apodo);
+            if (existingUsuario == null)
             {
-                var existingUsuario = gymsydb.Usuarios.FirstOrDefault(u => u.Apodo == nickname);
-                if (existingUsuario == null)
-                {
-                    return true;
-                }
-                else
-                {
-                    //MessageBox.Show("El nombre de usuario ya existe");
-                    return false;
-                }
+                return true;
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show("Error al verificar el nombre de usuario: " + ex.Message);
                 return false;
             }
+
         }
     }
+
     public static bool verificarNacimiento(DateTime fechaNacimiento)
     {
         return fechaNacimiento < DateTime.Now;
+    }
+
+
+    public static void desactivarOActivarUsuario(int idUsuario, bool estado)
+    {
+        using (var gymsydb = new NuevoGymsyContext())
+        {
+            var persona = gymsydb.Usuarios
+                .Where(p => p.IdUsuario == idUsuario).FirstOrDefault();
+
+            if (persona != null)
+            {
+                persona.UsuarioInactivo = estado;
+                gymsydb.SaveChanges();
+            }
+        }
+
+    }
+
+    public static Usuario buscarUsuario(int id, int idRol)
+    {
+
+        //Cuando el id rol es cero significa que busca cualquier usuario en cualquier role
+        using (var gymsydb = new NuevoGymsyContext())
+        {
+            if (idRol != 0)
+            {
+                return gymsydb.Usuarios
+                                .Where(usuario => usuario.IdUsuario == id && usuario.IdRol == idRol)
+                                .First();
+            }
+            else
+            {
+                return gymsydb.Usuarios.Where(usuario => usuario.IdUsuario == id).First();
+            }
+
+        }
+    }
+
+
+    public static IEnumerable<Usuario> listarUsuariosPorRoles(int idRol)
+    {
+        using (var gymsydb = new NuevoGymsyContext())
+        {
+            return gymsydb.Usuarios
+                             .Where(usuario => usuario.IdRol == idRol)
+                             .ToList();
+        }
     }
 
 }

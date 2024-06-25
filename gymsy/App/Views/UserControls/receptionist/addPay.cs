@@ -105,7 +105,7 @@ namespace gymsy.App.Views.UserControls.receptionist
 
             foreach (AlumnoSuscripcion plan in AppState.AlumnoSuscripciones)
             {
-                var client = AddPayPresenter.getAlumno(plan.IdAlumno);
+                var client = AddPayPresenter.ObtenerAlumno(plan.IdAlumno);
                
                 
                     if (!client.UsuarioInactivo)

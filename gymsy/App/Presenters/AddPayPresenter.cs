@@ -34,7 +34,7 @@ namespace gymsy.App.Presenters
             Pago.guardarPago(pIdCliente,pMonto);
         }
 
-        public static Usuario getAlumno(int pIdAlumno)
+        public static Usuario ObtenerAlumno(int pIdAlumno)
         {
 
             return Usuario.buscarUsuario(pIdAlumno,3);

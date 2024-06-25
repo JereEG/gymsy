@@ -14,7 +14,7 @@ namespace gymsy.App.Presenters
     internal static class DashboardInstructorPresenter
     {
 
-        public static int ContarExpiradosONoExp(bool Expirado)
+        public static int ContarExpiradosONoExpirados(bool Expirado)
         {
             using (var gymsydb = new NuevoGymsyContext())
             {

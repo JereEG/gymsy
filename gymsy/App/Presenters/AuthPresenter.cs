@@ -32,12 +32,12 @@ namespace gymsy.App.Presenters
 
 
             this.authView.Signin += Signin;
-            inactivarClientes();
+            desactivarClientesConSuscripcionesExpiradas();
             // Show view
             this.authView.Show();
         }
 
-        private void inactivarClientes()
+        private void desactivarClientesConSuscripcionesExpiradas()
         {
             using (var gymsydb = new NuevoGymsyContext()) { 
 

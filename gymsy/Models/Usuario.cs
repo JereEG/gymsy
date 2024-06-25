@@ -109,4 +109,15 @@ public partial class Usuario
         }
     }
 
+
+    public static IEnumerable<Usuario> listarUsuariosPorRoles(int idRol)
+    {
+        using (var gymsydb = new NuevoGymsyContext())
+        {
+            return gymsydb.Usuarios
+                             .Where(usuario => usuario.IdRol == idRol)
+                             .ToList();
+        }
+    }
+
 }

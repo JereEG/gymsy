@@ -82,4 +82,13 @@ public partial class EstadoFisico
         }
     }
 
+
+    public static List<EstadoFisico> listarProgresosPorAlumnoSuscripcion(int idAlumnoSuscripcion)
+        {
+            using (var gymsydb=new NuevoGymsyContext())
+            {
+                return (List<EstadoFisico>)gymsydb.EstadoFisicos.Where(a => a.IdAlumnoSuscripcion==idAlumnoSuscripcion).ToList();
+            }
+        }
+
  }

@@ -20,13 +20,11 @@ namespace gymsy.App.Presenters
            
         }
 
-        public static List<EstadoFisico> ListarProgresosPorAlumno(int idAlumnoSucripcion)
+        public static List<EstadoFisico> ListarProgresosPorAlumno(int idUsuarioAlumno)
         {
-            
-            using (var gymsydb=new NuevoGymsyContext())
-            {
-                return (List<EstadoFisico>)gymsydb.EstadoFisicos.Where(a => a.IdAlumnoSuscripcion==ObtenerSuscripcionPorAlumno(idAlumnoSucripcion).IdAlumnoSuscripcion).ToList();
-            }
+            AlumnoSuscripcion alumnnoSusc = AlumnoSuscripcion.obtenerSuscripcionPorAlumno(idUsuarioAlumno);
+
+            return EstadoFisico.listarProgresosPorAlumnoSuscripcion(alumnnoSusc.IdAlumnoSuscripcion);
         }
 
 

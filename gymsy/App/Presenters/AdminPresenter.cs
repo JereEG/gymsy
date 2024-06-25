@@ -302,13 +302,10 @@ namespace gymsy.App.Presenters
 
         public static IEnumerable<Usuario> GetInstructors()
         {
-            using (var gymsydb = new NuevoGymsyContext())
-            {
-                return gymsydb.Usuarios
-                                 .Where(instructor => instructor.IdRol == 2)
-                                 .ToList();
-            }
+            return Usuario.listarUsuariosPorRoles(2);
+            
         }
+
         public static Usuario ObtenerInstructor(int pId_intructor)
         {
             return Usuario.buscarUsuario(pId_intructor,2);

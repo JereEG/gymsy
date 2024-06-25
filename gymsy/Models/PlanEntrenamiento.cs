@@ -1,5 +1,6 @@
 ﻿using gymsy.Context;
 using gymsy.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 

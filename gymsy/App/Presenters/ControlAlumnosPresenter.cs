@@ -13,7 +13,7 @@ namespace gymsy.App.Presenters
 
         public static Usuario BuscarCliente(int id)
         {
-            Usuario.buscarUsuario(id,3);
+            return Usuario.buscarUsuario(id,3);
         }
 
         public static void DesactivarOActivarCliente(int idUsuario, bool estado)

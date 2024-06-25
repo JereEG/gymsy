@@ -1,4 +1,7 @@
-﻿using System;
+﻿using gymsy.App.Presenters;
+using gymsy.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 
 namespace gymsy.Modelos;
@@ -55,7 +58,7 @@ public partial class Pago
             using (var gymsydb = new NuevoGymsyContext())
             {
                 var admin = AddPayPresenter.TraerAdmin();
-
+            
                 //var resepcionist = this.dbContext.People.FirstOrDefault(person => person.Rol.IdRol == 4);//rol de secretaria
                 var client = AddPayPresenter.BuscarCliente(pIdCliente);
                 Usuario.buscarUsuario(pIdCliente,3);

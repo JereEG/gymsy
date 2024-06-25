@@ -95,7 +95,7 @@ namespace gymsy.App.Presenters
         public static PlanEntrenamiento BuscarPlan(int idPlan)
         {
 
-            return planEntrenamiento = PlanEntrenamiento.buscarPlan(idPlan);
+            return PlanEntrenamiento.buscarPlan(idPlan);
 
         }
 

@@ -17,7 +17,20 @@ namespace gymsy.App.Presenters
             return PlanEntrenamiento.buscarPlanesPorInstructor(pIdInstructor);
     
         }
+        public static void EliminarOActivarPlan(int pIdPlan, bool pDeleteOrAcitive)
+        {
+            using (var gymsydb = new NuevoGymsyContext())
+            {
 
+                var plan = gymsydb.PlanEntrenamientos.Where(p => p.IdPlanEntrenamiento == pIdPlan).FirstOrDefault();
+                if (plan != null)
+                {
+                    plan.PlanEntrenamientoInactivo = pDeleteOrAcitive;
+                    gymsydb.SaveChanges();
+                }
+            }
+
+        }
         public static void ModificarPlan(int idPlan, string descripcion, decimal precio)
         {
             PlanEntrenamiento.modificarPlan(idPlan,descripcion,precio);

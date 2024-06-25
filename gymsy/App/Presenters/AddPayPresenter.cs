@@ -16,7 +16,13 @@ namespace gymsy.App.Presenters
             return Usuario.buscarUsuario(pIdCliente,0);
                
         }
-      
+        public static Usuario TraerAdmin()
+        {
+            using (var gymsydb = new NuevoGymsyContext())
+            {
+                return gymsydb.Usuarios.Where(u => u.IdRol == 1).FirstOrDefault();
+            }
+        }
         public static AlumnoSuscripcion suscripcionCliente(int idCliente)
         {
             return AlumnoSuscripcion.obtenerSuscripcionPorAlumno(idCliente);

@@ -36,7 +36,7 @@ public partial class AlumnoSuscripcion
 
             AlumnoSuscripcion suscripcion = new AlumnoSuscripcion
             {
-                IdAlumno = usuario.IdUsuario,
+                IdAlumno = idAlumno,
                 IdPlanEntrenamiento = pIdPlan,
                 FechaExpiracion = pExpiration
             };

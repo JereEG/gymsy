@@ -47,3 +47,17 @@ Este proyecto se centra en el desarrollo de una aplicación de gestión de gimna
 - **Contraseña:** cliente
 
 ¡Explora y disfruta de Gymsy! Si tienes alguna pregunta o sugerencia, no dudes en ponerte en contacto con nosotros.
+
+## Pantallas
+
+### Login
+![image11](https://github.com/user-attachments/assets/8c94d77b-5442-42d5-ac18-55d2fd40519c)
+### Añadir instructor
+![image21](https://github.com/user-attachments/assets/ec8e7f69-4afb-4c13-a9a3-08b750b9ec1a)
+### Añadir nuevo pago
+![image20](https://github.com/user-attachments/assets/88b62dbb-ff3b-495f-b35a-f6aa48b99983)
+### CRUD de clientes
+![image26](https://github.com/user-attachments/assets/64d72354-3c53-487f-b749-4b7936bf887d)
+### Añadir progreso
+![image12](https://github.com/user-attachments/assets/52833736-fd02-45f4-be1e-f419bebe9e2c)
+
